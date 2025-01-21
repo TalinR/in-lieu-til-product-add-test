@@ -141,15 +141,15 @@ const BallPool = function() {
         // Adding various bodies
         // yes its some bad code whatever...
         Composite.add(world, [
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['1'], xScale: 0.1, yScale: 0.1 } } }),
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['2'], xScale: 0.1, yScale: 0.1 } } }),
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['3'], xScale: 0.1, yScale: 0.1 } } }),
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['4'], xScale: 0.1, yScale: 0.1 } } }),
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['5'], xScale: 0.1, yScale: 0.1 } } }),
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['6'], xScale: 0.1, yScale: 0.1 } } }),
-            // createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['7'], xScale: 0.1, yScale: 0.1 } } }),
-            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['8'], xScale: 0.1, yScale: 0.1 } } }),
-            // createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['9'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['1'], xScale: 0.4, yScale: 0.4 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['2'], xScale: 0.4, yScale: 0.4 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['3'], xScale: 0.4, yScale: 0.4 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['4'], xScale: 0.4, yScale: 0.4 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['5'], xScale: 0.4, yScale: 0.4 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['6'], xScale: 0.4, yScale: 0.4 } } }),
+            // createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['7'], xScale: 0.4, yScale: 0.4 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['8'], xScale: 0.4, yScale: 0.4 } } }),
+            // createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['9'], xScale: 0.4, yScale: 0.4 } } }),
 
             // createBody('rectangle', { width: 100, height: 180 }, { render: { sprite: { texture: images['3'], xScale: 0.2, yScale: 0.2 } } }),
             // createBody('rectangle', { width: 160, height: 60 }, { render: { sprite: { texture: images['4'], xScale: 0.12, yScale: 0.12 } } }),

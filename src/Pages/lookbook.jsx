@@ -57,7 +57,7 @@ const Lookbook = () => {
       {/* <Navbar /> */}
       <div className="lookbook">
         <div className="lookbook-header">
-          <h1>Of Your Everyday Holiday Wardrobe</h1>
+          <h1>Of Your Holiday Wardrobe</h1>
           <h2>January, 2025</h2>
         </div>
         <div className="slider-container">

@@ -19,6 +19,7 @@ import PulloverProductPage from "./Pages/pulloverProductPage";
 import TshirtProductPage from "./Pages/tshirtProductPage";
 import HoodieProductPage from "./Pages/hoodieProductPage";
 import PasswordModal from "./Components/PasswordModal"; // Import your modal component
+import CombinedPage from "./Pages/combinedPage";
 
 function App() {
 
@@ -28,11 +29,11 @@ function App() {
 
   const handlePasswordSubmit = (password) => {
     // Replace with your actual password logic
-    // const correctPassword = "timeinlieu"; // Replace with the actual password
+    const correctPassword = "timeinlieu"; // Replace with the actual password
     // const correctPassword = process.env.PASSWORD;
     // console.log('Environment Variable:', process.env.REACT_APP_PRESALE_PWORD);
 
-    const correctPassword = process.env.REACT_APP_PRESALE_PWORD; // Use REACT_APP_ prefix for better practice
+    // const correctPassword = process.env.REACT_APP_PRESALE_PWORD; // Use REACT_APP_ prefix for better practice
 
     setIsPasswordCorrect(password === correctPassword);
     localStorage.setItem('isLoggedIn', password === correctPassword ? 'true' : 'false'); // Set flag
@@ -55,7 +56,7 @@ function App() {
         <>
           <Navbar />
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<CombinedPage />} />
             <Route path="/about" element={<About />} />
             {/* <Route path="/avery-hoodie" element={<ProductPage />} /> */}
             <Route path="/lyon-pants" element={<PantsProductPage />} />
@@ -64,6 +65,7 @@ function App() {
             <Route path="/avery-hoodie" element={<HoodieProductPage />} />
             <Route path="/lookbook" element={<Lookbook />} />
             <Route path="/delivery-and-returns" element={<DeliveryAndReturns />} />
+
           </Routes>
         </>
       )}

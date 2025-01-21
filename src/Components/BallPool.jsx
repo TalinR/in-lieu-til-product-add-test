@@ -169,6 +169,7 @@ const BallPool = function() {
                 var orientation = typeof window.screen.orientation !== 'undefined' ? window.screen.orientation : 0,
                     gravity = engine.gravity;
 
+                console.log(orientation)
     
                 if (orientation === 0) {
                     gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
@@ -185,8 +186,9 @@ const BallPool = function() {
                 }
             };
     
-            // window.addEventListener('deviceorientation', updateGravity);
-            window.screen.orientation.addEventListener("change",updateGravity);
+            window.addEventListener('deviceorientation', updateGravity);
+            // window.screen.orientation.addEventListener("change",updateGravity);
+            // console.log(window.screen.orientation)
         }
 
         // Keep the mouse in sync with rendering

@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../../../HTML_GPT_Help_Testing"
+		},
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../in-lieu-avery-email-submission"
+		},
+		{
+			"path": "../../../../random_python"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "HTML CSS Course"
+	}
+}

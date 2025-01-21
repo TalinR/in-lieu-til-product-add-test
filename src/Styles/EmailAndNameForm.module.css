@@ -1,0 +1,69 @@
+/* emailAndNameForm.module.css */
+
+.emailFormContainer {
+    width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emailForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.nameInput,
+.emailInput {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #b4b4b4; /* Underline */
+    background: transparent; /* Transparent background */
+    color: hsl(0, 0%, 2%); /* White font color */
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    outline: none; /* Removes the outline on focus */
+    font-family: 'Noto Sans';
+    /* font-weight:500; */
+    margin-bottom: 1rem;
+}
+
+.nameInput::placeholder,
+.emailInput::placeholder {
+    color: #252525; /* Adjust the placeholder color */
+    font-size: 13px;
+    font-weight:400
+}
+
+.subscribeButton {
+    border: none;
+    background: transparent;
+    color: #252525;
+    font-size: 13px;
+    font-weight:400;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    outline: none; /* Removes the outline on focus */
+    margin-top: 1rem;
+    border-radius: 25px;
+    border: 1px solid #b4b4b4; /* White border for the button */
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.subscribeButton:hover {
+    /* background-color: #ffffff00; */
+     /* White background on hover */
+    color: #000; /* Black text on hover */
+}
+
+
+.thankYouMessage{
+    font-family: Noto Sans;
+    font-weight: 300;
+    font-size: 15px;
+    margin-top: 50px;
+}

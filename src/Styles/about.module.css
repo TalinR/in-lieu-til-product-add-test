@@ -1,0 +1,21 @@
+.productInfoPage {
+    font-family: 'PT Serif';
+    font-size: 14px;
+    /* font-weight:lighter; */
+    /* margin-top: 60px;  */
+    padding-top: 80px;
+    width: 100%;
+    padding: 80px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    min-height: calc(100vh - 60px); /* 60px is the height of the navbar */
+    padding-top: 60px; /* Adjust to match the height of the navbar */
+}
+
+
+
+.aboutParagraphIndent{
+    margin-left: 32px
+}
+

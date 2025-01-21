@@ -1,0 +1,135 @@
+[
+    {
+        "slug": "avery-hoodie-hibiscus",
+        "id": "hibiscus",
+        "color": "Hibiscus",
+        "title": "HIBISCUS",
+        "description": "Unisex relaxed fit hoodie knitted from a soft wool and nylon blend for comfort against skin. Avery features a tortoise shell button at the hood - intended to fit like a loose balaclava when buttoned.",
+        "colorDescriptor": "Colour: Hibiscus Oatmeal / Multi-colour Speckles",
+        "modelInfo": "Jane is 165cm (5ft 5”) and wears size Extra Small.",
+        "buttonDescription":"Tortoise shell button at hood",
+        "price": "240 AUD"
+    },
+    {
+        "slug": "avery-hoodie-sencha",
+        "id": "sencha",
+        "color": "Sencha",
+        "title": "SENCHA",
+        "description": "Unisex relaxed fit hoodie knitted from a soft wool and nylon blend for comfort against skin. Avery features a jade button at the hood - intended to fit like a loose balaclava when buttoned.",
+        "colorDescriptor": "Colour: Sencha Green / Multi-colour Speckles",
+        "modelInfo": "Eva is 168cm (5ft 6”) and wears size Small.",
+        "buttonDescription":"Jade stone button at hood",
+        "price": "240 AUD"
+    },
+    {
+        "slug": "avery-hoodie-oolong",
+        "id": "oolong",
+        "color": "Oolong",
+        "title": "OOLONG",
+        "description": "Unisex relaxed fit hoodie knitted from a soft wool and nylon blend for comfort against skin. Avery features a tortoise shell button at the hood - intended to fit like a loose balaclava when buttoned.",
+        "colorDescriptor": "Colour: Oolong Brown / Multi-colour Speckles",
+        "modelInfo": "Richard is 189cm (6ft 2”) and wears size Extra Large.",
+        "buttonDescription":"Tortoise shell button at hood",
+        "price": "240 AUD"
+    },
+    {
+        "slug": "lyon-pants-black",
+        "productId": "lyon-pants-Black",
+        "colourId": "black",
+        "color": "Black",
+        "title": "LYON",
+        "description": "Unisex straight leg trouser woven from a lightweight wool. Lyon features a single pleat at waist and side. Constructed with elastic ribbing at side, it is intended that sizing for Lyon is chosen with reference to the wearers’ height. ",
+        "colorDescriptor": "Colour: Black",
+        "modelInfo": "Harvey is 179cm (5’10”) and wears a size M. ",
+        "price": "240 AUD"
+    },
+    {
+        "slug": "lyon-pants-beige",
+        "productId": "lyon-pants-Beige",
+        "colourId": "beige",
+        "color": "Beige",
+        "title": "LYON",
+        "description": "Unisex straight leg trouser woven from a lightweight wool. Lyon features a single pleat at waist and side. Constructed with elastic ribbing at side, it is intended that sizing for Lyon is chosen with reference to the wearers’ height. ",
+        "colorDescriptor": "Colour: Beige",
+        "modelInfo": "Erica is 166cm (5ft 5”) and wears a size XS. ",
+        "price": "240 AUD"
+    },
+    {
+        "slug": "como-pullover-limoncello",
+        "productId": "como-pullover-Limoncello",
+        "colourId": "limoncello",
+        "color": "Limoncello",
+        "title": "COMO",
+        "description": "Unisex relaxed fit collared pullover knitted from a supple bouclé yarn. Como features an open placket wide point spread collar with a rib-knit at hem and cuffs. Stripe patterning is varied between sizes.",
+        "colorDescriptor": "Limoncello Yellow/Lemon/Beige/Cream",
+        "passportHolderNote": "Purchases of Como in Limoncello will receive a complimentary Time in lieu exclusive passport holder in the black colourway",
+        "modelInfo": "Nick is 191cm (6ft 3”) and wears a size XL.",
+        "buttonDescription":"Tortoise shell button at hood",
+        "price": "240 AUD"
+    },
+    {
+        "slug": "como-pullover-campari",
+        "productId": "como-pullover-Campari",
+        "colourId": "campari",
+        "color": "Campari",
+        "title": "COMO",
+        "description": "Unisex relaxed fit collared pullover knitted from a supple bouclé yarn. Como features an open placket wide point spread collar with a rib-knit at hem and cuffs. Stripe patterning is varied between sizes.",
+        "colorDescriptor": "Colour: Campari Burgundy/Gray/Cream/Beige",
+        "passportHolderNote":"Purchases of Como in Campari will receive a complimentary Time in lieu exclusive passport holder in the brown colourway",
+        "modelInfo": "Lisa is 176cm (5ft 9”) and wears a size XS.",
+        "buttonDescription":"Tortoise shell button at hood",
+        "price": "240 AUD"
+    }
+    ,
+    {
+        "slug": "shion-tshirt-charcoal",
+        "productId": "shion-tshirt-Charcoal",
+        "colourId": "charcoal",
+        "color": "Charcoal",
+        "title": "SHION",
+        "description": "Unisex relaxed fit T-shirt in a plush cotton jersey. Shion features a cropped hem and over-elbow sleeve finish. Intended to function as a blank when layered, Shion showcases a seasonal ‘Time in lieu’ print exclusively on the back. ",
+        "colorDescriptor": "Colour: Charcoal",
+        "disclaimerNote": "*Note the pictured print is incorrect and will say 'My bad, still in a meeting with my holiday'",
+        "modelInfo": "Erica is 166cm (5ft 5”) and wears a size S. ",
+        "buttonDescription":"Tortoise shell button at hood",
+        "price": "240 AUD",
+        "productBulletPoints": [
+            "100% Cotton",
+            "Seasonal ‘Time in lieu’ backprint",
+            "Wash in cold gentle cycle",
+            "Made in China"
+          ]
+    },
+    {
+        "slug": "shion-tshirt-cream",
+        "productId": "shion-tshirt-Cream",
+        "colourId": "cream",
+        "color": "Cream",
+        "title": "SHION",
+        "description": "Unisex relaxed fit T-shirt in a plush cotton jersey. Shion features a cropped hem and over-elbow sleeve finish. Intended to function as a blank when layered, Shion showcases a seasonal ‘Time in lieu’ print exclusively on the back. ",
+        "colorDescriptor": "Colour: Cream",
+        "modelInfo": "Harvey is 179cm (5ft 10”) and wears a size S.",
+        "buttonDescription":"Tortoise shell button at hood",
+        "price": "240 AUD",
+        "productBulletPoints": [
+            "100% Cotton",
+            "Seasonal ‘Time in lieu’ backprint",
+            "Wash in cold gentle cycle",
+            "Made in China"
+          ]
+    }
+    ,
+    {
+        "slug": "avery-hoodie-kyoho",
+        "productId": "avery-hoodie-Kyoho",
+        "colourId": "kyoho",
+        "color": "Kyoho",
+        "title": "KYOHO",
+        "description": "Unisex relaxed fit hoodie knitted from a soft wool and nylon blend for comfort against skin. Avery in Kyoho features a custom dyed tortoise shell button at the hood - intended to fit like a loose fit balaclava when buttoned.",
+        "colorDescriptor": "Colour: Lilac/Multi-coloured Speckles",
+        "modelInfo": "Harvey is _____ and wears size Medium. Erica is _____ and wears size Medium.",
+        "buttonDescription":"Purple tortoise shell button at hood",
+        "price": "240 AUD"
+    }
+]
+

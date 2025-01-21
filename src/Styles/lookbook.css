@@ -1,0 +1,141 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ececec;
+    margin: 0;
+    overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
+
+/* Common Styles */
+.lookbook {
+    font-family: 'PT Serif';
+    margin-top:0px; /* Add margin to ensure content starts below the navbar */
+    padding: 2rem;
+    width: 100%;
+}
+
+/* Lookbook Header Styles */
+.lookbook-header {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 0rem;
+    z-index: 99;
+}
+
+.lookbook-header h1 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.lookbook-header h2 {
+    font-size: 15px;
+    color: #666; /* Adjust color to match your design */
+}
+
+/* Slider Container */
+.slider-container {
+    display: block;
+    max-width: 90vw;
+
+    margin: 20px auto;
+    padding: 0 1rem; /* Adds padding to the sides */
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+.slider-container img{
+    width: 100%;
+}
+
+.slick-slide {
+    text-align: center;
+    color: #fff;
+    /* background: #3498db; */
+    padding: 0px 10px; /* Adjust this for your content */
+}
+
+.slick-prev, .slick-next {
+    /* z-index: 1; */
+    /* padding: 0 60px; */
+    /* width: 50px;
+    height: 50px; */
+}
+
+.slick-prev:before, .slick-next:before {
+    font-size: 20px;
+    color: rgb(189, 189, 189);
+}
+
+/* the dots below the images */
+.slick-dots {
+    bottom: 10px;
+}
+
+.slick-dots li {
+    margin: 0 -1px;
+    width: 15px;
+    height: 15px;
+}
+
+.slick-dots li button:before {
+    font-size: 7px;
+    color: rgb(255, 255, 255); 
+}
+
+.slick-dots li.slick-active button:before {
+    color: rgb(255, 255, 255); 
+}
+
+
+
+/* Additional Images Section */
+.additional-images {
+    width: 100%;
+    
+}
+
+.full-width-image {
+    width: 100%;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+}
+
+.side-by-side {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0rem;
+    
+}
+
+.side-image {
+    width: 49%; /* Adjust this width if you want more/less space between images */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .side-by-side {
+        flex-direction: column;
+    }
+
+    .side-image {
+        width: 100%;
+        margin-bottom: 1rem; /* Add some space between stacked images */
+    }
+
+    .lookbook-header h1 {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 0.2rem;
+    }
+    
+    .lookbook-header h2 {
+        font-size: 12px;
+        color: #666; /* Adjust color to match your design */
+    }
+    
+}

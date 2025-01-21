@@ -1,0 +1,353 @@
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ececec;
+}
+
+/* Other existing styles */
+/* header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    background-color: #313131;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1000;
+} */
+
+
+
+
+/* Common Styles */
+.product-page {
+    font-family: 'PT Serif';
+    margin-top: 60px; /* Add margin to ensure content starts below the navbar */
+    padding: 2rem;
+    width: 100%;
+}
+
+/* Navbar Styles */
+/* header {
+    width: 100%;
+    background-color: #fff; 
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} */
+
+/* header h1 {
+    margin: 0;
+} */
+
+/* Desktop View */
+.desktop-view .top-images {
+    display: flex;
+    justify-content: space-between;
+}
+
+.desktop-view .top-images img {
+    width: 32%; /* Adjust width as needed */
+    height: auto;
+    object-fit: cover;
+}
+
+.desktop-view .product-details {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Align items to top and bottom */
+    flex: 2;
+    padding: 1rem;
+}
+
+
+.product-info button {
+    margin-top: auto; /* Push button to the bottom */
+}
+
+.top-info {
+    flex: 1;
+}
+
+/* this ensures that both of these divisions are equal width flexing*/
+.product-image {
+    /* max-width: 50%; */
+    flex: 2    ;
+}
+
+.product-image img {
+    /* max-width: 0%; */
+    padding: 0 35rem;
+
+    min-height: 100%;
+    /* display: block; */
+}
+
+
+/* styling for Desktop product description */
+.top-info h2 {
+    font-family: 'PT Serif';
+    font-size: 1.5rem; /* Adjust as needed */
+    margin-bottom: 0rem; /* Space below the title */
+}
+
+.top-info h3 {
+    font-family: 'PT Serif';
+    font-size: 20px; /* Adjust as needed */
+    font-weight: normal;
+    margin-bottom: 1rem; /* Space below the title */
+}
+
+.top-info p {
+    font-family: 'PT Serif';
+    margin-bottom: 1rem; /* Space below each paragraph */
+}
+
+.top-info .italic {
+    font-family: 'PT Serif';
+    font-style: italic;
+}
+
+.top-info .indented {
+    font-family: 'PT Serif';
+    text-indent: 2rem; /* Indentation for the first line */
+}
+
+.top-info .indented.italic {
+    font-family: 'PT Serif';
+    font-style: italic;
+    text-indent: 2rem; /* Combine both indentation and italic styling */
+}
+
+.bottom-info{
+    width: 80%
+
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.bottom-images {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.bottom-images img {
+    width: 48%;
+    height: auto;
+    object-fit: cover;
+}
+
+
+.mobile-view .main-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.mobile-view .product-details {
+    padding: 1rem;
+    font-size: 14px;
+}
+
+
+
+.mobile-view .gallery {
+    display: flex;
+    flex-direction: column; /* Arrange images in a column */
+    margin: 1rem 0;
+}
+
+.mobile-view .gallery img {
+    width: 100%; /* Make each image take up the full width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Adjust as needed to fit the container */
+}
+
+
+/* styling for Desktop product description */
+.top-mobile-view h2 {
+    font-family: 'PT Serif', serif; /* Replace with the desired font */
+    font-size: 1.5rem; /* Adjust as needed */
+    margin-bottom: 1rem; /* Space below the title */
+}
+
+.mobile-view h2{
+    font-family: 'PT Serif', serif; /* Replace with the desired font */
+    font-size: 2rem; /* Adjust as needed */
+}
+
+.mobile-view p {
+    font-family: 'PT Serif';
+    margin-bottom: 1rem; /* Space below each paragraph */
+}
+
+.mobile-view h3 {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 1rem
+}
+
+
+.mobile-view .italic {
+    font-style: italic;
+}
+
+.mobile-view .italic-model-info {
+    font-style: italic;
+    margin-bottom: 2rem
+}
+
+.mobile-view .indented {
+    font-family: 'PT Serif';
+    text-indent: 2rem; /* Indentation for the first line */
+}
+
+.mobile-view .indented.italic {
+    font-style: italic;
+    text-indent: 2rem; /* Combine both indentation and italic styling */
+}
+
+
+/* Ensure the buy button spans the width of its container */
+#product-component .shopify-buy__btn{
+    width: 100%;
+}
+
+/* Hide the Shopify Buy Button select icon arrows */
+.shopify-buy__select-icon {
+    display: none;
+}
+
+/* Hide Shopify Buy Button option labels */
+.shopify-buy__option-select__label {
+    display: none;
+}
+
+
+
+/* Ensure the container is a flex container */
+.shopify-buy__product__variant-selectors {
+    display: flex;
+    justify-content: space-between; /* Adjust spacing between items */
+    gap: 20px; /* Optional: Adjust gap between items */
+}
+
+/* Ensure each option select wrapper takes up equal space */
+.shopify-buy__option-select {
+    flex: 1; /* Allow each option select to grow equally */
+    max-width: 100%; /* Ensure they take up full width within their container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    margin-bottom: 10px; /* Add margin to increase the gap between selectors and the button */
+
+}
+
+
+
+/* Ensure select box fits within its parent and padding is managed */
+.shopify-buy__option-select__select {
+    border-radius: 32px; /* Rounded corners */
+    padding: 8px 12px;  /* Padding inside the selector; adjust right padding to create space for arrow */
+    background-color: #ececec; /* Background color */
+    border: 1px solid #757575; /* Border color */
+    width: 100%; /* Make the selector take full width of its parent */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    -webkit-appearance: none; /* Remove default styling */
+    -moz-appearance: none; /* Remove default styling */
+    appearance: none; /* Remove default styling */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="8" height="8"><path d="M21 5.176l-9.086 9.353L3 5.176.686 7.647 12 19.382 23.314 7.647 21 5.176z" fill="%23798c9c"/></svg>'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Position the arrow */
+
+}
+
+/* Custom arrow using pseudo-elements */
+.shopify-buy__option-select__select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5.176l-9.086 9.353L3 5.176.686 7.647 12 19.382 23.314 7.647 21 5.176z"/></svg>') no-repeat center center;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+/* Style for "Add to cart" button */
+.shopify-buy__btn {
+    background-color: #000000; /* Black background */
+    color: #ffffff; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 32px; /* Rounded corners */
+    padding: 10px 20px; /* Adjust padding */
+    text-transform: uppercase; /* Uppercase text */
+    font-weight: bold; /* Bold text */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.shopify-buy__btn:hover {
+    background-color: #333333; /* Darker black on hover */
+}
+
+/* Media Query for Mobile View */
+
+    @media only screen and (max-width: 2300px) {
+        .product-image img{
+            padding: 0 20rem;
+        }
+    } 
+
+    @media only screen and (max-width: 2300px) {
+        .product-image img{
+            padding: 0 20rem;
+        }
+    } 
+
+    @media only screen and (max-width: 2300px) {
+        .product-image img{
+            padding: 0 20rem;
+        }
+    } 
+
+    @media only screen and (max-width: 1800px) {
+        .product-image img{
+            padding: 0 13rem;
+        }
+    } 
+    
+    @media only screen and (max-width: 1500px) {
+        .product-image img{
+            padding: 0 10rem;
+        }
+    } 
+    
+    @media only screen and (max-width: 1200px) {
+        .product-image img{
+            padding: 0 3rem;
+        }
+    } 
+    
+    
+    @media only screen and (max-width: 768px) {
+        .product-page {
+            padding:1rem;
+        }
+    
+    }

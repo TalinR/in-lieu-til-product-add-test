@@ -1,0 +1,64 @@
+
+
+
+.mainPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100lvh;
+  overflow: hidden;
+}
+
+.centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.centerHeading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.centerList {
+  list-style: none;
+  padding: 0;
+  
+}
+
+.centerListItems {
+  margin: 0.5rem 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  
+  text-decoration: none; /* Remove underline */
+}
+
+.variant-link {
+  text-decoration: none !important; /* Force removal */
+  color: inherit; /* Ensure consistent color */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.separator {
+  margin: 0 0.5rem;
+  color: grey;
+}
+
+.arrow {
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.arrowIcon {
+  font-size: 1.5rem;
+}
+
+

@@ -1,0 +1,441 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'PT Serif';
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    font-family: 'Noto Sans';
+    font-size: 13px;
+    letter-spacing: .5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    /* background-color:#ececece3; */
+    background-color:#ececec84;
+
+    backdrop-filter: blur(5px);
+    /* border-bottom: 1px; */
+    border-bottom: .5px solid #c2c2c27c;
+    /* background-color: #ececec; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1000;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo img {
+    max-height: 100%;
+    max-width: 100px; /* Set a specific max-width */
+    height: auto;
+    object-fit: contain;
+}
+
+/* .menu-icon img{
+    font-size: 0rem;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-top: auto;
+    transition: opacity 0.3s ease;
+} */
+
+.menu-icon {
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Vertically center the image */
+    justify-content: center; /* Horizontally center the image */
+    width: 20px; /* Set the desired width of the label */
+    height: 20px; /* Set the desired height of the label */
+    cursor: pointer; /* Change the cursor to indicate it's clickable */
+  }
+  
+  .menu-icon img {
+    max-width: 100%; /* Ensure the image scales down if too large */
+    max-height: 100%; /* Ensure the image scales down if too large */
+  }
+
+.menu-toggle:checked + .menu-icon {
+    opacity: 0; /* Hide the burger menu when sidebar is open */
+}
+
+.menu-toggle {
+    display: none;
+}
+
+nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.nav-items {
+    /* font-weight: bold; */
+    display: flex;
+    list-style: none;
+    margin-left: auto;
+    align-items: center;
+    
+}
+
+.nav-items li {
+    margin-left: 1rem;
+    flex-direction: row;
+}
+
+.nav-items a {
+    color: inherit; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+}
+
+.nav-items img {
+    width: 24px;
+    height: 24px;
+}
+
+.mobile-icons {
+    display: none;
+}
+
+
+
+
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Sidebar starts off-screen from the left */
+    width: 300px;
+    height: 100%;
+    /* background-color: rgba(0, 0, 0, 0.7);  */
+    background-color: rgba(94, 94, 94, 0.515); /* Tranparent black background */
+
+    backdrop-filter: blur(10px);
+    transition: left 0.3s ease; /* Animate the sliding effect */
+    /* padding: 1rem; */
+    padding: 0 2rem;
+
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Noto Sans';
+    font-size: 13px;
+}
+
+.sidebar.open {
+    left: 0; /* Sidebar slides in from the left */
+}
+
+.sidebar-close {
+    position: absolute; /* Keep the button at the top right */
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1002; /* Ensure it's above the other content */
+    color: #fff;
+}
+
+.sidebar.open ~ .menu-icon {
+    opacity: 0; /* Hide the burger menu when sidebar is open */
+}
+
+
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    /* margin: 0; */
+    flex-grow: 1; /* Allow the list to take up remaining space */
+}
+
+
+.top-list{
+
+    margin-top: 3rem; 
+}
+
+
+.bottom-list {
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-top: 0rem;
+
+}
+
+.collectionList{
+    margin-bottom: .5rem;
+    color: #ffff; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+}
+
+.listItems {
+    margin-bottom: 1rem;
+    color: #ffff; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+}
+
+.listItemsBottom{
+    margin-bottom: 1rem;
+    text-align: right;
+    color: #ffff; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+}
+
+
+.centerListHeading {
+    margin-bottom: .5rem;
+    font-weight: 400;
+    color: #ffff; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+}
+
+
+
+.indentedListItems {
+    margin-left: 15px;
+    margin-bottom: .2rem;
+    /* margin-bottom: 1rem; */
+    /* font-size: 12px; */
+}
+
+.indentedListItemsFinal {
+    margin-left: 15px;
+    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
+    /* font-size: 12px; */
+}
+
+.sidebar a {
+    color: #ffff; 
+    text-decoration: none; 
+}
+
+.sidebar Link {
+    color: #ffff; 
+    text-decoration: none; 
+}
+ 
+.sidebar-bottom {
+    margin-top: auto; /* Push this section to the bottom of the sidebar */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1; /* Make sure this takes the remaining space */
+    /* padding-bottom: 50px */
+}
+
+.center-heading {
+    color: #fff; /* Match with sidebar text */
+
+  }
+
+.center-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem; 
+    margin-bottom: 16px; 
+}
+
+.centerListItems {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-size: 16px; */
+    gap: 20px; /* Adjust spacing between links and separator */
+    margin-bottom: .3rem;
+    color: #ffff; /* Inherit color from parent */
+    text-decoration: none; /* Remove underline */
+  }
+
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    gap: 100px; /* Adjust this value for spacing */
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding-top: 23px;
+  }
+
+.sidebar-bottom a, 
+.sidebar-bottom form {
+    margin-bottom: 1rem;
+}
+
+
+
+
+
+
+/* .shopify-buy-frame--toggle{
+    
+} */
+
+/* Ensure the wrapper uses Flexbox */
+.shopify-buy-frame--toggle .shopify-buy__cart-toggle {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    justify-content: center; /* Optional: Center the items horizontally */
+    padding: 0px
+  }
+  
+  /* Style the text 'cart' */
+  .shopify-buy-frame--toggle .shopify-buy__cart-toggle__title {
+    /* font-size: 15px; */
+    font-weight:normal;
+    color: #000; 
+    padding: 0px
+
+  }
+  
+  /* Style the count */
+  .shopify-buy-frame--toggle .shopify-buy__cart-toggle__count {
+    /* font-size: 15px; */
+    color: #000; 
+    padding: 0px
+
+  }
+
+.shopify-buy--visually-hidden{
+    display: none;
+}
+
+.shopify-buy-frame .shopify-buy-frame--toggle .is-active {
+    padding: 0px;
+
+
+}
+
+.shopify-buy-frame--toggle:not(.is-sticky) {
+    overflow:visible !important;
+    padding: 0px !important;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-item span,
+  #custom-cart-toggle-location {
+    margin-left: 0px; 
+    
+    
+  }
+  
+  #custom-cart-toggle-location {
+    display: inline-block;
+  }
+
+  .alt-font{
+    /* font-family: 'Noto Sans';
+    letter-spacing: .1rem; */
+  }
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+    header {
+        padding: 1rem;
+    }
+
+
+    .nav-items {
+        display: none;
+    }
+
+    /* .menu-toggle:checked + .menu-icon + .logo + nav .nav-items {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: #ececec;
+        padding: 1rem 0;
+    } */
+
+    .nav-items li {
+        display: none;
+    }
+
+    /* .mobile-icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mobile-icons img {
+        width: 30px;
+        height: 30px;
+    } */
+
+    .mobile-icons {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+      }
+    
+      
+      
+      .mobile-icons img {
+        display: block;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+      
+      .overlay-text {
+        position: absolute;
+        top: 53%; 
+        left: 50%; 
+        transform: translate(-50%, -50%); 
+        color: #000000; 
+        /* padding: 10px 20px;  */
+        font-size: 12px; 
+        text-align: center;
+      }  
+    
+}

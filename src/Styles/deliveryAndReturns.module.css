@@ -1,0 +1,62 @@
+.productInfoPage {
+    font-family: 'PT Serif';
+    font-weight: 500;
+    /* margin-top: 60px;  */
+    padding-top: 80px;
+    width: 100%;
+    padding: 80px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    min-height: calc(100vh - 60px); /* 60px is the height of the navbar */
+    padding-top: 60px; /* Adjust to match the height of the navbar */
+}
+
+.aboutParagraphIndent{
+    margin-left: 32px
+}
+
+.container {
+    font-family: 'PT Serif';
+    font-weight: 500;
+    /* margin-top: 60px;  */
+    padding-top: 80px;
+    width: 100%;
+    padding: 80px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    min-height: calc(100vh - 60px); /* 60px is the height of the navbar */
+    padding-top: 80px; /* Adjust to match the height of the navbar */
+  }
+  
+  .heading {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .paragraph {
+    font-size: 14px;
+    font-weight:500;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  .link {
+    color: black;
+    text-decoration: underline;
+  }
+  
+  .list {
+    margin-bottom: 20px;
+  }
+  
+  .list li {
+    font-size: 14px;
+    font-weight:500;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    list-style-type: disc;
+  }
+  

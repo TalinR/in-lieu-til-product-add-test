@@ -256,7 +256,7 @@ const PulloverProductPage = () => {
             *{passportHolderNote}
             <div className="spacer"></div>
  
-            *Please note that this is a pre-order: we aim to have your 'Time in Lieu' product to you by the 14th of February
+            *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
             </p>
 
           {/* {priceLoaded ? <p>{price}</p> : <p>Loading price...</p>} */}

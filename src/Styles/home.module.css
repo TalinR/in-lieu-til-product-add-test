@@ -44,7 +44,7 @@
 }
 
 .centerHeading {
-  font-size: 2rem;
+  font-size: 25px;
   font-weight: bold;
   margin-bottom: 1rem;
 }
@@ -58,7 +58,7 @@
 .centerListItems {
   margin: 0.5rem 0;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 16px;
   
   text-decoration: none; /* Remove underline */
 }

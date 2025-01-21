@@ -1,21 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter from 'matter-js';
-import image1 from "../assets/images/closeups/c1.jpg";
-import image2 from "../assets/images/closeups/c2.jpg";
-import image3 from "../assets/images/closeups/c3.jpg";
-import jade_button from "../assets/images/collage/jade_button.png";
-import oolong_button from "../assets/images/collage/oolong_button.png";
-import hibiscus_button from "../assets/images/collage/hibiscus_button.png";
 
-import hibiscus_cut_out from "../assets/images/collage/hibiscus_cut_out.png";
-import oolong_cut_out from "../assets/images/collage/oolong_cut_out.png";
-import sencha_cut_out from "../assets/images/collage/sencha_cut_out.png";
+// "dO MoRe EffiCienT ImPorts"
+const importAll = (r) => {
+    let images = {};
+    r.keys().forEach((key) => {
+      const name = key.replace('./', '').replace(/\.[^/.]+$/, ''); // Remove './' and extension
+      images[name] = r(key);
+    });
+    return images;
+  };
+  
+const images = importAll(require.context('../assets/images/floating_people', false, /\.(png|jpe?g|svg)$/));
 
-import macha_croissant from "../assets/images/collage/macha_croissant_bland.png";
-import paint_tube from "../assets/images/collage/paint_tube.png";
-import saxophone from "../assets/images/collage/saxophone.png";
 
-const BallPool = ({ onBodyClick }) => {
+const BallPool = function() {
     const sceneRef = useRef(null);
     const [isMounted, setIsMounted] = useState(false);
     const engineRef = useRef(null); // Store Matter.js engine instance
@@ -36,8 +35,6 @@ const BallPool = ({ onBodyClick }) => {
             Composite = Matter.Composite,
             Composites = Matter.Composites,
             Common = Matter.Common,
-            MouseConstraint = Matter.MouseConstraint,
-            Mouse = Matter.Mouse,
             Bodies = Matter.Bodies,
             Events = Matter.Events,
             Query = Matter.Query;
@@ -55,6 +52,8 @@ const BallPool = ({ onBodyClick }) => {
         // Set gravity to zero
         world.gravity.y = 0;
         world.gravity.x = 0;
+
+        // gravity = engine.gravity
 
         const pixelRatio = window.devicePixelRatio;
 
@@ -117,7 +116,7 @@ const BallPool = ({ onBodyClick }) => {
                 body = Bodies.rectangle(x, y, size.width, size.height, {
                     ...options,
                     restitution: .7, // High restitution for bounciness
-                    frictionAir: 0, // Increase air resistance
+                    frictionAir: 0.001, // Increase air resistance
                 });
             } else {
                 body = Bodies.polygon(x, y, size.sides, size.radius, {
@@ -128,88 +127,68 @@ const BallPool = ({ onBodyClick }) => {
             }
 
             const randomVelocity = {
-                x: (Math.random() - 0.5) * 3,
-                y: (Math.random() - 0.5) * 3,
+                x: (Math.random() - 0.5) * 2,
+                y: (Math.random() - 0.5) * 2,
             };
             Matter.Body.setVelocity(body, randomVelocity);
 
             // Apply random angular velocity for spinning
-            const randomAngularVelocity = (Math.random() - 0.5) * 0.05; // Adjust the multiplier for faster or slower spin
+            const randomAngularVelocity = (Math.random() - 0.5) * 0.1; // Adjust the multiplier for faster or slower spin
             Matter.Body.setAngularVelocity(body, randomAngularVelocity);
             return body;
         };
 
         // Adding various bodies
+        // yes its some bad code whatever...
         Composite.add(world, [
-            createBody('rectangle', { width: 100, height: 180 }, { render: { sprite: { texture: oolong_cut_out, xScale: 0.2, yScale: 0.2 } } }),
-            createBody('rectangle', { width: 100, height: 180 }, { render: { sprite: { texture: hibiscus_cut_out, xScale: 0.2, yScale: 0.2 } } }),
-            createBody('rectangle', { width: 100, height: 180 }, { render: { sprite: { texture: sencha_cut_out, xScale: 0.2, yScale: 0.2 } } }),
-            createBody('circle', 35, { render: { sprite: { texture: jade_button, xScale: 0.06, yScale: 0.06 } } }),
-            createBody('circle', 35, { render: { sprite: { texture: hibiscus_button, xScale: 0.06, yScale: 0.06 } } }),
-            createBody('circle', 35, { render: { sprite: { texture: oolong_button, xScale: 0.06, yScale: 0.06 } } }),
-            createBody('rectangle', { width: 160, height: 60 }, { render: { sprite: { texture: macha_croissant, xScale: 0.12, yScale: 0.12 } } }),
-            createBody('rectangle', { width: 40, height: 180 }, { render: { sprite: { texture: saxophone, xScale: 0.15, yScale: 0.15 } } }),
-                createBody('rectangle', { width: 40, height: 160 }, { render: { sprite: { texture: paint_tube, xScale: 0.15, yScale: 0.15 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['1'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['2'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['3'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['4'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['5'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['6'], xScale: 0.1, yScale: 0.1 } } }),
+            // createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['7'], xScale: 0.1, yScale: 0.1 } } }),
+            createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['8'], xScale: 0.1, yScale: 0.1 } } }),
+            // createBody('rectangle', { width: 70, height: 170 }, { render: { sprite: { texture: images['9'], xScale: 0.1, yScale: 0.1 } } }),
+
+            // createBody('rectangle', { width: 100, height: 180 }, { render: { sprite: { texture: images['3'], xScale: 0.2, yScale: 0.2 } } }),
+            // createBody('rectangle', { width: 160, height: 60 }, { render: { sprite: { texture: images['4'], xScale: 0.12, yScale: 0.12 } } }),
+            // createBody('rectangle', { width: 40, height: 180 }, { render: { sprite: { texture: images['5'], xScale: 0.15, yScale: 0.15 } } }),
+            // createBody('rectangle', { width: 40, height: 160 }, { render: { sprite: { texture: images['6'], xScale: 0.15, yScale: 0.15 } } }),
+            // createBody('rectangle', { width: 40, height: 160 }, { render: { sprite: { texture: images['7'], xScale: 0.15, yScale: 0.15 } } }),
+            // createBody('rectangle', { width: 40, height: 160 }, { render: { sprite: { texture: images['8'], xScale: 0.15, yScale: 0.15 } } }),
+            // createBody('rectangle', { width: 40, height: 160 }, { render: { sprite: { texture: images['9'], xScale: 0.15, yScale: 0.15 } } }),
+
+
 
         ]);
 
-        // Add mouse control
-        const mouse = Mouse.create(render.canvas),
-            mouseConstraint = MouseConstraint.create(engine, {
-                mouse: mouse,
-                constraint: {
-                    stiffness: 0.2,
-                    render: { visible: false },
-                },
-            });
 
-        mouse.pixelRatio = pixelRatio;
+        if (typeof window !== 'undefined') {
+            var updateGravity = function(event) {
+                var orientation = typeof window.orientation !== 'undefined' ? window.orientation : 0,
+                    gravity = engine.gravity;
 
-        Composite.add(world, mouseConstraint);
-
-        let isDragging = false;
-        let initialMousePosition = null;
-
-        Events.on(mouseConstraint, 'mousedown', function(event) {
-            initialMousePosition = { x: event.mouse.position.x, y: event.mouse.position.y };
-            isDragging = false;
-        });
-
-        Events.on(mouseConstraint, 'mousemove', function(event) {
-            if (initialMousePosition) {
-                const currentMousePosition = event.mouse.position;
-                const distance = Math.sqrt(
-                    Math.pow(currentMousePosition.x - initialMousePosition.x, 2) +
-                    Math.pow(currentMousePosition.y - initialMousePosition.y, 2)
-                );
-
-                if (distance > 5) { // Adjust this threshold as needed
-                    isDragging = true;
+    
+                if (orientation === 0) {
+                    gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
+                    gravity.y = Common.clamp(event.beta, -90, 90) / 90;
+                } else if (orientation === 180) {
+                    gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
+                    gravity.y = Common.clamp(-event.beta, -90, 90) / 90;
+                } else if (orientation === 90) {
+                    gravity.x = Common.clamp(event.beta, -90, 90) / 90;
+                    gravity.y = Common.clamp(-event.gamma, -90, 90) / 90;
+                } else if (orientation === -90) {
+                    gravity.x = Common.clamp(-event.beta, -90, 90) / 90;
+                    gravity.y = Common.clamp(event.gamma, -90, 90) / 90;
                 }
-            }
-        });
-
-        Events.on(mouseConstraint, 'mouseup', function(event) {
-            if (!isDragging && initialMousePosition) {
-                const mousePosition = event.mouse.position;
-                const clickedBodies = Query.point(Composite.allBodies(world), mousePosition);
-
-                clickedBodies.forEach((body) => {
-                    if (onBodyClick) { // Pass the click event handler as a prop
-                        onBodyClick(body);
-                      }
-                    // alert(`You clicked on a body with ID: ${body.id}`);
-                });
-
-                
-            }
-
-            initialMousePosition = null;
-            isDragging = false;
-        });
+            };
+    
+            window.addEventListener('deviceorientation', updateGravity);
+        }
 
         // Keep the mouse in sync with rendering
-        render.mouse = mouse;
 
         // Fit the render viewport to the scene
         Render.lookAt(render, {

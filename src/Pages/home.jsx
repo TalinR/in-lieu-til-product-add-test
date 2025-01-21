@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import homeStyles from '../Styles/home.module.css';
-// 
 
 function HomePage() {
   // Example state to mimic the functionality in the sidebar
@@ -55,7 +54,7 @@ function HomePage() {
   };
 
   return (
-    <div className={homeStyles.mainPage}>
+    <div className={homeStyles.foregroundContainer}>
       <div className={homeStyles.centerContent}>
         <motion.div
           key={selectedItem || 'default'}

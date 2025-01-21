@@ -40,7 +40,7 @@
         "title": "LYON",
         "description": "Unisex straight leg trouser woven from a lightweight wool. Lyon features a single pleat at waist and side. Constructed with elastic ribbing at side, it is intended that sizing for Lyon is chosen with reference to the wearers’ height. ",
         "colorDescriptor": "Colour: Black",
-        "modelInfo": "Harvey is 179cm (5’10”) and wears a size M. ",
+        "modelInfo": "Harvey is 179cm (5ft 10”) and wears a size M. ",
         "price": "240 AUD"
     },
     {
@@ -127,7 +127,7 @@
         "title": "KYOHO",
         "description": "Unisex relaxed fit hoodie knitted from a soft wool and nylon blend for comfort against skin. Avery in Kyoho features a custom dyed tortoise shell button at the hood - intended to fit like a loose fit balaclava when buttoned.",
         "colorDescriptor": "Colour: Lilac/Multi-coloured Speckles",
-        "modelInfo": "Harvey is _____ and wears size Medium. Erica is _____ and wears size Medium.",
+        "modelInfo": "Harvey is 179cm (5ft 10”) and wears a size M. Erica is 166cm (5ft 5”) and wears a size M.",
         "buttonDescription":"Purple tortoise shell button at hood",
         "price": "240 AUD"
     }

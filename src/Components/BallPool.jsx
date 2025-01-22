@@ -203,7 +203,7 @@ const BallPool = function() {
     
             window.addEventListener('deviceorientation', updateGravity);
             // window.screen.orientation.addEventListener("change",updateGravity);
-            window.screen.orientation.addEventListener("change", updateGravity);
+            // window.screen.orientation.addEventListener("change", updateGravity);
 
         }
 

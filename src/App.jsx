@@ -28,15 +28,17 @@ function App() {
     ); // Check if logged in on initial render
 
   const handlePasswordSubmit = (password) => {
-    // Replace with your actual password logic
-    // const correctPassword = "timeinlieu"; // Replace with the actual password
-    // const correctPassword = process.env.PASSWORD;
-    // console.log('Environment Variable:', process.env.REACT_APP_PRESALE_PWORD);
+    // const correctPassword = "test";
 
     const correctPassword = process.env.REACT_APP_PRESALE_PWORD; // Use REACT_APP_ prefix for better practice
 
-    setIsPasswordCorrect(password === correctPassword);
-    localStorage.setItem('isLoggedIn', password === correctPassword ? 'true' : 'false'); // Set flag
+    const isCorrect = password === correctPassword;
+
+    setIsPasswordCorrect(isCorrect);
+    
+    localStorage.setItem('isLoggedIn', isCorrect ? 'true' : 'false'); // Set flag
+
+    return isCorrect;
   };
 
   const handleQRAuthenticate = () => {

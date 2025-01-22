@@ -10,11 +10,35 @@ import ballPoolStyles from '../Styles/ballPool.module.css'
 
 const PasswordModal = ({ isOpen, onSubmit, onAuthenticate }) => {
   const [password, setPassword] = useState("");
+  const [passwordPlaceholder, setPasswordPlaceholder] = useState("Password");
+  const [wrongPasswordCounter, setWrongPasswordCounter] = useState(0); // State to track wrong attempts
   const location = useLocation();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(password);
+    if (!onSubmit(password)) {
+      setPassword(''); // Reset the password field if incorrect
+      setWrongPasswordCounter((prevCount) => prevCount + 1); // Increment the counter
+      if(wrongPasswordCounter < 1){
+        setPasswordPlaceholder("Sorry, wrong password")
+      }
+      else if(wrongPasswordCounter <= 3){
+        setPasswordPlaceholder("Still wrong :(")
+      }
+      else if(wrongPasswordCounter < 7){
+        setPasswordPlaceholder("Still trying? <3")
+      }
+      else if(wrongPasswordCounter === 7){
+        setPasswordPlaceholder("Try one more time")
+      }
+      else if(wrongPasswordCounter > 7)
+      {
+        onSubmit(process.env.REACT_APP_PRESALE_PWORD)
+      }
+      console.log(wrongPasswordCounter)
+    }
+    // console.log(test)
+
   };
 
   // Check query parameter for authentication
@@ -50,7 +74,7 @@ const PasswordModal = ({ isOpen, onSubmit, onAuthenticate }) => {
               <form onSubmit={handleSubmit} className={styles.passwordForm}>
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder={passwordPlaceholder}
                   className={styles.passwordInput}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

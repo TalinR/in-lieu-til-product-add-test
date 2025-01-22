@@ -379,7 +379,7 @@ const PulloverProductPage = () => {
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
               <p className="disclaimer-font">
-                *All COMO orders will receive a complimentary passport holder
+                *{passportHolderNote}
                 <div className="spacer"></div>
                 *Please note that this is a pre-order: we aim to have your 'Time in Lieu' product to you by the 14th of February
               

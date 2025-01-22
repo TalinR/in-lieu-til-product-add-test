@@ -166,24 +166,39 @@ const BallPool = function() {
 
         if (typeof window !== 'undefined') {
             var updateGravity = function(event) {
-                var orientation = typeof window.orientation !== 'undefined' ? window.orientation : 0,
+                // var orientation = typeof window.orientation !== 'undefined' ? window.orientation : 0,
+                var orientation = typeof window.screen.orientation.angle !== 'undefined' ? window.screen.orientation.angle : 0,
                     gravity = engine.gravity;
                 // console.log(window.orientation)
                 // console.log(window.screen.orientation)
     
-                if (orientation === 0) {
-                    gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
-                    gravity.y = Common.clamp(event.beta, -90, 90) / 90;
-                } else if (orientation === 180) {
-                    gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
-                    gravity.y = Common.clamp(-event.beta, -90, 90) / 90;
-                } else if (orientation === 90) {
-                    gravity.x = Common.clamp(event.beta, -90, 90) / 90;
-                    gravity.y = Common.clamp(-event.gamma, -90, 90) / 90;
-                } else if (orientation === -90) {
-                    gravity.x = Common.clamp(-event.beta, -90, 90) / 90;
-                    gravity.y = Common.clamp(event.gamma, -90, 90) / 90;
-                }
+                // if (orientation === 0) {
+                //     gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
+                //     gravity.y = Common.clamp(event.beta, -90, 90) / 90;
+                // } else if (orientation === 180) {
+                //     gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
+                //     gravity.y = Common.clamp(-event.beta, -90, 90) / 90;
+                // } else if (orientation === 90) {
+                //     gravity.x = Common.clamp(event.beta, -90, 90) / 90;
+                //     gravity.y = Common.clamp(-event.gamma, -90, 90) / 90;
+                // } else if (orientation === -90) {
+                //     gravity.x = Common.clamp(-event.beta, -90, 90) / 90;
+                //     gravity.y = Common.clamp(event.gamma, -90, 90) / 90;
+                // }
+
+                if (window.screen.orientation.angle === 0) {
+                    engine.gravity.x = Common.clamp(event.gamma, -90, 90) / 90
+                    engine.gravity.y = Common.clamp(event.beta, -90, 90) / 90
+                  } else if (window.screen.orientation.angle === 90) {
+                    engine.gravity.x = Common.clamp(event.beta, -90, 90) / 90
+                    engine.gravity.y = Common.clamp(-event.gamma, -90, 90) / 90
+                  } else if (window.screen.orientation.angle === 180) {
+                    engine.gravity.x = Common.clamp(event.gamma, -90, 90) / 90
+                    engine.gravity.y = Common.clamp(-event.beta, -90, 90) / 90
+                  } else if (window.screen.orientation.angle === -90) {
+                    engine.gravity.x = Common.clamp(-event.beta, -90, 90) / 90
+                    engine.gravity.y = Common.clamp(event.gamma, -90, 90) / 90
+                  }
             };
     
             window.addEventListener('deviceorientation', updateGravity);

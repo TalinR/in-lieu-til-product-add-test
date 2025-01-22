@@ -349,7 +349,7 @@ const PantsProductPage = () => {
           <img src={images[`${selectedColorRef}_pants_1.jpg`]} alt="Mobile 2" />
           <img src={images[`${selectedColorRef}_pants_3.jpg`]} alt="Mobile 3" />
           <img src={images[`${selectedColorRef}_pants_4.jpg`]} alt="Mobile 4" />
-          <img src={images[`${selectedColorRef}_pants_5.jpg`]} alt="Mobile 5" />
+          <img className="pants-extra-margin-bottom" src={images[`${selectedColorRef}_pants_5.jpg`]} alt="Mobile 5" />
           <img src={images[`${selectedColorRef}_pants_6.jpg`]} alt="Mobile 6" />
         </div>
       </div>

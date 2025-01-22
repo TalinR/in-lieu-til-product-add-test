@@ -140,7 +140,7 @@ body {
     width: 100%;
     height: auto;
     object-fit: cover;
-    margin-top: 0px;
+    margin-top: -15px;
 }
 
 .mobile-view .product-details {
@@ -210,6 +210,10 @@ body {
 .mobile-view .indented.italic {
     font-style: italic;
     text-indent: 2rem; /* Combine both indentation and italic styling */
+}
+
+.mobile-view .pants-extra-margin-bottom {
+    margin-bottom: 15px;
 }
 
 .taller-break {

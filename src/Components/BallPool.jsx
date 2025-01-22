@@ -167,8 +167,8 @@ const BallPool = function() {
         if (typeof window !== 'undefined') {
             var updateGravity = function(event) {
                 // var orientation = typeof window.orientation !== 'undefined' ? window.orientation : 0,
-                var orientation = typeof window.screen.orientation.angle !== 'undefined' ? window.screen.orientation.angle : 0,
-                    gravity = engine.gravity;
+                // var orientation = typeof window.screen.orientation.angle !== 'undefined' ? window.screen.orientation.angle : 0,
+                    // gravity = engine.gravity;
                 // console.log(window.orientation)
                 // console.log(window.screen.orientation)
     
@@ -201,7 +201,7 @@ const BallPool = function() {
                   }
             };
     
-            // window.addEventListener('deviceorientation', updateGravity);
+            window.addEventListener('deviceorientation', updateGravity);
             // window.screen.orientation.addEventListener("change",updateGravity);
             window.screen.orientation.addEventListener("change", updateGravity);
 

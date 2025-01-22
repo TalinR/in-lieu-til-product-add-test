@@ -22,16 +22,16 @@ const PasswordModal = ({ isOpen, onSubmit, onAuthenticate }) => {
       if(wrongPasswordCounter < 1){
         setPasswordPlaceholder("Sorry, wrong password")
       }
-      else if(wrongPasswordCounter <= 3){
+      else if(wrongPasswordCounter < 2){
         setPasswordPlaceholder("Still wrong :(")
       }
-      else if(wrongPasswordCounter < 7){
-        setPasswordPlaceholder("Still trying? <3")
+      else if(wrongPasswordCounter === 2){
+        setPasswordPlaceholder("Try one more time :)")
       }
-      else if(wrongPasswordCounter === 7){
-        setPasswordPlaceholder("Try one more time")
-      }
-      else if(wrongPasswordCounter > 7)
+      // else if(wrongPasswordCounter === 7){
+      //   setPasswordPlaceholder("Try one more time")
+      // }
+      else if(wrongPasswordCounter > 2)
       {
         onSubmit(process.env.REACT_APP_PRESALE_PWORD)
       }

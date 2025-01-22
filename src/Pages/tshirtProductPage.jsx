@@ -440,6 +440,7 @@ const TshirtProductPage = () => {
               </div>
 
               <div className="dropdown-container">
+                {/* on desktop we want these sizing details to scroll into view */}
                 <div className="dropdown-header" onClick={toggleSizingDetails}>
                   <h4>SIZING</h4>
                   <svg

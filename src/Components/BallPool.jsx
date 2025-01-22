@@ -201,8 +201,10 @@ const BallPool = function() {
                   }
             };
     
-            window.addEventListener('deviceorientation', updateGravity);
+            // window.addEventListener('deviceorientation', updateGravity);
             // window.screen.orientation.addEventListener("change",updateGravity);
+            window.screen.orientation.addEventListener("change", updateGravity);
+
         }
 
         // Keep the mouse in sync with rendering

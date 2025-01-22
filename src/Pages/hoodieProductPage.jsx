@@ -242,7 +242,7 @@ const HoodieProductPage = () => {
           </p>
           <p>{colorDescriptor}</p>
           <p className="italic-model-info">{modelInfo}</p>
-          <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.y</p>
+          <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience. </p>
 
           {/* {priceLoaded ? <p>{price}</p> : <p>Loading price...</p>} */}
 
@@ -363,7 +363,7 @@ const HoodieProductPage = () => {
               </p>
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
-              <p className="disclaimer-font">*Please note that this is a pre-order: we aim to have your 'Time in Lieu' product to you by the 14th of February</p>
+              <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.</p>
 
 
               <div className="dropdown-container">

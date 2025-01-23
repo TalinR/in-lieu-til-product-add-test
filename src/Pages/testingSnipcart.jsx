@@ -8,13 +8,14 @@ const TestingSnipcart = () => {
   return (
     <div className="product-page">
       <div>
-        {products.map(product => {
+        {/* {products.map(product => { */}
           return (
-            <div key={product.id}>
-              <h3>{product.title}</h3>
-              <p>{product.description}</p>
-              <p>${product.price}</p>
-              <p>
+            <div>
+            {/* // <div key={product.id}>
+            //   <h3>{product.title}</h3>
+            //   <p>{product.description}</p>
+            //   <p>${product.price}</p>
+            //   <p> */}
                 {/* <button 
                   className="snipcart-add-item"
                   data-item-id={product.id}
@@ -34,10 +35,10 @@ const TestingSnipcart = () => {
                 Add to Cart
               </button>
 
-              </p>
+              {/* </p> */}
             </div>
           );
-        })}
+        {/* })} */}
       </div>
     </div>
   );

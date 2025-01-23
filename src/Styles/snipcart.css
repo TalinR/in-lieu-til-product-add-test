@@ -1,0 +1,65 @@
+/* .snipcart-cart__secondary-header {
+  background-color: black !important;
+} */
+
+.snipcart-modal__container {
+    margin-top: 60px; /* Add margin to ensure content starts below the navbar */
+
+  background-color: rgb(174, 159, 159);
+}
+
+/* Customize cart button */
+.snipcart-add-item {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 32px;
+  cursor: pointer;
+}
+
+.snipcart-add-item:hover {
+  background-color: #333;
+}
+
+/* Customize cart header */
+.snipcart-cart-header {
+  background-color: black;
+  color: white;
+}
+
+/* Customize checkout button */
+.snipcart-cart__checkout-button {
+  background-color: black !important;
+  border-radius: 32px !important;
+}
+
+/* Customize item count badge */
+.snipcart-cart-header__option {
+  background-color: white;
+  color: black;
+}
+
+.snipcart-checkout__content {
+  margin-top: 20px;
+}
+
+/* Custom theme colors using CSS variables */
+:root {
+  --color-default: black;
+  --color-alt: #333;
+  --color-icon: white;
+  --borderRadius: 32px;
+  
+  /* Snipcart variables */
+  --color-buttonPrimary: black;
+  --color-buttonPrimary-hover: #333;
+  --color-buttonSecondary: white;
+  --color-buttonSecondary-hover: #f5f5f5;
+  --color-link: black;
+  --color-link-hover: #333;
+  
+  --color-badge: black;
+  --color-badge-active: #333;
+  --color-badge-count: white;
+} 

@@ -20,6 +20,8 @@ import TshirtProductPage from "./Pages/tshirtProductPage";
 import HoodieProductPage from "./Pages/hoodieProductPage";
 import PasswordModal from "./Components/PasswordModal"; // Import your modal component
 import CombinedPage from "./Pages/combinedPage";
+import TestingSnipcart from "./Pages/testingSnipcart";
+import "./Styles/snipcart.css";
 
 function App() {
 
@@ -67,7 +69,7 @@ function App() {
             <Route path="/avery-hoodie" element={<HoodieProductPage />} />
             <Route path="/lookbook" element={<Lookbook />} />
             <Route path="/delivery-and-returns" element={<DeliveryAndReturns />} />
-
+            <Route path="/snipcart-test" element={<TestingSnipcart />} />
           </Routes>
         </>
       )}

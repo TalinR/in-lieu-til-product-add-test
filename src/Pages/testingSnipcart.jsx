@@ -30,7 +30,6 @@ const TestingSnipcart = () => {
                 data-item-id="example-item"
                 data-item-name="Example Product"
                 data-item-price="19.99"
-                data-item-url="https://time-in-lieu-site-git-main-talinrs-projects.vercel.app/snipcart-test"
                 data-item-description="An example product for testing.">
                 Add to Cart
               </button>

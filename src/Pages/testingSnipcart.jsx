@@ -28,25 +28,6 @@ const TestingSnipcart = () => {
           </div>
         ))}
       </div>
-
-      {/* Add a hidden JSON representation of your products for Snipcart to crawl */}
-      <div style={{ display: 'none' }}>
-        {products.map(product => (
-          <div 
-            key={product.id}
-            id={`product-${product.id}`}
-            className="snipcart-product"
-            data-item-id={product.id}
-            data-item-price={product.price}
-            data-item-url={`${baseUrl}/products/${product.id}`}
-            data-item-description={product.description}
-            data-item-image={product.image}
-            data-item-name={product.title}
-          >
-            {JSON.stringify(product)}
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

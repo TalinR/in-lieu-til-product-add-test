@@ -19,7 +19,7 @@ const TestingSnipcart = () => {
               className="snipcart-add-item"
               data-item-id={product.id}
               data-item-price={product.price}
-              data-item-url={`${baseUrl}/snipcart-test`}
+              data-item-url="/"
               data-item-description={product.description}
               data-item-image={product.image}
               data-item-name={product.title}

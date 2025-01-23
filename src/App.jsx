@@ -48,7 +48,7 @@ function App() {
     localStorage.setItem("isLoggedIn", "true");
   };
 
-//removed password
+//removed pass
   return (
     <Router>
       {/* <PasswordModal

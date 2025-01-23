@@ -2,16 +2,16 @@
     {
       "id": "sticker_logo",
       "name": "Snipcart Logo Sticker",
-      "price": "2.00",
-      "url": "https://time-in-lieu-site-git-main-talinrs-projects.vercel.app/api/products.json",
+      "price": 2.00,
+      "url": "/snipcart-test",
       "description": "Show off your Snipcart support with a logo sticker!",
       "customFields": []
     },
     {
       "id": "sticker_logo_pack",
       "name": "Snipcart Logo Sticker Pack",
-      "price": "4.00",
-      "url": "https://time-in-lieu-site-git-main-talinrs-projects.vercel.app/api/products.json",
+      "price": 4.00,
+      "url": "/snipcart-test",
       "description": "Get a pack of 3 Snipcart logo stickers.",
       "customFields": []
     }

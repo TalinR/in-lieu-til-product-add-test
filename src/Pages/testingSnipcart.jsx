@@ -5,7 +5,7 @@ import "../Styles/ProductPage.css";
 const TestingSnipcart = () => {
   // Get the base URL of your site
   const baseUrl = window.location.origin;
-  console.log(baseUrl);
+  console.log(`${baseUrl}/api/products.json`);
   
   return (
     <div className="product-page">
@@ -19,7 +19,7 @@ const TestingSnipcart = () => {
               className="snipcart-add-item"
               data-item-id={product.id}
               data-item-price={product.price}
-              data-item-url="/snipcart-test"
+              data-item-url={`${baseUrl}/api/products.json`}
               data-item-description={product.description}
               data-item-image={product.image}
               data-item-name={product.title}

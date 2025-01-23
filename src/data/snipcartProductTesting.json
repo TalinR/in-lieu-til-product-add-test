@@ -6,7 +6,11 @@
     "price": 2.00,
     "image": "/images/sticker-single.jpg",
     "url": "/snipcart-test",
-    "customFields": []
+    "customFields": [{
+      "name": "Size",
+      "options": "Small|Medium|Large|XL",
+      "required": true
+    }]
   },
   {
     "id": "sticker_logo_pack",
@@ -15,6 +19,10 @@
     "price": 4.00,
     "image": "/images/sticker-3pack.jpg",
     "url": "/snipcart-test",
-    "customFields": []
+    "customFields": [{
+      "name": "Size",
+      "options": "Small|Medium|Large|XL",
+      "required": true
+    } ]
   }
 ]

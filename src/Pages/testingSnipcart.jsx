@@ -23,6 +23,9 @@ const TestingSnipcart = () => {
               data-item-description={product.description}
               data-item-image={product.image}
               data-item-name={product.title}
+              data-item-custom1-name="Size"
+              data-item-custom1-options="Small|Medium|Large|XL"
+              data-item-custom1-required="true"
             >
               Add to Cart
             </button>

@@ -22,7 +22,6 @@ import PasswordModal from "./Components/PasswordModal"; // Import your modal com
 import CombinedPage from "./Pages/combinedPage";
 import TestingSnipcart from "./Pages/testingSnipcart";
 import "./Styles/snipcart.css";
-import { SnipcartProvider } from 'use-snipcart';
 
 function App() {
 
@@ -51,23 +50,31 @@ function App() {
 
 //removed password
   return (
-    <SnipcartProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route exact path="/" element={<CombinedPage />} />
-          <Route path="/about" element={<About />} />
-          {/* <Route path="/avery-hoodie" element={<ProductPage />} /> */}
-          <Route path="/lyon-pants" element={<PantsProductPage />} />
-          <Route path="/como-pullover" element={<PulloverProductPage />} />
-          <Route path="/shion-tshirt" element={<TshirtProductPage />} />
-          <Route path="/avery-hoodie" element={<HoodieProductPage />} />
-          <Route path="/lookbook" element={<Lookbook />} />
-          <Route path="/delivery-and-returns" element={<DeliveryAndReturns />} />
-          <Route path="/snipcart-test" element={<TestingSnipcart />} />
-        </Routes>
-      </Router>
-    </SnipcartProvider>
+    <Router>
+      {/* <PasswordModal
+        isOpen={!isPasswordCorrect}
+        onSubmit={handlePasswordSubmit}
+        onAuthenticate = {handleQRAuthenticate}
+      />
+      {isPasswordCorrect && ( */}
+        <>
+          <Navbar />
+          <Routes>
+            <Route exact path="/" element={<CombinedPage />} />
+            <Route path="/about" element={<About />} />
+            {/* <Route path="/avery-hoodie" element={<ProductPage />} /> */}
+            <Route path="/lyon-pants" element={<PantsProductPage />} />
+            <Route path="/como-pullover" element={<PulloverProductPage />} />
+            <Route path="/shion-tshirt" element={<TshirtProductPage />} />
+            <Route path="/avery-hoodie" element={<HoodieProductPage />} />
+            <Route path="/lookbook" element={<Lookbook />} />
+            <Route path="/delivery-and-returns" element={<DeliveryAndReturns />} />
+            <Route path="/snipcart-test" element={<TestingSnipcart />} />
+          </Routes>
+        </>
+      {/* )} */}
+      {/* {!isPasswordCorrect && <Navigate to="/" />} */}
+    </Router>
   );
 }
 

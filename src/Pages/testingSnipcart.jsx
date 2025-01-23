@@ -8,37 +8,26 @@ const TestingSnipcart = () => {
   return (
     <div className="product-page">
       <div>
-        {/* {products.map(product => { */}
+        {products.map(product => {
           return (
-            <div>
-            {/* // <div key={product.id}>
-            //   <h3>{product.title}</h3>
-            //   <p>{product.description}</p>
-            //   <p>${product.price}</p>
-            //   <p> */}
-                {/* <button 
-                  className="snipcart-add-item"
-                  data-item-id={product.id}
-                  data-item-image={product.image}
-                  data-item-name={product.title}
-                  data-item-price={product.price}
-                >
-                  Add to Cart
-                </button> */}
-
-                <button 
+            <div key={product.id}>
+              <h3>{product.title}</h3>
+              <p>{product.description}</p>
+              <p>${product.price}</p>
+              <button 
                 className="snipcart-add-item"
-                data-item-id="example-item"
-                data-item-name="Example Product"
-                data-item-price="19.99"
-                data-item-description="An example product for testing.">
+                data-item-id={product.id}
+                data-item-price={product.price}
+                data-item-url={window.location.href}
+                data-item-description={product.description}
+                data-item-image={product.image}
+                data-item-name={product.title}
+              >
                 Add to Cart
               </button>
-
-              {/* </p> */}
             </div>
           );
-        {/* })} */}
+        })}
       </div>
     </div>
   );

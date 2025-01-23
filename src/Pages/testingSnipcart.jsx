@@ -5,6 +5,7 @@ import "../Styles/ProductPage.css";
 const TestingSnipcart = () => {
   // Get the base URL of your site
   const baseUrl = window.location.origin;
+  console.log(baseUrl);
   
   return (
     <div className="product-page">
@@ -18,7 +19,7 @@ const TestingSnipcart = () => {
               className="snipcart-add-item"
               data-item-id={product.id}
               data-item-price={product.price}
-              data-item-url="https://time-in-lieu-site-git-main-talinrs-projects.vercel.app/api/products.json"
+              data-item-url={`${baseUrl}/snipcart-test`}
               data-item-description={product.description}
               data-item-image={product.image}
               data-item-name={product.title}

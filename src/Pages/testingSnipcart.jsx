@@ -18,13 +18,10 @@ const TestingSnipcart = () => {
               className="snipcart-add-item"
               data-item-id={product.id}
               data-item-price={product.price}
-              data-item-url={`${baseUrl}/products/${product.id}`} // Use a specific product URL
+              data-item-url="/api/products.json" // Point to your JSON endpoint
               data-item-description={product.description}
               data-item-image={product.image}
               data-item-name={product.title}
-              data-item-custom1-name="Special instructions"
-              data-item-custom1-type="textarea"
-              data-item-custom1-required="false"
             >
               Add to Cart
             </button>

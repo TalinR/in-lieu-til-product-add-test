@@ -1,0 +1,18 @@
+[
+    {
+      "id": "sticker_logo",
+      "name": "Snipcart Logo Sticker",
+      "price": "2.00",
+      "url": "/api/products.json",
+      "description": "Show off your Snipcart support with a logo sticker!",
+      "customFields": []
+    },
+    {
+      "id": "sticker_logo_pack",
+      "name": "Snipcart Logo Sticker Pack",
+      "price": "4.00",
+      "url": "/api/products.json",
+      "description": "Get a pack of 3 Snipcart logo stickers.",
+      "customFields": []
+    }
+  ]

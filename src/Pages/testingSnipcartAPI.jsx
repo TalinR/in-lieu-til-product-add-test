@@ -40,7 +40,7 @@ const TestingSnipcartAPI = () => {
             product.variants?.forEach(variant => {
               variant.variation.forEach(v => {
                 if (v.name === 'Size') sizes.add(v.option);
-                if (v.name === 'Color') colors.add(v.option);
+                if (v.name === 'Colour') colors.add(v.option);
               });
             });
             
@@ -82,9 +82,9 @@ const TestingSnipcartAPI = () => {
     if (productInventory.variants) {
       const variant = productInventory.variants.find(v => 
         v.variation.some(varItem => varItem.name === 'Size' && varItem.option === size) &&
-        v.variation.some(varItem => varItem.name === 'Color' && varItem.option === color)
+        v.variation.some(varItem => varItem.name === 'Colour' && varItem.option === color)
       );
-      return variant ? variant.stock <= 0 : false;
+      return !variant || variant.stock <= 0;
     }
     
     return productInventory.stock <= 0;
@@ -97,8 +97,8 @@ const TestingSnipcartAPI = () => {
           const productVariants = variants[product.id] || { sizes: [], colors: [] };
           const outOfStock = isOutOfStock(
             product.id, 
-            selectedSizes[product.id] || 'Small',
-            selectedColors[product.id] || 'Yellow'
+            selectedSizes[product.id] || productVariants.sizes[0],
+            selectedColors[product.id] || productVariants.colors[0]
           );
           
           return (
@@ -108,7 +108,7 @@ const TestingSnipcartAPI = () => {
               <p>${product.price}</p>
               
               <select 
-                value={selectedSizes[product.id] || 'Small'} 
+                value={selectedSizes[product.id] || productVariants.sizes[0]} 
                 onChange={(e) => handleSizeChange(product.id, e.target.value)}
                 style={{ marginBottom: '10px' }}
               >
@@ -118,7 +118,7 @@ const TestingSnipcartAPI = () => {
               </select>
               
               <select 
-                value={selectedColors[product.id] || 'Yellow'} 
+                value={selectedColors[product.id] || productVariants.colors[0]} 
                 onChange={(e) => handleColorChange(product.id, e.target.value)}
                 style={{ marginBottom: '10px', marginLeft: '10px' }}
               >

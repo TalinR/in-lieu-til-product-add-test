@@ -31,7 +31,6 @@ const TestingSnipcartAPI = () => {
               variants: product.variants
             };
 
-            console.log(inventoryMap);
             
             // Extract unique sizes and colors from variants
             const sizes = new Set();

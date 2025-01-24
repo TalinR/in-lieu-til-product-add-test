@@ -181,25 +181,25 @@ const HoodieProductPage = () => {
 
   const BuyButton = (
     <div>
-      <select 
-        value={selectedSize}
-        onChange={(e) => setSelectedSize(e.target.value)}
-        style={{ marginBottom: '10px' }}
-      >
-        {productVariants.sizes.map(size => (
-          <option key={size} value={size}>{size}</option>
-        ))}
-      </select>
+      <div className="snipcart-selectors-container">
+        <select 
+          value={selectedSize}
+          onChange={(e) => setSelectedSize(e.target.value)}
+        >
+          {productVariants.sizes.map(size => (
+            <option key={size} value={size}>{size}</option>
+          ))}
+        </select>
 
-      <select 
-        value={selectedColor}
-        onChange={(e) => setSelectedColor(e.target.value)}
-        style={{ marginBottom: '10px', marginLeft: '10px' }}
-      >
-        {productVariants.colors.map(color => (
-          <option key={color} value={color}>{color}</option>
-        ))}
-      </select>
+        <select 
+          value={selectedColor}
+          onChange={(e) => setSelectedColor(e.target.value)}
+        >
+          {productVariants.colors.map(color => (
+            <option key={color} value={color}>{color}</option>
+          ))}
+        </select>
+      </div>
       
       <button 
         className={`snipcart-add-item ${outOfStock ? 'out-of-stock' : ''}`}
@@ -219,7 +219,7 @@ const HoodieProductPage = () => {
         data-item-custom2-required="true"
         disabled={outOfStock}
       >
-        {outOfStock ? 'Out of Stock' : 'Add to Cart'}
+        {outOfStock ? 'Out of Stock' : 'add to bag'}
       </button>
     </div>
   );
@@ -234,7 +234,7 @@ const HoodieProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>{price}</h3>
+          <h3>${price}</h3>
           <p className="italic">Lyon (n)</p>
           <p >{description}</p>
           <p className="italic">
@@ -355,7 +355,7 @@ const HoodieProductPage = () => {
             <div className="top-info">
               <h2>{title}</h2>
               {/* {priceLoaded ? <h3>{price}</h3> : <h3>Loading price...</h3>} */}
-              <h3>{price}</h3>
+              <h3>${price}</h3>
               <p className="italic">Lyon (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">

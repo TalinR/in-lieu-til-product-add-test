@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useLocation} from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import products from "../data/products.json";
 import "../Styles/ProductPage.css";
-import ShopifyBuy from "@shopify/buy-button-js";
 import size_chart from "../assets/images/size_charts/avery_size_chart.png";
-
 
 function importAll(r) {
   let images = {};
@@ -14,11 +12,9 @@ function importAll(r) {
   return images;
 }
 
-// Import all images
 const hoodieKyohoImages = importAll(
   require.context("../assets/images/hoodie/kyoho", false, /\.jpg$/)
 );
-
 
 const allImages = {
   Kyoho: hoodieKyohoImages,
@@ -28,22 +24,90 @@ const HoodieProductPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState({});
-  const buyButtonInitialized = useRef(false);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const initialColor = query.get("color") || "Kyoho"; // Default to 'kyoho' if no color is provided
-  const [selectedColor, setSelectedColor] = useState(initialColor); // Default to 'kyoho'
-  const [selectedColorRef, setSelectedColorRef] = useState(
-    useState(initialColor.toLowerCase())
-  );
+  const initialColor = query.get("color") || "Kyoho";
+  const [selectedColor, setSelectedColor] = useState(initialColor);
+  const [selectedColorRef, setSelectedColorRef] = useState(initialColor.toLowerCase());
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [price, setPrice] = useState("");
-  const [priceLoaded, setPriceLoaded] = useState(false);
+  const [inventory, setInventory] = useState({});
+  const [variants, setVariants] = useState({});
+  const [selectedSize, setSelectedSize] = useState("");
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showSizingDetails, setShowSizingDetails] = useState(false);
+  const baseUrl = window.location.origin;
 
-  const toggleProductDetails = () => setShowProductDetails(!showProductDetails);
-  const toggleSizingDetails = () => setShowSizingDetails(!showSizingDetails);
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await fetch('https://app.snipcart.com/api/products', {
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Basic ${btoa("ST_NGYwNDEwZjctYTliMS00NjU2LWI3ZjMtYTU1ZDE3NWZjNmNkNjM4NzMyNzUxNjE4MTE5Nzk0" + ':')}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          const inventoryMap = {};
+          const variantsMap = {};
+          
+          // Find the hoodie product
+          const hoodieProduct = data.items.find(item => item.userDefinedId === "avery_hoodie");
+          
+          if (hoodieProduct) {
+            inventoryMap[hoodieProduct.userDefinedId] = {
+              stock: hoodieProduct.stock,
+              variants: hoodieProduct.variants,
+              price: hoodieProduct.price
+            };
+            
+            // Extract sizes and colors
+            const sizes = new Set();
+            const colors = new Set();
+            
+            hoodieProduct.variants?.forEach(variant => {
+              variant.variation.forEach(v => {
+                if (v.name === 'Size') sizes.add(v.option);
+                if (v.name === 'Colour') colors.add(v.option);
+              });
+            });
+            
+            variantsMap[hoodieProduct.userDefinedId] = {
+              sizes: Array.from(sizes),
+              colors: Array.from(colors)
+            };
+            
+            setPrice(hoodieProduct.price);
+          }
+          
+          setInventory(inventoryMap);
+          setVariants(variantsMap);
+          setSelectedSize(variantsMap.avery_hoodie?.sizes[0] || "");
+        }
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+      }
+    };
+
+    fetchInventory();
+  }, []);
+
+  const isOutOfStock = (size, color) => {
+    const productInventory = inventory.avery_hoodie;
+    if (!productInventory) return false;
+    
+    if (productInventory.variants) {
+      const variant = productInventory.variants.find(v => 
+        v.variation.some(varItem => varItem.name === 'Size' && varItem.option === size) &&
+        v.variation.some(varItem => varItem.name === 'Colour' && varItem.option === color)
+      );
+      return !variant || variant.stock <= 0;
+    }
+    
+    return productInventory.stock <= 0;
+  };
 
   useEffect(() => {
     // Keep track of previous window width to detect view mode changes
@@ -56,7 +120,6 @@ const HoodieProductPage = () => {
         (prevWidth <= 768 && window.innerWidth > 768) ||
         (prevWidth > 768 && window.innerWidth <= 768)
       ) {
-        buyButtonInitialized.current = false;
         setIsMobile(isCurrentlyMobile);
       }
       prevWidth = window.innerWidth;
@@ -73,19 +136,15 @@ const HoodieProductPage = () => {
   }, []);
 
   useEffect(() => {
-
     const selectedId = `avery-hoodie-${selectedColor}`;
-    
     const foundProduct = products.find((p) => p.productId === selectedId);
 
     if (foundProduct) {
       setProduct(foundProduct);
       const { color } = foundProduct;
       const { colourId } = foundProduct;
-
       setSelectedColorRef(colourId);
-
-      setImages(allImages[color] || {}); // Set images based on the color id
+      setImages(allImages[color] || {});
 
       const url = new URL(window.location);
       url.searchParams.set("color", selectedColor);
@@ -100,129 +159,60 @@ const HoodieProductPage = () => {
     
     if (currentColor !== selectedColor) {
       setSelectedColor(currentColor);
-
-        const selectElements = document.querySelectorAll(".shopify-buy__option-select__select");
-
-      // Iterate over each select element
-      selectElements.forEach((selectElement) => {
-          // Assuming selectedColor corresponds to an option value
-          selectElement.value = currentColor;
-
-          // Manually trigger the change event if necessary
-          const event = new Event('change', { bubbles: true });
-          selectElement.dispatchEvent(event);
-      });
-
     }
     
   }, [location.search]);
 
-  useEffect(() => {
-    if (buyButtonInitialized.current) return;
+  const toggleProductDetails = () => {
+    setShowProductDetails(!showProductDetails);
+  };
 
-    if (product) {
-      const client = ShopifyBuy.buildClient({
-        domain: "nc173t-ah.myshopify.com",
-        storefrontAccessToken: "836eeafd9f000cca2e63ccd0f5eca722",
-      });
-
-      const ui = ShopifyBuy.UI.init(client);
-
-      const createBuyButton = (elementId) => {
-        ui.createComponent("product", {
-          id: "7361223393370",
-          node: document.getElementById(elementId),
-          moneyFormat: "%24%7B%7Bamount_no_decimals%7D%7D AUD",
-          options: {
-            product: {
-              iframe: false,
-              width: "100%",
-              styles: {
-                product: {
-                  "text-align": "left",
-                },
-                button: {
-                  ":hover": {
-                    "background-color": "#000000",
-                  },
-                  "background-color": "#000000",
-                  ":focus": {
-                    "background-color": "#000000",
-                  },
-                  "border-radius": "32px",
-                  padding: "10px 0",
-                  display: "block",
-                  width: "100%",
-                },
-              },
-              contents: {
-                img: false,
-                title: false,
-                price: false,
-              },
-              text: {
-                button: "Add to cart",
-              },
-
-              events: {
-                afterInit: function (component) {
-                  if (selectedColor)
-                    component.updateVariant("Color", selectedColor);
-                  // price.current = component.view.component.formattedPrice
-                },
-                afterRender: function (component) {
-                  const updatedPrice = component.view.component.formattedPrice;
-                  setPrice(updatedPrice);
-                  setPriceLoaded(true); // Indicate that the price has been loaded
-                  document
-                    .querySelectorAll(".shopify-buy__option-select__select")
-                    .forEach(function (selectElement) {
-                      selectElement.addEventListener("change", function () {
-                        setTimeout(() => {
-                          const selectedColor = component.selectedOptions.Color;
-
-                          setSelectedColor(selectedColor);
-                        }, 10); // Add a slight delay to allow Shopify component to update
-                      });
-                    });
-                },
-              },
-            },
-            cart: {
-              iframe: true,
-              styles: {
-                button: {
-                  ":hover": {
-                    "background-color": "#000000",
-                  },
-                  "background-color": "#000000",
-                  ":focus": {
-                    "background-color": "#000000",
-                  },
-                  "border-radius": "32px",
-                },
-              },
-              text: {
-                total: "Subtotal",
-                button: "Checkout",
-              },
-            },
-          },
-        });
-      };
-
-      createBuyButton("product-component");
-      buyButtonInitialized.current = true; // Mark the buy button as initialized
-    }
-  }, [product, selectedColor, isMobile]);
+  const toggleSizingDetails = () => {
+    setShowSizingDetails(!showSizingDetails);
+  };
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
-  const { title, description, modelInfo, colorDescriptor, buttonDescription } = product;
+  const { title, description, modelInfo, colorDescriptor } = product;
+  const productVariants = variants.avery_hoodie || { sizes: [], colors: [] };
+  const outOfStock = isOutOfStock(selectedSize, selectedColor);
 
-  const BuyButton = <div id="product-component"></div>;
+  const BuyButton = (
+    <div>
+      <select 
+        value={selectedSize}
+        onChange={(e) => setSelectedSize(e.target.value)}
+        style={{ marginBottom: '10px' }}
+      >
+        {productVariants.sizes.map(size => (
+          <option key={size} value={size}>{size}</option>
+        ))}
+      </select>
+      
+      <button 
+        className={`snipcart-add-item ${outOfStock ? 'out-of-stock' : ''}`}
+        data-item-id="avery_hoodie"
+        data-item-price={price}
+        data-item-url={`${baseUrl}/api/products.json`}
+        data-item-description={description}
+        data-item-image={images[`${selectedColorRef}_hoodie_1.jpg`]}
+        data-item-name={title}
+        data-item-custom1-name="Size"
+        data-item-custom1-value={selectedSize}
+        data-item-custom1-options={productVariants.sizes.join('|')}
+        data-item-custom1-required="true"
+        data-item-custom2-name="Colour"
+        data-item-custom2-value={selectedColor}
+        data-item-custom2-options={productVariants.colors.join('|')}
+        data-item-custom2-required="true"
+        disabled={outOfStock}
+      >
+        {outOfStock ? 'Out of Stock' : 'Add to Cart'}
+      </button>
+    </div>
+  );
 
   const Mobileview = (children) => {
     return (

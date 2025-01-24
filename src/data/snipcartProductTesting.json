@@ -1,28 +1,38 @@
 [
   {
     "id": "sticker_logo",
-    "title": "Snipcart Logo Sticker",
-    "description": "Show off your Snipcart support with a logo sticker!",
+    "name": "Snipcart Logo Sticker",
     "price": 2.00,
-    "image": "/images/sticker-single.jpg",
     "url": "/snipcart-test",
+    "description": "Show off your Snipcart support with a logo sticker!",
     "customFields": [{
       "name": "Size",
-      "options": "Small|Medium|Large|XL",
+      "options": "S|M|L|XL",
+      "required": true
+    },
+    {
+      "name": "Colour",
+      "options": "Yellow|Red",
       "required": true
     }]
   },
   {
     "id": "sticker_logo_pack",
-    "title": "Snipcart Logo Sticker Pack",
-    "description": "Get a pack of 3 Snipcart logo stickers.",
+    "name": "Snipcart Logo Sticker Pack",
     "price": 4.00,
-    "image": "/images/sticker-3pack.jpg",
     "url": "/snipcart-test",
-    "customFields": [{
-      "name": "Size",
-      "options": "Small|Medium|Large|XL",
-      "required": true
-    } ]
+    "description": "Get a pack of 3 Snipcart logo stickers.",
+    "customFields": [
+      {
+        "name": "Size",
+        "options": "S|M|L|XL",
+        "required": true
+      },
+      {
+        "name": "Colour",
+        "options": "Yellow|Red",
+        "required": true
+      }
+    ]
   }
 ]

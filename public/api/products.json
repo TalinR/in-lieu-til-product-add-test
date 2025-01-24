@@ -7,7 +7,12 @@
       "description": "Show off your Snipcart support with a logo sticker!",
       "customFields": [{
         "name": "Size",
-        "options": "Small|Medium|Large|XL",
+        "options": "S|M|L|XL",
+        "required": true
+      },
+      {
+        "name": "Colour",
+        "options": "Yellow|Red",
         "required": true
       }]
     },
@@ -17,10 +22,17 @@
       "price": 4.00,
       "url": "/snipcart-test",
       "description": "Get a pack of 3 Snipcart logo stickers.",
-      "customFields": [{
-        "name": "Size",
-        "options": "Small|Medium|Large|XL",
-        "required": true
-      }]
+      "customFields": [
+        {
+          "name": "Size",
+          "options": "S|M|L|XL",
+          "required": true
+        },
+        {
+          "name": "Colour",
+          "options": "Yellow|Red",
+          "required": true
+        }
+      ]
     }
   ]

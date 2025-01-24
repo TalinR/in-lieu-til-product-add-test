@@ -190,6 +190,16 @@ const HoodieProductPage = () => {
           <option key={size} value={size}>{size}</option>
         ))}
       </select>
+
+      <select 
+        value={selectedColor}
+        onChange={(e) => setSelectedColor(e.target.value)}
+        style={{ marginBottom: '10px', marginLeft: '10px' }}
+      >
+        {productVariants.colors.map(color => (
+          <option key={color} value={color}>{color}</option>
+        ))}
+      </select>
       
       <button 
         className={`snipcart-add-item ${outOfStock ? 'out-of-stock' : ''}`}

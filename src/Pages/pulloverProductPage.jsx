@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useLocation} from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import products from "../data/products.json";
 import "../Styles/ProductPage.css";
-import ShopifyBuy from "@shopify/buy-button-js";
 import size_chart from "../assets/images/size_charts/como_size_chart.png";
-
 
 function importAll(r) {
   let images = {};
@@ -31,19 +29,90 @@ const PulloverProductPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [images, setImages] = useState({});
-  const buyButtonInitialized = useRef(false);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const initialColor = query.get("color") || "Campari"; // Default to 'campari' if no color is provided
-  const [selectedColor, setSelectedColor] = useState(initialColor); // Default to 'campari'
-  const [selectedColorRef, setSelectedColorRef] = useState(
-    useState(initialColor.toLowerCase())
-  );
+  const initialColor = query.get("color") || "Campari";
+  const [selectedColor, setSelectedColor] = useState(initialColor);
+  const [selectedColorRef, setSelectedColorRef] = useState(initialColor.toLowerCase());
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [price, setPrice] = useState("");
-  const [priceLoaded, setPriceLoaded] = useState(false);
+  const [inventory, setInventory] = useState({});
+  const [variants, setVariants] = useState({});
+  const [selectedSize, setSelectedSize] = useState("");
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showSizingDetails, setShowSizingDetails] = useState(false);
+  const baseUrl = window.location.origin;
+
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await fetch('https://app.snipcart.com/api/products', {
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Basic ${btoa("ST_NGYwNDEwZjctYTliMS00NjU2LWI3ZjMtYTU1ZDE3NWZjNmNkNjM4NzMyNzUxNjE4MTE5Nzk0" + ':')}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          const inventoryMap = {};
+          const variantsMap = {};
+          
+          // Find the pullover product
+          const pulloverProduct = data.items.find(item => item.userDefinedId === "como_pullover");
+          
+          if (pulloverProduct) {
+            inventoryMap[pulloverProduct.userDefinedId] = {
+              stock: pulloverProduct.stock,
+              variants: pulloverProduct.variants,
+              price: pulloverProduct.price
+            };
+            
+            // Extract sizes and colors
+            const sizes = new Set();
+            const colors = new Set();
+            
+            pulloverProduct.variants?.forEach(variant => {
+              variant.variation.forEach(v => {
+                if (v.name === 'Size') sizes.add(v.option);
+                if (v.name === 'Colour') colors.add(v.option);
+              });
+            });
+            
+            variantsMap[pulloverProduct.userDefinedId] = {
+              sizes: Array.from(sizes),
+              colors: Array.from(colors)
+            };
+            
+            setPrice(pulloverProduct.price);
+          }
+          
+          setInventory(inventoryMap);
+          setVariants(variantsMap);
+          setSelectedSize(variantsMap.como_pullover?.sizes[0] || "");
+        }
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+      }
+    };
+
+    fetchInventory();
+  }, []);
+
+  const isOutOfStock = (size, color) => {
+    const productInventory = inventory.como_pullover;
+    if (!productInventory) return false;
+    
+    if (productInventory.variants) {
+      const variant = productInventory.variants.find(v => 
+        v.variation.some(varItem => varItem.name === 'Size' && varItem.option === size) &&
+        v.variation.some(varItem => varItem.name === 'Colour' && varItem.option === color)
+      );
+      return !variant || variant.stock <= 0;
+    }
+    
+    return productInventory.stock <= 0;
+  };
 
   const toggleProductDetails = () => setShowProductDetails(!showProductDetails);
   const toggleSizingDetails = () => setShowSizingDetails(!showSizingDetails);
@@ -59,7 +128,6 @@ const PulloverProductPage = () => {
         (prevWidth <= 768 && window.innerWidth > 768) ||
         (prevWidth > 768 && window.innerWidth <= 768)
       ) {
-        buyButtonInitialized.current = false;
         setIsMobile(isCurrentlyMobile);
       }
       prevWidth = window.innerWidth;
@@ -76,17 +144,14 @@ const PulloverProductPage = () => {
   }, []);
 
   useEffect(() => {
-
     const selectedId = `como-pullover-${selectedColor}`;
     
     const foundProduct = products.find((p) => p.productId === selectedId);
 
     if (foundProduct) {
-
       setProduct(foundProduct);
       const { color } = foundProduct;
       const { colourId } = foundProduct;
-
 
       setSelectedColorRef(colourId);
 
@@ -100,139 +165,65 @@ const PulloverProductPage = () => {
 
   // Effect to update selected color when the URL changes
   useEffect(() => {
-    
     const currentColor = query.get("color") || "Campari";
     
     if (currentColor !== selectedColor) {
-      // console.log(currentColor)
       setSelectedColor(currentColor);
-
-        const selectElements = document.querySelectorAll(".shopify-buy__option-select__select");
-
-      // Iterate over each select element
-      selectElements.forEach((selectElement) => {
-          // Assuming selectedColor corresponds to an option value
-          selectElement.value = currentColor;
-
-          // Manually trigger the change event if necessary
-          const event = new Event('change', { bubbles: true });
-          selectElement.dispatchEvent(event);
-      });
-
     }
-    
   }, [location.search]);
-
-  useEffect(() => {
-    if (buyButtonInitialized.current) return;
-
-    if (product) {
-      const client = ShopifyBuy.buildClient({
-        domain: "nc173t-ah.myshopify.com",
-        storefrontAccessToken: "836eeafd9f000cca2e63ccd0f5eca722",
-      });
-
-      const ui = ShopifyBuy.UI.init(client);
-
-      const createBuyButton = (elementId) => {
-        ui.createComponent("product", {
-          id: "7361223426138",
-          node: document.getElementById(elementId),
-          moneyFormat: "%24%7B%7Bamount_no_decimals%7D%7D AUD",
-          options: {
-            product: {
-              iframe: false,
-              width: "100%",
-              styles: {
-                product: {
-                  "text-align": "left",
-                },
-                button: {
-                  ":hover": {
-                    "background-color": "#000000",
-                  },
-                  "background-color": "#000000",
-                  ":focus": {
-                    "background-color": "#000000",
-                  },
-                  "border-radius": "32px",
-                  padding: "10px 0",
-                  display: "block",
-                  width: "100%",
-                },
-              },
-              contents: {
-                img: false,
-                title: false,
-                price: false,
-              },
-              text: {
-                button: "Add to cart",
-              },
-
-              events: {
-                afterInit: function (component) {
-                  if (selectedColor)
-                    component.updateVariant("Color", selectedColor);
-                  console.log("select color")
-
-                  // price.current = component.view.component.formattedPrice
-                },
-                afterRender: function (component) {
-                  const updatedPrice = component.view.component.formattedPrice;
-                  setPrice(updatedPrice);
-                  setPriceLoaded(true); // Indicate that the price has been loaded
-                  document
-                    .querySelectorAll(".shopify-buy__option-select__select")
-                    .forEach(function (selectElement) {
-                      selectElement.addEventListener("change", function () {
-                        setTimeout(() => {
-                          const selectedColor = component.selectedOptions.Color;
-
-                          console.log(selectedColor)
-
-                          setSelectedColor(selectedColor);
-                        }, 10); // Add a slight delay to allow Shopify component to update
-                      });
-                    });
-                },
-              },
-            },
-            cart: {
-              iframe: true,
-              styles: {
-                button: {
-                  ":hover": {
-                    "background-color": "#000000",
-                  },
-                  "background-color": "#000000",
-                  ":focus": {
-                    "background-color": "#000000",
-                  },
-                  "border-radius": "32px",
-                },
-              },
-              text: {
-                total: "Subtotal",
-                button: "Checkout",
-              },
-            },
-          },
-        });
-      };
-
-      createBuyButton("product-component");
-      buyButtonInitialized.current = true; // Mark the buy button as initialized
-    }
-  }, [product, selectedColor, isMobile]);
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
-  const { title, description, modelInfo, colorDescriptor, passportHolderNote } = product;
+  const { title, description, modelInfo, colorDescriptor } = product;
+  const productVariants = variants.como_pullover || { sizes: [], colors: [] };
+  const outOfStock = isOutOfStock(selectedSize, selectedColor);
 
-  const BuyButton = <div id="product-component"></div>;
+  const BuyButton = (
+    <div>
+      <div className="snipcart-selectors-container">
+        <select 
+          value={selectedSize}
+          onChange={(e) => setSelectedSize(e.target.value)}
+        >
+          {productVariants.sizes.map(size => (
+            <option key={size} value={size}>{size}</option>
+          ))}
+        </select>
+
+        <select 
+          value={selectedColor}
+          onChange={(e) => setSelectedColor(e.target.value)}
+        >
+          {productVariants.colors.map(color => (
+            <option key={color} value={color}>{color}</option>
+          ))}
+        </select>
+      </div>
+      
+      <button 
+        className={`snipcart-add-item ${outOfStock ? 'out-of-stock' : ''}`}
+        data-item-id="como_pullover"
+        data-item-price={price}
+        data-item-url={`${baseUrl}/api/products.json`}
+        data-item-description={description}
+        data-item-image={images[`${selectedColorRef}_pullover_1.jpg`]}
+        data-item-name={title}
+        data-item-custom1-name="Size"
+        data-item-custom1-value={selectedSize}
+        data-item-custom1-options={productVariants.sizes.join('|')}
+        data-item-custom1-required="true"
+        data-item-custom2-name="Colour"
+        data-item-custom2-value={selectedColor}
+        data-item-custom2-options={productVariants.colors.join('|')}
+        data-item-custom2-required="true"
+        disabled={outOfStock}
+      >
+        {outOfStock ? 'Out of Stock' : 'add to bag'}
+      </button>
+    </div>
+  );
 
   const Mobileview = (children) => {
     return (
@@ -244,7 +235,7 @@ const PulloverProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>{price}</h3>
+          <h3>${price}</h3>
           <p className="italic">Como (n)</p>
           <p >{description}</p>
           <p className="italic">
@@ -253,13 +244,8 @@ const PulloverProductPage = () => {
           <p>{colorDescriptor}</p>
           <p className="italic-model-info">{modelInfo}</p>
           <p className="disclaimer-font">
-            *{passportHolderNote}
-            <div className="spacer"></div>
- 
             *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
-            </p>
-
-          {/* {priceLoaded ? <p>{price}</p> : <p>Loading price...</p>} */}
+          </p>
 
           <div className="dropdown-container">
             <div className="dropdown-header" onClick={toggleProductDetails}>
@@ -369,8 +355,7 @@ const PulloverProductPage = () => {
           <div className="product-info">
             <div className="top-info">
               <h2>{title}</h2>
-              {/* {priceLoaded ? <h3>{price}</h3> : <h3>Loading price...</h3>} */}
-              <h3>{price}</h3>
+              <h3>${price}</h3>
               <p className="italic">Como (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">
@@ -379,13 +364,8 @@ const PulloverProductPage = () => {
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
               <p className="disclaimer-font">
-                *{passportHolderNote}
-                <div className="spacer"></div>
                 *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
-              
-
               </p>
-
 
               <div className="dropdown-container">
                 <div className="dropdown-header" onClick={toggleProductDetails}>
@@ -492,7 +472,6 @@ const PulloverProductPage = () => {
 
   return (
     <div className="container">
-      {/* <Navbar /> */}
       <div className="product-page">
         {isMobile ? Mobileview(BuyButton) : DesktopView(BuyButton)}
       </div>

@@ -26,7 +26,6 @@ const TestingSnipcartAPI = () => {
           const variantsMap = {};
           
           data.items.forEach(product => {
-            console.log(product);
             inventoryMap[product.userDefinedId] = {
               stock: product.stock,
               variants: product.variants

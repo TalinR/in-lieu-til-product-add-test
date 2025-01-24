@@ -70,5 +70,41 @@
       "options": "Limoncello|Campari",
       "required": true
     }]
+  },
+  {
+    "id": "shion_tshirt",
+    "title": "Shion T-Shirt",
+    "description": "Shion T-Shirt",
+    "price": 90.00,
+    "image": "/images/sticker-single.jpg",
+    "url": "/snipcart-test",
+    "customFields": [{
+      "name": "Size",
+      "options": "Small|Medium|Large|Extra Large",
+      "required": true
+    },
+    {
+      "name": "Colour",
+      "options": "Charcoal|Cream",
+      "required": true
+    }]
+  },
+  {
+    "id": "lyon_pant",
+    "title": "Lyon Pants",
+    "description": "Lyon Pants",
+    "price": 190.00,
+    "image": "/images/sticker-single.jpg",
+    "url": "/snipcart-test",
+    "customFields": [{
+      "name": "Size",
+      "options": "Small|Medium|Large|Extra Large",
+      "required": true
+    },
+    {
+      "name": "Colour",
+      "options": "Black|Beige",
+      "required": true
+    }]
   }
 ]

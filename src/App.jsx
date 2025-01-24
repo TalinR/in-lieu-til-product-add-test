@@ -52,12 +52,12 @@ function App() {
 //removed password
   return (
     <Router>
-      {/* <PasswordModal
+      <PasswordModal
         isOpen={!isPasswordCorrect}
         onSubmit={handlePasswordSubmit}
         onAuthenticate = {handleQRAuthenticate}
       />
-      {isPasswordCorrect && ( */}
+      {isPasswordCorrect && (
         <>
           <Navbar />
           <Routes>
@@ -74,8 +74,8 @@ function App() {
             <Route path="/snipcart-api" element={<TestingSnipcartAPI />} />
           </Routes>
         </>
-      {/* )} */}
-      {/* {!isPasswordCorrect && <Navigate to="/" />} */}
+      )}
+      {!isPasswordCorrect && <Navigate to="/" />}
     </Router>
   );
 }

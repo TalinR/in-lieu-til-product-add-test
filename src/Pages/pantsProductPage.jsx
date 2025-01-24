@@ -93,7 +93,7 @@ const PantsProductPage = () => {
           
           setInventory(inventoryMap);
           setVariants(variantsMap);
-          setSelectedSize(variantsMap.lyon_pant?.sizes[0] || "");
+          setSelectedSize("Medium");
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -232,7 +232,7 @@ const PantsProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>{price}</h3>
+          <h3>${price} AUD</h3>
           <p className="italic">Lyon (n)</p>
           <p >{description}</p>
           <p className="italic">
@@ -354,7 +354,7 @@ const PantsProductPage = () => {
           <div className="product-info">
             <div className="top-info">
               <h2>{title}</h2>
-              <h3>{price}</h3>
+              <h3>${price} AUD</h3>
               <p className="italic">Lyon (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">

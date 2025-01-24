@@ -85,11 +85,10 @@ const PulloverProductPage = () => {
             };
             
             setPrice(pulloverProduct.price);
+            setInventory(inventoryMap);
+            setVariants(variantsMap);
+            setSelectedSize("Medium");
           }
-          
-          setInventory(inventoryMap);
-          setVariants(variantsMap);
-          setSelectedSize(variantsMap.como_pullover?.sizes[0] || "");
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -235,7 +234,7 @@ const PulloverProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>${price}</h3>
+          <h3>${price} AUD</h3>
           <p className="italic">Como (n)</p>
           <p >{description}</p>
           <p className="italic">

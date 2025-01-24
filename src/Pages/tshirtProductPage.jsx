@@ -118,11 +118,12 @@ const TshirtProductPage = () => {
             };
             
             setPrice(tshirtProduct.price);
+            // Set default size to Medium instead of first size
+            setSelectedSize("Medium");
           }
           
           setInventory(inventoryMap);
           setVariants(variantsMap);
-          setSelectedSize(variantsMap.shion_tshirt?.sizes[0] || "");
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -361,7 +362,7 @@ const TshirtProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>{price}</h3>
+          <h3>${price} AUD</h3>
           <p className="italic">Shion (n)</p>
           <p >{description}</p>
           <p className="italic">
@@ -490,18 +491,18 @@ const TshirtProductPage = () => {
           <div className="product-info">
             <div className="top-info">
               <h2>{title}</h2>
-              {/* {priceLoaded ? <h3>{price}</h3> : <h3>Loading price...</h3>} */}
-              <h3>{price}</h3>
+              <h3>${price} AUD</h3>
               <p className="italic">Shion (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">
                 Avery, worn in lieu of your daily hoodie.
               </p>
               <p>{colorDescriptor}</p>
+              <p className="italic-model-info">{modelInfo}</p>
+              
               {disclaimerNote && <p className="disclaimer-font">{disclaimerNote}</p>}
               <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.</p>
 
-              <p className="italic-model-info">{modelInfo}</p>
 
               <div className="dropdown-container">
                 <div className="dropdown-header" onClick={toggleProductDetails}>

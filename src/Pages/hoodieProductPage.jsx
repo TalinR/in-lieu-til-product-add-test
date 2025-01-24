@@ -53,7 +53,6 @@ const HoodieProductPage = () => {
           const inventoryMap = {};
           const variantsMap = {};
           
-          // Find the hoodie product
           const hoodieProduct = data.items.find(item => item.userDefinedId === "avery_hoodie");
           
           if (hoodieProduct) {
@@ -63,7 +62,6 @@ const HoodieProductPage = () => {
               price: hoodieProduct.price
             };
             
-            // Extract sizes and colors
             const sizes = new Set();
             const colors = new Set();
             
@@ -80,11 +78,10 @@ const HoodieProductPage = () => {
             };
             
             setPrice(hoodieProduct.price);
+            setInventory(inventoryMap);
+            setVariants(variantsMap);
+            setSelectedSize("Medium");
           }
-          
-          setInventory(inventoryMap);
-          setVariants(variantsMap);
-          setSelectedSize(variantsMap.avery_hoodie?.sizes[0] || "");
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -234,7 +231,7 @@ const HoodieProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>${price}</h3>
+          <h3>${price} AUD</h3>
           <p className="italic">Lyon (n)</p>
           <p >{description}</p>
           <p className="italic">
@@ -354,8 +351,7 @@ const HoodieProductPage = () => {
           <div className="product-info">
             <div className="top-info">
               <h2>{title}</h2>
-              {/* {priceLoaded ? <h3>{price}</h3> : <h3>Loading price...</h3>} */}
-              <h3>${price}</h3>
+              <h3>${price} AUD</h3>
               <p className="italic">Lyon (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">

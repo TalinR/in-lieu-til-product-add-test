@@ -39,7 +39,7 @@ const DeliveryAndReturns = () => {
         We ship delivery duties unpaid (DDU). As such, any customs or import duties are charged once the parcel reaches the destination country. These charges must be paid by the recipient of the parcel. Unfortunately, we have no control over these charges, and cannot tell you what the cost would be, as customs policies and import duties vary widely from country to country. Please contact your local customs office for information on these prices, so you are not surprised by additional charges.
       </p>
       <p className={styles.paragraph}>
-        International deliveries will be shipped via Australia Standard Shipping. You should receive your order within 14 days after you have received your dispatch confirmation email.
+        International deliveries will be shipped via Australia Post Standard Shipping. You should receive your order within 14 days after you have received your dispatch confirmation email.
       </p>
       <p className={styles.paragraph}>
         International deliveries will incur a postage and handling fee of:
@@ -48,8 +48,8 @@ const DeliveryAndReturns = () => {
         <li><i>New Zealand:</i> 20AUD</li>
         <li><i>Asia Pacific:</i> 30AUD</li>
         <li><i>USA and Canada:</i> 30AUD</li>
-        <li><i>UK and Europe:</i> 30AUD</li>
-        <li><i>Rest of the World:</i> 50*AUD</li>
+        <li><i>UK and Europe:</i> 50AUD</li>
+        <li><i>Rest of the World:</i> 80*AUD</li>
       </ul>
       <p className={styles.paragraph}>
         International orders over 400AUD will receive free shipping.

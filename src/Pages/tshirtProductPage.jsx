@@ -34,16 +34,17 @@ const TshirtProductPage = () => {
   const buyButtonInitialized = useRef(false);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const initialColor = query.get("color") || "charcoal"; // Default to 'charcoal' if no color is provided
-  const [selectedColor, setSelectedColor] = useState(initialColor); // Default to 'charcoal'
-  const [selectedColorRef, setSelectedColorRef] = useState(
-    useState(initialColor.toLowerCase())
-  );
+  const initialColor = query.get("color") || "Hibiscus Brown";
+  const [selectedColor, setSelectedColor] = useState(initialColor);
+  const [selectedColorRef, setSelectedColorRef] = useState(initialColor.toLowerCase().replace(" ", "_"));
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [price, setPrice] = useState("");
-  const [priceLoaded, setPriceLoaded] = useState(false);
+  const [inventory, setInventory] = useState({});
+  const [variants, setVariants] = useState({});
+  const [selectedSize, setSelectedSize] = useState("");
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showSizingDetails, setShowSizingDetails] = useState(false);
+  const baseUrl = window.location.origin;
 
   const toggleProductDetails = () => setShowProductDetails(!showProductDetails);
   const toggleSizingDetails = () => setShowSizingDetails(!showSizingDetails);
@@ -76,7 +77,77 @@ const TshirtProductPage = () => {
   }, []);
 
   useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const response = await fetch('https://app.snipcart.com/api/products', {
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Basic ${btoa("ST_NGYwNDEwZjctYTliMS00NjU2LWI3ZjMtYTU1ZDE3NWZjNmNkNjM4NzMyNzUxNjE4MTE5Nzk0" + ':')}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          const inventoryMap = {};
+          const variantsMap = {};
+          
+          // Find the t-shirt product
+          const tshirtProduct = data.items.find(item => item.userDefinedId === "shion_tshirt");
+          
+          if (tshirtProduct) {
+            inventoryMap[tshirtProduct.userDefinedId] = {
+              stock: tshirtProduct.stock,
+              variants: tshirtProduct.variants,
+              price: tshirtProduct.price
+            };
+            
+            // Extract sizes and colors
+            const sizes = new Set();
+            const colors = new Set();
+            
+            tshirtProduct.variants?.forEach(variant => {
+              variant.variation.forEach(v => {
+                if (v.name === 'Size') sizes.add(v.option);
+                if (v.name === 'Colour') colors.add(v.option);
+              });
+            });
+            
+            variantsMap[tshirtProduct.userDefinedId] = {
+              sizes: Array.from(sizes),
+              colors: Array.from(colors)
+            };
+            
+            setPrice(tshirtProduct.price);
+          }
+          
+          setInventory(inventoryMap);
+          setVariants(variantsMap);
+          setSelectedSize(variantsMap.shion_tshirt?.sizes[0] || "");
+        }
+      } catch (error) {
+        console.error('Error fetching inventory:', error);
+      }
+    };
 
+    fetchInventory();
+  }, []);
+
+  const isOutOfStock = (size, color) => {
+    const productInventory = inventory.shion_tshirt;
+    if (!productInventory) return false;
+    
+    if (productInventory.variants) {
+      const variant = productInventory.variants.find(v => 
+        v.variation.some(varItem => varItem.name === 'Size' && varItem.option === size) &&
+        v.variation.some(varItem => varItem.name === 'Colour' && varItem.option === color)
+      );
+      return !variant || variant.stock <= 0;
+    }
+    
+    return productInventory.stock <= 0;
+  };
+
+  useEffect(() => {
     const selectedId = `shion-tshirt-${selectedColor}`;
     
     const foundProduct = products.find((p) => p.productId === selectedId);
@@ -183,7 +254,6 @@ const TshirtProductPage = () => {
                 afterRender: function (component) {
                   const updatedPrice = component.view.component.formattedPrice;
                   setPrice(updatedPrice);
-                  setPriceLoaded(true); // Indicate that the price has been loaded
                   document
                     .querySelectorAll(".shopify-buy__option-select__select")
                     .forEach(function (selectElement) {
@@ -230,9 +300,54 @@ const TshirtProductPage = () => {
     return <div>Product not found</div>;
   }
 
-  const { title, description, modelInfo, colorDescriptor, buttonDescription, productBulletPoint, disclaimerNote} = product;
+  const { title, description, modelInfo, colorDescriptor, buttonDescription, productBulletPoint, disclaimerNote } = product;
+  const productVariants = variants.shion_tshirt || { sizes: [], colors: [] };
+  const outOfStock = isOutOfStock(selectedSize, selectedColor);
 
-  const BuyButton = <div id="product-component"></div>;
+  const BuyButton = (
+    <div>
+      <div className="snipcart-selectors-container">
+        <select 
+          value={selectedSize}
+          onChange={(e) => setSelectedSize(e.target.value)}
+        >
+          {productVariants.sizes.map(size => (
+            <option key={size} value={size}>{size}</option>
+          ))}
+        </select>
+
+        <select 
+          value={selectedColor}
+          onChange={(e) => setSelectedColor(e.target.value)}
+        >
+          {productVariants.colors.map(color => (
+            <option key={color} value={color}>{color}</option>
+          ))}
+        </select>
+      </div>
+      
+      <button 
+        className={`snipcart-add-item ${outOfStock ? 'out-of-stock' : ''}`}
+        data-item-id="shion_tshirt"
+        data-item-price={price}
+        data-item-url={`${baseUrl}/api/products.json`}
+        data-item-description={description}
+        data-item-image={images[`${selectedColorRef}_tshirt_1.jpg`]}
+        data-item-name={title}
+        data-item-custom1-name="Size"
+        data-item-custom1-value={selectedSize}
+        data-item-custom1-options={productVariants.sizes.join('|')}
+        data-item-custom1-required="true"
+        data-item-custom2-name="Colour"
+        data-item-custom2-value={selectedColor}
+        data-item-custom2-options={productVariants.colors.join('|')}
+        data-item-custom2-required="true"
+        disabled={outOfStock}
+      >
+        {outOfStock ? 'Out of Stock' : 'add to bag'}
+      </button>
+    </div>
+  );
 
   const Mobileview = (children) => {
     return (
@@ -298,7 +413,7 @@ const TshirtProductPage = () => {
                     ))}
                   {/* • 100% Cotton
                   <br />
-                  • Seasonal ‘Time in lieu’ backprint
+                  • Seasonal 'Time in lieu' backprint
                   <br />
                   • Wash in cold gentle cycle
                   <br />
@@ -428,7 +543,7 @@ const TshirtProductPage = () => {
                     ))}
                       {/* • 100% Cotton
                       <br />
-                      • Seasonal ‘Time in lieu’ backprint
+                      • Seasonal 'Time in lieu' backprint
                       <br />
                       • Wash in cold gentle cycle
                       <br />

@@ -82,7 +82,7 @@ const TshirtProductPage = () => {
         const response = await fetch('https://app.snipcart.com/api/products', {
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Basic ${btoa("ST_NGYwNDEwZjctYTliMS00NjU2LWI3ZjMtYTU1ZDE3NWZjNmNkNjM4NzMyNzUxNjE4MTE5Nzk0" + ':')}`
+            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_KEY + ':')}`
           }
         });
         
@@ -499,7 +499,7 @@ const TshirtProductPage = () => {
               </p>
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
-              
+
               {disclaimerNote && <p className="disclaimer-font">{disclaimerNote}</p>}
               <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.</p>
 

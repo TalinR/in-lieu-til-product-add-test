@@ -49,7 +49,7 @@ const PulloverProductPage = () => {
         const response = await fetch('https://app.snipcart.com/api/products', {
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Basic ${btoa("ST_NGYwNDEwZjctYTliMS00NjU2LWI3ZjMtYTU1ZDE3NWZjNmNkNjM4NzMyNzUxNjE4MTE5Nzk0" + ':')}`
+            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_KEY + ':')}`
           }
         });
         

@@ -176,7 +176,7 @@ const PulloverProductPage = () => {
     return <div>Product not found</div>;
   }
 
-  const { title, description, modelInfo, colorDescriptor } = product;
+  const { title, description, modelInfo, colorDescriptor, passportHolderNote } = product;
   const productVariants = variants.como_pullover || { sizes: [], colors: [] };
   const outOfStock = isOutOfStock(selectedSize, selectedColor);
 
@@ -244,6 +244,8 @@ const PulloverProductPage = () => {
           <p>{colorDescriptor}</p>
           <p className="italic-model-info">{modelInfo}</p>
           <p className="disclaimer-font">
+            *{passportHolderNote}
+            <div className="spacer"></div>
             *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
           </p>
 
@@ -364,6 +366,8 @@ const PulloverProductPage = () => {
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
               <p className="disclaimer-font">
+                *{passportHolderNote}
+                <div className="spacer"></div>
                 *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
               </p>
 

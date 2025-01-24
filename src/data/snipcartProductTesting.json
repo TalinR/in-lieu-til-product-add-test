@@ -44,7 +44,7 @@
     "url": "/snipcart-test",
     "customFields": [{
       "name": "Size",
-      "options": "Small|Medium|Large|Extra Large",
+      "options": "Extra Small|Small|Medium|Large|Extra Large",
       "required": true
     },
     {
@@ -62,7 +62,7 @@
     "url": "/snipcart-test",
     "customFields": [{
       "name": "Size",
-      "options": "Small|Medium|Large|Extra Large",
+      "options": "Extra Small|Small|Medium|Large|Extra Large",
       "required": true
     },
     {
@@ -80,7 +80,7 @@
     "url": "/snipcart-test",
     "customFields": [{
       "name": "Size",
-      "options": "Small|Medium|Large|Extra Large",
+      "options": "Extra Small|Small|Medium|Large|Extra Large",
       "required": true
     },
     {
@@ -98,7 +98,7 @@
     "url": "/snipcart-test",
     "customFields": [{
       "name": "Size",
-      "options": "Small|Medium|Large|Extra Large",
+      "options": "Extra Small|Small|Medium|Large|Extra Large",
       "required": true
     },
     {

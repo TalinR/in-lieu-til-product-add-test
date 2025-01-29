@@ -371,7 +371,7 @@ const TshirtProductPage = () => {
           <p>{colorDescriptor}</p>
 
           <p className="italic-model-info">{modelInfo}</p>
-          {disclaimerNote && <p className="disclaimer-font">{disclaimerNote}</p>}
+          {/* {disclaimerNote && <p className="disclaimer-font">{disclaimerNote}</p>} */}
           <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.</p>
 
           {/* {priceLoaded ? <p>{price}</p> : <p>Loading price...</p>} */}
@@ -500,7 +500,7 @@ const TshirtProductPage = () => {
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
 
-              {disclaimerNote && <p className="disclaimer-font">{disclaimerNote}</p>}
+              {/* {disclaimerNote && <p className="disclaimer-font">{disclaimerNote}</p>} */}
               <p className="disclaimer-font">*Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.</p>
 
 

@@ -51,9 +51,9 @@ const DeliveryAndReturns = () => {
         <li><i>UK and Europe:</i> 50AUD</li>
         <li><i>Rest of the World:</i> 80*AUD</li>
       </ul>
-      <p className={styles.paragraph}>
+      {/* <p className={styles.paragraph}>
         International orders over 400AUD will receive free shipping.
-      </p>
+      </p> */}
       <p className={styles.paragraph}>
         <i>*Please email <a href="mailto:info@inlieuofficial.com" className={styles.link}>info@inlieuofficial.com</a> to enquire for deliveries out of listed regions
         </i>

@@ -31,7 +31,7 @@ const DeliveryAndReturns = () => {
         Once we have dispatched your order, you will receive a dispatch confirmation e-mail including tracking details for your parcel.
       </p>
       <p className={styles.paragraph}>
-        Domestic deliveries will incur a postage and handling fee of 10AUD. Domestic orders over 400AUD will receive free shipping. All product prices indicated are in Australian dollar currency. All prices are GST inclusive.
+        Domestic deliveries will incur a postage and handling fee of 10AUD. All product prices indicated are in Australian dollar currency. All prices are GST inclusive.
       </p>
 
       <h2 className={styles.heading}>International deliveries</h2>

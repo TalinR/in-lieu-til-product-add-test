@@ -232,7 +232,7 @@ const HoodieProductPage = () => {
         <div className="product-details">
           <h2>{title}</h2>
           <h3>${price} AUD</h3>
-          <p className="italic">Lyon (n)</p>
+          <p className="italic">Avery (n)</p>
           <p >{description}</p>
           <p className="italic">
             Pullover, worn in lieu of your daily hoodie.
@@ -352,7 +352,7 @@ const HoodieProductPage = () => {
             <div className="top-info">
               <h2>{title}</h2>
               <h3>${price} AUD</h3>
-              <p className="italic">Lyon (n)</p>
+              <p className="italic">Avery (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">
                 Avery, worn in lieu of your daily hoodie.

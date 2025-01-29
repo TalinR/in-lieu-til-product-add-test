@@ -495,7 +495,7 @@ const TshirtProductPage = () => {
               <p className="italic">Shion (n)</p>
               <p className="indented">{description}</p>
               <p className="indented italic">
-                Avery, worn in lieu of your daily hoodie.
+                When worn alone, I am Shion. When layered, wear me in lieu of your daily blank T-Shirt. 
               </p>
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>

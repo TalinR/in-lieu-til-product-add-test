@@ -1,19 +1,47 @@
 :root {
+  /* Base flap measurements */
   --flap-width: 28px;
   --flap-height: 42px;
-  --flap-border-color: #1a1a1a;
-  --flap-font-size: 35px;
-  --flap-bg-color: rgb(15, 15, 15);
-  --board-max-width: 100%;
-  --header-font-size: 20px;
-  --title-font-size: 42px;
-  --column-gap: 16px;
-  --row-gap: 16px;
+  --flap-margin: 2px;
+  --flap-border: 1px;
+  --display-padding: 5px;
   
-  /* Column widths */
-  --time-width: 154px;
-  --from-width: 154px;
-  --flight-width: 182px;
+  /* Spacing system */
+  --spacing-xs: 0px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  
+  /* Board layout */
+  --board-max-width: 1200px;
+  --board-padding: var(--spacing-md);
+  --row-gap: 10px;      /* Space between rows */
+  --column-gap: 0px;   /* Space between columns */
+  --header-gap: 0;   /* Space between headers and content */
+  
+  /* Typography */
+  --header-font-size: 20px;
+  --title-font-size: 48px;
+  
+  /* Colors */
+  --flap-border-color: #1a1a1a;
+  --flap-bg-color: rgb(15, 15, 15);
+  
+  /* Calculate widths */
+  --char-total-width: calc(var(--flap-width) + (var(--flap-margin) * 2) + (var(--flap-border) * 2));
+  
+  /* Column configuration */
+  --time-chars: 5;
+  --from-chars: 5;
+  --flight-chars: 6;
+  --remarks-chars: 10;
+  
+  /* Calculate display widths */
+  --time-width: calc((var(--char-total-width) * var(--time-chars)) + (var(--display-padding) * 2));
+  --from-width: calc((var(--char-total-width) * var(--from-chars)) + (var(--display-padding) * 2));
+  --flight-width: calc((var(--char-total-width) * var(--flight-chars)) + (var(--display-padding) * 2));
+  --remarks-width: calc((var(--char-total-width) * var(--remarks-chars)) + (var(--display-padding) * 2));
 }
 
 @font-face {
@@ -37,79 +65,76 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 60px);
-  width: 100%;
-  background: rgb(44, 44, 44);
-  padding: 40px 0;
-  margin-top: 60px;
+  min-height: 100vh;
+  background: black;
+  padding: var(--board-padding);
   color: white;
   font-family: monospace;
 }
 
-.board-content {
-  width: 100%;
-  max-width: 1200px; /* Set a max-width for better centering */
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
 .board-title {
   font-size: var(--title-font-size);
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-xl);
   font-weight: normal;
   text-align: center;
 }
 
-/* Grid layouts */
+.board-content {
+  width: 100%;
+  max-width: var(--board-max-width);
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+}
+
+/* Grid system */
 .board-headers,
 .board-row {
   display: grid;
-  grid-template-columns: minmax(auto, var(--time-width)) minmax(auto, var(--from-width)) minmax(auto, var(--flight-width)) 1fr;
+  grid-template-columns: var(--time-width) var(--from-width) var(--flight-width) var(--remarks-width);
   gap: var(--column-gap);
   width: 100%;
-  align-items: center;
+  justify-content: center;
 }
 
 .board-headers {
-  margin-bottom: 24px;
-  padding: 0 5px;
-}
-
-.board-row {
-  margin-bottom: var(--row-gap);
-  min-height: calc(var(--flap-height) * 2 + 14px);
-}
-
-.row-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Align items to start of their grid area */
-  height: 100%;
-}
-
-/* Ensure the remarks column (last column) is left-aligned */
-.row-item:last-child {
-  justify-content: flex-start;
-}
-
-.display-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  margin-bottom: var(--header-gap);
 }
 
 .header-item {
   font-size: var(--header-font-size);
   color: #ffffff;
   text-align: left;
+  width: 100%;
+  padding: 0 var(--display-padding);
+  margin-left: 10px;
 }
 
-/* Split flap display adjustments */
+/* Row layout */
+.board-row {
+  min-height: calc((var(--flap-height) * 2) + var(--spacing-sm));
+}
+
+.row-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.display-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  height: 100%;
+}
+
+/* Split flap display */
 .split-flap-display {
-  display: inline-flex;
+  display: flex;
   position: relative;
   background: black;
-  padding: 3px;
+  padding: 5px;
   border-radius: 4px;
   box-shadow: 0 0 10px rgba(28, 28, 28, 0.8);
 }
@@ -119,7 +144,7 @@
   height: var(--flap-height);
   border: 1px solid var(--flap-border-color);
   margin: 2px;
-  font-size: var(--flap-font-size);
+  font-size: 30px;
   font-family: 'Arial', sans-serif;
   font-weight: 800;
   display: flex;
@@ -200,7 +225,7 @@
 }
 
 .bottom span {
-  margin-top: -76%;
+  margin-top: -72%;
 }
 
 /* Animation states */

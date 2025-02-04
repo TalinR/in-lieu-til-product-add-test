@@ -22,6 +22,7 @@ import PasswordModal from "./Components/PasswordModal"; // Import your modal com
 import CombinedPage from "./Pages/combinedPage";
 import TestingSnipcart from "./Pages/testingSnipcart";
 import TestingSnipcartAPI from "./Pages/testingSnipcartAPI";
+import TestingSplitflap from "./Pages/testingSplitflap";
 import "./Styles/snipcart.css";
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
             <Route path="/delivery-and-returns" element={<DeliveryAndReturns />} />
             <Route path="/snipcart-test" element={<TestingSnipcart />} />
             <Route path="/snipcart-api" element={<TestingSnipcartAPI />} />
+            <Route path="/split-flap-test" element={<TestingSplitflap />} />
           </Routes>
         </>
       )}

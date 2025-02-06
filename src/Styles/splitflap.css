@@ -64,6 +64,12 @@
   
   /* Add specific gap for double-height displays */
   --remarks-gap: 2px;  /* Gap between top and bottom remarks displays */
+  
+  /* Fluorescent lighting effects */
+  --tube-glow-color: rgba(255, 255, 255, 0.15);
+  --tube-glow-spread: 15px;
+  --tube-glow-intensity: 0.8;
+  --tube-width: 8px;
 }
 
 @font-face {
@@ -95,7 +101,7 @@
     rgb(25, 25, 25) 65%,
     rgb(18, 18, 18) 100%
   );
-  padding: var(--board-padding);
+  padding: calc(var(--board-padding) * 2);
   color: white;
   font-family: monospace;
   width: 100%;
@@ -169,7 +175,17 @@
   font-size: var(--title-font-size);
   margin-bottom: var(--spacing-xl);
   font-weight: normal;
-  text-align: center;
+  text-align: left;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--board-max-width);
+  padding: 0 var(--spacing-md);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .board-content {
@@ -180,19 +196,52 @@
   gap: 0;
   min-width: min-content;
   position: relative;
-  padding: 0 var(--spacing-md);
+  padding: calc(var(--spacing-md) * 2);
   background: linear-gradient(
     180deg,
     rgba(15,15,15,0.9) 0%,
     rgba(20,20,20,0.9) 100%
   );
   border-radius: 4px;
+  overflow: hidden; /* Contain the glow effect */
   box-shadow: 
     0 2px 4px rgba(0,0,0,0.2),
     0 -1px 4px rgba(0,0,0,0.1),
     inset 0 1px 1px rgba(255,255,255,0.05);
   padding: var(--spacing-md);
   margin: 0 var(--spacing-md);
+}
+
+/* Inner glow container */
+.board-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow:
+    /* Inner glow */
+    inset 0 0 var(--tube-glow-spread) var(--tube-glow-color),
+    inset 0 0 calc(var(--tube-glow-spread) / 2) rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Corner accents with contained glow */
+.board-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: calc(var(--tube-width) / 2) solid rgba(255, 255, 255, 0.03);
+  box-shadow:
+    /* Contained corner glow */
+    inset 0 0 var(--tube-glow-spread) rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Grid system - tighter spacing */

@@ -155,7 +155,7 @@ const DepartureBoard = () => {
 
   return (
     <div className="departure-board">
-      <h1 className="board-title">Départs Departures</h1>
+      <h1 className="board-title">Départs &nbsp; Departures</h1>
       <div className="board-content">
         <BoardHeader />
         <BoardRow data={boardData['row1']} />

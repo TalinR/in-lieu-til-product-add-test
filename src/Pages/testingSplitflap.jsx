@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/splitflap.css';
 import SplitFlapDisplay from '../Components/SplitFlapDisplay';
+import LedScroller from '../Components/LedScroller';
 
 const COLUMN_CONFIG = {
   TIME: { width: 5, key: 'time' },
@@ -57,12 +58,14 @@ const BoardRow = ({ data }) => (
               <>
                 <SplitFlapDisplay 
                   word={[firstLine]} 
-                  width={config.width} 
+                  width={config.width}
+                  type={header}
                 />
                 {header === 'REMARKS' && (
                   <SplitFlapDisplay 
                     word={[secondLine || ' '.repeat(config.width)]} 
-                    width={config.width} 
+                    width={config.width}
+                    type={header}
                   />
                 )}
               </>
@@ -161,11 +164,11 @@ const DepartureBoard = () => {
         <BoardRow data={boardData['row1']} />
         <BoardRow data={boardData['row2']} />
         <BoardRow data={boardData['row3']} />
-        <BoardRow data={boardData['row1']} />
-        <BoardRow data={boardData['row2']} />
-        <BoardRow data={boardData['row3']} />
-        <BoardRow data={boardData['row1']} />
-
+        <LedScroller 
+          text="WELCOME TO IN LIEU — SHOP NOW OPEN — NEW ARRIVALS AVAILABLE"
+          speed={1}
+          color="#ff0000"
+        />
       </div>
     </div>
   );

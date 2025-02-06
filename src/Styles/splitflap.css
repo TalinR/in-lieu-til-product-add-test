@@ -16,7 +16,7 @@
   --display-padding: 0px;
   
   /* Spacing system - reduce default gaps */
-  --spacing-xs: 10px;
+  --spacing-xs: 8px;
   --spacing-sm: 15px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
@@ -38,7 +38,7 @@
   --letter-spacing: -0.5px;
   
   /* Colors */
-  --flap-border-color: #232323;
+  --flap-border-color: #000000;
   --flap-bg-color: rgb(15, 15, 15);
   
   /* Calculate widths */
@@ -88,12 +88,81 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background: rgb(27, 27, 27);
+  background: linear-gradient(
+    170deg,
+    rgb(20, 20, 20) 0%,
+    rgb(30, 30, 30) 35%,
+    rgb(25, 25, 25) 65%,
+    rgb(18, 18, 18) 100%
+  );
   padding: var(--board-padding);
   color: white;
   font-family: monospace;
   width: 100%;
   margin-top: 60px;
+  position: relative;
+  box-shadow: 
+    inset 0 2px 4px rgba(255,255,255,0.05),
+    inset 0 -2px 4px rgba(0,0,0,0.2);
+}
+
+/* Add brushed metal texture effect */
+.departure-board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    /* Horizontal brushed lines */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(255,255,255,0.015) 1px,
+      rgba(255,255,255,0.015) 2px
+    ),
+    /* Vertical subtle variation */
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 1px,
+      rgba(0,0,0,0.02) 1px,
+      rgba(0,0,0,0.02) 4px
+    ),
+    /* Diagonal texture for depth */
+    linear-gradient(
+      45deg,
+      transparent 25%,
+      rgba(255,255,255,0.02) 25%,
+      rgba(255,255,255,0.02) 26%,
+      transparent 26%,
+      transparent 75%,
+      rgba(255,255,255,0.02) 75%
+    );
+  background-size: 4px 100%, 100% 4px, 8px 8px;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+/* Add subtle edge lighting effect */
+.departure-board::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    170deg,
+    rgba(255,255,255,0.03) 0%,
+    transparent 20%,
+    transparent 80%,
+    rgba(0,0,0,0.1) 100%
+  );
+  pointer-events: none;
 }
 
 .board-title {
@@ -108,8 +177,22 @@
   max-width: var(--board-max-width);
   display: flex;
   flex-direction: column;
-  gap: var(--row-gap);
-  min-width: min-content; /* Ensures content doesn't shrink below its minimum width */
+  gap: 0;
+  min-width: min-content;
+  position: relative;
+  padding: 0 var(--spacing-md);
+  background: linear-gradient(
+    180deg,
+    rgba(15,15,15,0.9) 0%,
+    rgba(20,20,20,0.9) 100%
+  );
+  border-radius: 4px;
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.2),
+    0 -1px 4px rgba(0,0,0,0.1),
+    inset 0 1px 1px rgba(255,255,255,0.05);
+  padding: var(--spacing-md);
+  margin: 0 var(--spacing-md);
 }
 
 /* Grid system - tighter spacing */
@@ -120,10 +203,61 @@
   gap: var(--column-gap);
   width: fit-content;
   margin: 0 auto;
+  position: relative; /* For divider positioning */
+}
+
+/* Add dividers between rows */
+.board-row {
+  padding: var(--row-gap) 0;
+  width: 100%;
+}
+
+/* Create divider lines between rows */
+.board-row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.1) 100%,
+    transparent
+  );
+  /* Add subtle shadow effect */
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 -0.5px 1px rgba(255, 255, 255, 0.05);
 }
 
 .board-headers {
   margin-bottom: var(--header-gap);
+  /* Add a slightly more prominent divider under headers */
+  position: relative;
+  width: 100%;
+}
+
+.board-headers::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.15) 100%,
+    transparent
+  );
+  /* Add more pronounced shadow for header divider */
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 -0.5px 1px rgba(255, 255, 255, 0.07);
 }
 
 .header-item {
@@ -164,15 +298,21 @@
   gap: var(--remarks-gap); /* Explicit gap between displays */
 }
 
-/* Split flap display - reduce spacing */
+/* Split flap display - enhance depth */
 .split-flap-display {
   display: flex;
   position: relative;
-  background: black;
+  background: linear-gradient(180deg, 
+    rgba(10,10,10,1) 0%,
+    rgba(15,15,15,1) 100%);
   padding: var(--display-padding);
   border-radius: var(--flap-border-radius);
+  box-shadow: 
+    inset 0 2px 4px rgba(0,0,0,0.5),
+    inset 0 -2px 4px rgba(0,0,0,0.5);
 }
 
+/* Enhance flap depth and texture */
 .flap {
   width: var(--flap-width);
   height: var(--flap-height);
@@ -187,13 +327,40 @@
   perspective: 1000px;
   overflow: hidden;
   border-radius: var(--flap-border-radius);
-  /* box-shadow: 
-    inset 0 2px 3px rgba(255,255,255,0.1),
-    inset 0 -2px 3px rgba(0,0,0,0.4),
-    0 2px 4px rgba(0,0,0,0.8); */
+  position: relative;
+  box-shadow: 
+    -1px 0 1px rgba(0,0,0,0.3),
+    1px 0 1px rgba(0,0,0,0.3),
+    inset 0 2px 3px rgba(255,255,255,0.05),
+    inset 0 -2px 3px rgba(0,0,0,0.2);
 }
 
-/* Flap sections */
+/* Add subtle texture to flaps */
+.flap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(45deg, 
+      rgba(255,255,255,0.02) 25%, 
+      transparent 25%, 
+      transparent 75%, 
+      rgba(255,255,255,0.02) 75%),
+    linear-gradient(-45deg, 
+      rgba(255,255,255,0.02) 25%, 
+      transparent 25%, 
+      transparent 75%, 
+      rgba(255,255,255,0.02) 75%);
+  background-size: 4px 4px;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+/* Enhance flap sections with depth */
 .top,
 .bottom {
   width: 100%;
@@ -202,8 +369,8 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(180deg, 
-    rgb(20,20,20) 0%,
-    rgb(176, 176, 176) 100%);
+    rgba(20,20,20,1) 0%,
+    rgba(25,25,25,1) 100%);
   border-radius: var(--inner-border-radius);
 }
 
@@ -211,16 +378,18 @@
   border-bottom: var(--flap-divider-width) solid #222;
   box-shadow: 
     inset 0 var(--text-shadow-offset) calc(var(--text-shadow-blur) * 1.5) rgba(255,255,255,0.1),
-    0 calc(var(--text-shadow-offset) * -1) 0 rgba(0,0,0,0.9);
+    0 calc(var(--text-shadow-offset) * -1) 2px rgba(0,0,0,0.9),
+    inset 0 -1px 0 rgba(0,0,0,0.3);
 }
 
 .bottom {
   border-top: var(--flap-divider-width) solid #111;
   box-shadow: 
-    inset 0 calc(var(--text-shadow-offset) * -1) calc(var(--text-shadow-blur) * 1.5) rgba(0,0,0,0.4);
+    inset 0 calc(var(--text-shadow-offset) * -1) calc(var(--text-shadow-blur) * 1.5) rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(0,0,0,0.3);
 }
 
-/* Flap states */
+/* Enhanced flap states with depth */
 .top-flap-visible,
 .top-flap-queued,
 .top-static-flap,
@@ -234,6 +403,7 @@
   width: 100%;
   background: linear-gradient(180deg, 
     rgba(12,12,12,1) 0%,
+    rgba(18,18,18,1) 50%,
     rgba(8,8,8,1) 100%);
   border-radius: var(--inner-border-radius);
   box-shadow: 
@@ -241,7 +411,7 @@
     inset 0 -1px 2px rgba(0,0,0,0.3);
 }
 
-/* Text positioning and styling */
+/* Enhanced text styling with better depth */
 .top span,
 .bottom span {
   display: block;
@@ -250,8 +420,9 @@
   line-height: var(--flap-height);
   color: white;
   text-shadow: 
-    0 calc(var(--text-shadow-offset) * -1) 0 rgba(0,0,0,0.7),
-    0 var(--text-shadow-offset) 0 rgba(255,255,255,0.1);
+    0 -1px 0 rgba(0,0,0,0.7),
+    0 1px 0 rgba(255,255,255,0.1),
+    0 0 5px rgba(255,255,255,0.05);
   font-family: var(--font-family-primary);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing);
@@ -342,11 +513,6 @@ svg {
     0 calc(var(--text-shadow-offset) * -1) 0 rgba(0,0,0,0.7),
     0 var(--text-shadow-offset) 0 rgba(255,255,255,0.1),
     0 0 var(--text-glow-blur) rgba(255,235,105,0.3);
-}
-
-/* Remove the texture overlay */
-.flap::after {
-  display: none;
 }
 
 /* Mobile-first styles are in the base styles */

@@ -1,29 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const SplitFlapCharacters = [
-  ' ',
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':'
-];
+// Define specific character sets for each column type
+const CharacterSets = {
+  TIME: [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':'],
+  FROM: [' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+         'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+  FLIGHT: [' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+           'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+           '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+  REMARKS: [' ', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+            'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+};
 
-const Flap = ({ index }) => (
-  <div key={index} className="flap flex-center-all">
+const Flap = ({ char = ' ' }) => (
+  <div className="flap flex-center-all">
     <div className="top">
       <div className="top-flap-queued">
-        <span>_</span>
+        <span>{char}</span>
       </div>
       <div className='top-flap-visible'>
-        <span>a</span>
+        <span>{char}</span>
       </div>
     </div>
     <div className="bottom">
       <div className="bottom-flap-queued">
-        <span>_</span>
+        <span>{char}</span>
       </div>
       <div className='bottom-flap-visible'>
-        <span>a</span>
+        <span>{char}</span>
       </div>
     </div>
   </div>
@@ -43,15 +48,17 @@ const NoiseFilter = () => (
   </svg>
 );
 
-const SplitFlapDisplay = ({ word, width = 7 }) => {
+const SplitFlapDisplay = ({ word, width = 7, type = 'REMARKS' }) => {
   const flapRef = useRef(null);
   const animationRef = useRef({});
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const timeoutRef = useRef(null);
   const completedFlapsRef = useRef(0);
+  const [initialWord] = useState(Array.isArray(word) ? word[0] : word);
 
   const WORDS = Array.isArray(word) ? word : [word];
+  const characterSet = CharacterSets[type] || CharacterSets.REMARKS;
 
   const cleanupAnimations = () => {
     if (timeoutRef.current) {
@@ -71,8 +78,6 @@ const SplitFlapDisplay = ({ word, width = 7 }) => {
 
   const moveToNextWord = () => {
     const nextIndex = (currentWordIndex + 1) % WORDS.length;
-
-    console.log('next word')
     
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -180,40 +185,42 @@ const SplitFlapDisplay = ({ word, width = 7 }) => {
   };
 
   useEffect(() => {
-    if (!isInitialized && flapRef.current) {
-      const initialChars = Array(width).fill('a');
-      const targetWord = WORDS[0].padEnd(width, ' ').split('');
-      setup(initialChars, SplitFlapCharacters, targetWord);
+    // Only start animations after initial render
+    if (isInitialized) {
+      const currentChars = [...flapRef.current.children]
+        .filter(item => item.tagName.toLowerCase() !== 'svg')
+        .map(item => {
+          const visibleChar = item.querySelector('.bottom-flap-visible span')?.textContent || characterSet[0];
+          return visibleChar;
+        });
+
+      const targetWord = WORDS[currentWordIndex].padEnd(width, ' ').split('');
+      setup(currentChars, characterSet, targetWord);
+    }
+  }, [currentWordIndex, isInitialized, width, WORDS, characterSet]);
+
+  // Set isInitialized after first render
+  useEffect(() => {
+    if (!isInitialized) {
       setIsInitialized(true);
     }
-  }, [isInitialized, width, WORDS]);
+  }, [isInitialized]);
 
-  useEffect(() => {
-    if (!isInitialized || !flapRef.current) return;
-
-    const currentChars = [...flapRef.current.children]
-      .filter(item => item.tagName.toLowerCase() !== 'svg')
-      .map(item => {
-        const visibleChar = item.querySelector('.bottom-flap-visible span')?.textContent || 'a';
-        return visibleChar;
-      });
-
-    const targetWord = WORDS[currentWordIndex].padEnd(width, ' ').split('');
-    setup(currentChars, SplitFlapCharacters, targetWord);
-
-    return () => {
-      cleanupAnimations();
-    };
-  }, [currentWordIndex, isInitialized, width, WORDS]);
+  // Initial render with static characters
+  const initialChars = initialWord.padEnd(width, ' ').split('');
 
   return (
     <div className="split-flap-display" ref={flapRef}>
-      {[...Array(width)].map((_, index) => (
-        <Flap key={index} index={index} />
+      {initialChars.map((char, index) => (
+        <Flap key={index} char={char} />
       ))}
       {/* <NoiseFilter /> */}
     </div>
   );
+};
+
+Flap.propTypes = {
+  char: PropTypes.string
 };
 
 SplitFlapDisplay.propTypes = {
@@ -221,7 +228,8 @@ SplitFlapDisplay.propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string)
   ]).isRequired,
-  width: PropTypes.number
+  width: PropTypes.number,
+  type: PropTypes.oneOf(['TIME', 'FROM', 'FLIGHT', 'REMARKS'])
 };
 
 export default SplitFlapDisplay;

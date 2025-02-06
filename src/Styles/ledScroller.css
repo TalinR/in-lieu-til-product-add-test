@@ -1,0 +1,139 @@
+/* Import LED Matrix font for authentic display appearance */
+@font-face {
+  font-family: 'LED';
+  src: url('https://fonts.cdnfonts.com/css/led-dot-matrix') format('woff2');
+}
+
+:root {
+  /* LED Scroller measurements - mobile first (smallest size) */
+  --led-container-height: 20px;
+  --led-font-size: 12px;
+  --led-letter-spacing: 1px;
+  --led-dot-size: 2px;
+  --led-top-position: 8%;
+}
+
+/* Main container for the LED scroller */
+.led-scroller-container {
+  width: 100%;
+  height: var(--led-container-height);
+  background-color: black;
+  overflow: hidden;      /* Hide content that scrolls outside the container */
+  position: relative;    /* Establish positioning context for children */
+  margin-top: 20px;
+  /* Subtle borders to frame the display */
+  border-top: 1px solid #232323;
+  border-bottom: 1px solid #232323;
+}
+
+/* Fixed LED matrix background that creates the dot-matrix effect */
+.led-matrix {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Create a grid of dimmed LED dots using radial gradient */
+  background-image: 
+    radial-gradient(
+      circle at center,
+      rgba(255, 235, 105, 0.1) 0.7px,  /* Dim yellow for unlit LEDs */
+      transparent 0.7px
+    );
+  background-size: var(--led-dot-size) var(--led-dot-size);  /* Space between LED dots */
+  pointer-events: none;      /* Allow clicks to pass through to content below */
+}
+
+/* Styling for the scrolling text elements */
+.led-scroller-text {
+  position: absolute;
+  white-space: nowrap;       /* Prevent text from wrapping */
+  font-family: 'LED', monospace;
+  font-size: var(--led-font-size);
+  top: var(--led-top-position);
+  transform: translateY(-50%); /* Offset by half height for true centering */
+  letter-spacing: var(--led-letter-spacing);
+  will-change: transform;    /* Optimize for animation performance */
+  text-shadow: 0 0 5px currentColor;  /* Create LED glow effect */
+  
+  /* Create smooth fade effect at the edges using CSS masks */
+  /* The gradient creates 4 zones:
+     1. 0% to 5%: Fade from transparent to solid
+     2. 5% to 95%: Solid visibility
+     3. 95% to 100%: Fade from solid to transparent
+  */
+  /* -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  ); */
+}
+
+/* Extra small devices (small phones) */
+@media (max-width: 349px) {
+  :root {
+    --led-container-height: 16px;
+    --led-font-size: 10px;
+    --led-letter-spacing: 0.5px;
+    --led-dot-size: 1.5px;
+  }
+}
+
+/* Small devices (phones) */
+@media (min-width: 350px) and (max-width: 575px) {
+  :root {
+    --led-container-height: 20px;
+    --led-font-size: 12px;
+    --led-letter-spacing: 1px;
+    --led-dot-size: 2px;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 576px) {
+  :root {
+    --led-container-height: 25px;
+    --led-font-size: 16px;
+    --led-letter-spacing: 1.5px;
+    --led-dot-size: 2.5px;
+  }
+}
+
+/* Large devices (small laptops) */
+@media (min-width: 768px) {
+  :root {
+    --led-container-height: 30px;
+    --led-font-size: 20px;
+    --led-letter-spacing: 2px;
+    --led-dot-size: 3px;
+  }
+}
+
+/* Extra large devices (large laptops/desktops) */
+@media (min-width: 992px) {
+  :root {
+    --led-container-height: 35px;
+    --led-font-size: 24px;
+    --led-letter-spacing: 2.5px;
+    --led-dot-size: 3.5px;
+  }
+}
+
+/* XXL devices */
+@media (min-width: 1200px) {
+  :root {
+    --led-container-height: 40px;
+    --led-font-size: 28px;
+    --led-letter-spacing: 3px;
+    --led-dot-size: 4px;
+  }
+} 

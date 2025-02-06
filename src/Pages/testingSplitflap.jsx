@@ -17,7 +17,13 @@ const BoardHeader = () => (
   </div>
 );
 
-const splitText = (text, width) => {
+const splitText = (text, width, isRemarks = false) => {
+  if (!isRemarks) {
+    // For non-remarks columns, just return a single line
+    return [text.padEnd(width), ''];
+  }
+
+  // For remarks, split into two lines as before
   const words = text.split(' ');
   let firstLine = '';
   let secondLine = '';
@@ -44,19 +50,21 @@ const BoardRow = ({ data }) => (
   <div className="board-row">
     {Object.entries(COLUMN_CONFIG).map(([header, config]) => (
       <div key={header} className="row-item">
-        <div className="display-stack">
+        <div className={`display-stack ${header === 'REMARKS' ? 'double-height' : 'single-height'}`}>
           {(() => {
-            const [firstLine, secondLine] = splitText(data[config.key], config.width);
+            const [firstLine, secondLine] = splitText(data[config.key], config.width, header === 'REMARKS');
             return (
               <>
                 <SplitFlapDisplay 
                   word={[firstLine]} 
                   width={config.width} 
                 />
-                <SplitFlapDisplay 
-                  word={[secondLine || ' '.repeat(config.width)]} 
-                  width={config.width} 
-                />
+                {header === 'REMARKS' && (
+                  <SplitFlapDisplay 
+                    word={[secondLine || ' '.repeat(config.width)]} 
+                    width={config.width} 
+                  />
+                )}
               </>
             );
           })()}
@@ -150,6 +158,14 @@ const DepartureBoard = () => {
         <BoardRow data={boardData['row1']} />
         <BoardRow data={boardData['row2']} />
         <BoardRow data={boardData['row3']} />
+        <BoardRow data={boardData['row1']} />
+        <BoardRow data={boardData['row2']} />
+        <BoardRow data={boardData['row3']} />
+        <BoardRow data={boardData['row1']} />
+        <BoardRow data={boardData['row2']} />
+        <BoardRow data={boardData['row3']} />
+        <BoardRow data={boardData['row1']} />
+
       </div>
     </div>
   );

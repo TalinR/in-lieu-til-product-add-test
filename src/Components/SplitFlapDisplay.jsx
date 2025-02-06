@@ -211,7 +211,7 @@ const SplitFlapDisplay = ({ word, width = 7 }) => {
       {[...Array(width)].map((_, index) => (
         <Flap key={index} index={index} />
       ))}
-      <NoiseFilter />
+      {/* <NoiseFilter /> */}
     </div>
   );
 };

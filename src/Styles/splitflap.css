@@ -1,35 +1,48 @@
 :root {
-  /* Base flap measurements */
-  --flap-width: 28px;
-  --flap-height: 42px;
-  --flap-margin: 2px;
-  --flap-border: 1px;
-  --display-padding: 5px;
+  /* Breakpoints */
+  --breakpoint-xs: 350px;  /* Extra small devices (small phones) */
+  --breakpoint-sm: 576px;  /* Small devices (phones) */
+  --breakpoint-md: 768px;  /* Medium devices (tablets) */
+  --breakpoint-lg: 992px;  /* Large devices (small laptops) */
+  --breakpoint-xl: 1200px; /* Extra large devices (large laptops/desktops) */
   
-  /* Spacing system */
-  --spacing-xs: 0px;
-  --spacing-sm: 16px;
-  --spacing-md: 24px;
-  --spacing-lg: 32px;
-  --spacing-xl: 48px;
+  /* Base flap measurements - mobile first (smallest size) */
+  --flap-width: 12px;
+  --flap-height: 25px;
+  --flap-margin: 0px;
+  --flap-border: 1px;
+  --flap-border-radius: calc(var(--flap-width) * 0.06);
+  --inner-border-radius: calc(var(--flap-width) * 0.04);
+  --display-padding: 0px;
+  
+  /* Spacing system - reduce default gaps */
+  --spacing-xs: 10px;
+  --spacing-sm: 15px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
   
   /* Board layout */
-  --board-max-width: 1200px;
-  --board-padding: var(--spacing-md);
-  --row-gap: 10px;      /* Space between rows */
-  --column-gap: 0px;   /* Space between columns */
-  --header-gap: 0;   /* Space between headers and content */
+  --board-max-width: 100%;
+  --board-padding: var(--spacing-sm);
+  --row-gap: var(--spacing-xs);
+  --column-gap: 5px;
+  --header-gap: var(--spacing-xs);
   
   /* Typography */
-  --header-font-size: 20px;
-  --title-font-size: 48px;
+  --font-family-primary: 'Arial', sans-serif;
+  --font-weight-bold: 800;
+  --header-font-size: 10px;
+  --title-font-size: 15px;
+  --flap-font-size: 13px;
+  --letter-spacing: -0.5px;
   
   /* Colors */
-  --flap-border-color: #1a1a1a;
+  --flap-border-color: #232323;
   --flap-bg-color: rgb(15, 15, 15);
   
   /* Calculate widths */
-  --char-total-width: calc(var(--flap-width) + (var(--flap-margin) * 2) + (var(--flap-border) * 2));
+  --char-total-width: calc(var(--flap-width) + (var(--flap-margin) * 2));
   
   /* Column configuration */
   --time-chars: 5;
@@ -42,6 +55,15 @@
   --from-width: calc((var(--char-total-width) * var(--from-chars)) + (var(--display-padding) * 2));
   --flight-width: calc((var(--char-total-width) * var(--flight-chars)) + (var(--display-padding) * 2));
   --remarks-width: calc((var(--char-total-width) * var(--remarks-chars)) + (var(--display-padding) * 2));
+  
+  /* Border and shadow measurements */
+  --flap-divider-width: 0.1px;
+  --text-shadow-offset: calc(var(--flap-height) * 0.02);
+  --text-shadow-blur: calc(var(--flap-height) * 0.04);
+  --text-glow-blur: calc(var(--flap-height) * 0.1);
+  
+  /* Add specific gap for double-height displays */
+  --remarks-gap: 2px;  /* Gap between top and bottom remarks displays */
 }
 
 @font-face {
@@ -66,10 +88,12 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  background: black;
+  background: rgb(27, 27, 27);
   padding: var(--board-padding);
   color: white;
   font-family: monospace;
+  width: 100%;
+  margin-top: 60px;
 }
 
 .board-title {
@@ -85,16 +109,17 @@
   display: flex;
   flex-direction: column;
   gap: var(--row-gap);
+  min-width: min-content; /* Ensures content doesn't shrink below its minimum width */
 }
 
-/* Grid system */
+/* Grid system - tighter spacing */
 .board-headers,
 .board-row {
   display: grid;
   grid-template-columns: var(--time-width) var(--from-width) var(--flight-width) var(--remarks-width);
   gap: var(--column-gap);
-  width: 100%;
-  justify-content: center;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .board-headers {
@@ -112,7 +137,8 @@
 
 /* Row layout */
 .board-row {
-  min-height: calc((var(--flap-height) * 2) + var(--spacing-sm));
+  min-height: calc(var(--flap-height) * 2);
+  align-items: center;
 }
 
 .row-item {
@@ -122,41 +148,49 @@
   height: 100%;
 }
 
+/* Update display stack styles */
 .display-stack {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
-  height: 100%;
+  height: var(--flap-height); /* Single height by default */
 }
 
-/* Split flap display */
+.single-height {
+  justify-content: center;
+}
+
+.double-height {
+  height: calc(var(--flap-height) * 2); /* Exact height for two displays */
+  gap: var(--remarks-gap); /* Explicit gap between displays */
+}
+
+/* Split flap display - reduce spacing */
 .split-flap-display {
   display: flex;
   position: relative;
   background: black;
-  padding: 5px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(28, 28, 28, 0.8);
+  padding: var(--display-padding);
+  border-radius: var(--flap-border-radius);
 }
 
 .flap {
   width: var(--flap-width);
   height: var(--flap-height);
-  border: 1px solid var(--flap-border-color);
-  margin: 2px;
-  font-size: 30px;
-  font-family: 'Arial', sans-serif;
-  font-weight: 800;
+  border: var(--flap-border) solid var(--flap-border-color);
+  margin: var(--flap-margin);
+  font-size: var(--flap-font-size);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
   display: flex;
   flex-direction: column;
   background-color: var(--flap-bg-color);
   perspective: 1000px;
   overflow: hidden;
-  border-radius: 2px;
-  box-shadow: 
+  border-radius: var(--flap-border-radius);
+  /* box-shadow: 
     inset 0 2px 3px rgba(255,255,255,0.1),
     inset 0 -2px 3px rgba(0,0,0,0.4),
-    0 2px 4px rgba(0,0,0,0.8);
+    0 2px 4px rgba(0,0,0,0.8); */
 }
 
 /* Flap sections */
@@ -170,19 +204,20 @@
   background: linear-gradient(180deg, 
     rgb(20,20,20) 0%,
     rgb(176, 176, 176) 100%);
+  border-radius: var(--inner-border-radius);
 }
 
 .top {
-  border-bottom: 1px solid #222;
+  border-bottom: var(--flap-divider-width) solid #222;
   box-shadow: 
-    inset 0 2px 3px rgba(255,255,255,0.1),
-    0 -1px 0 rgba(0,0,0,0.9);
+    inset 0 var(--text-shadow-offset) calc(var(--text-shadow-blur) * 1.5) rgba(255,255,255,0.1),
+    0 calc(var(--text-shadow-offset) * -1) 0 rgba(0,0,0,0.9);
 }
 
 .bottom {
-  border-top: 1px solid #111;
+  border-top: var(--flap-divider-width) solid #111;
   box-shadow: 
-    inset 0 -2px 3px rgba(0,0,0,0.4);
+    inset 0 calc(var(--text-shadow-offset) * -1) calc(var(--text-shadow-blur) * 1.5) rgba(0,0,0,0.4);
 }
 
 /* Flap states */
@@ -200,7 +235,7 @@
   background: linear-gradient(180deg, 
     rgba(12,12,12,1) 0%,
     rgba(8,8,8,1) 100%);
-  border-radius: 2px;
+  border-radius: var(--inner-border-radius);
   box-shadow: 
     inset 0 1px 2px rgba(255,255,255,0.05),
     inset 0 -1px 2px rgba(0,0,0,0.3);
@@ -210,22 +245,33 @@
 .top span,
 .bottom span {
   display: block;
+  position: relative;
+  height: var(--flap-height);
+  line-height: var(--flap-height);
   color: white;
   text-shadow: 
-    0 -1px 0 rgba(0,0,0,0.7),
-    0 1px 0 rgba(255,255,255,0.1);
-  font-family: 'Arial', sans-serif;
-  font-weight: 800;
-  letter-spacing: -1px;
+    0 calc(var(--text-shadow-offset) * -1) 0 rgba(0,0,0,0.7),
+    0 var(--text-shadow-offset) 0 rgba(255,255,255,0.1);
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing);
   -webkit-font-smoothing: antialiased;
 }
 
 .top span {
-  margin-top: 2%;
+  /* Position the text so its bottom half is at the bottom of the top flap */
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  transform: translateY(50%);
 }
 
 .bottom span {
-  margin-top: -72%;
+  /* Position the text so its top half is at the top of the bottom flap */
+  position: absolute;
+  top: 0%;
+  width: 100%;
+  transform: translateY(-50%);
 }
 
 /* Animation states */
@@ -235,14 +281,14 @@
 }
 
 .top-flap-animation {
-  animation: flip 0.017s ease-in;
+  animation: flip 0.05s ease-in;
   transform-origin: bottom;
 }
 
 .bottom-flap-animation {
-  animation: bflip 0.017s ease-in;
+  animation: bflip 0.05s ease-in;
   transform-origin: top;
-  animation-delay: 0.017s;
+  animation-delay: 0.05s;
 }
 
 /* Noise overlay */
@@ -293,12 +339,179 @@ svg {
 .row-item:last-child .display-stack .split-flap-display span {
   color: #FFEB69;
   text-shadow: 
-    0 -1px 0 rgba(0,0,0,0.7),
-    0 1px 0 rgba(255,255,255,0.1),
-    0 0 5px rgba(255,235,105,0.3);
+    0 calc(var(--text-shadow-offset) * -1) 0 rgba(0,0,0,0.7),
+    0 var(--text-shadow-offset) 0 rgba(255,255,255,0.1),
+    0 0 var(--text-glow-blur) rgba(255,235,105,0.3);
 }
 
 /* Remove the texture overlay */
 .flap::after {
   display: none;
+}
+
+/* Mobile-first styles are in the base styles */
+
+/* Small devices (landscape phones) */
+@media (min-width: 576px) {
+  :root {
+    --flap-width: 20px;
+    --flap-height: 34px;
+    --flap-font-size: 24px;
+    --header-font-size: 18px;
+    --title-font-size: 36px;
+    --board-padding: var(--spacing-md);
+    --row-gap: var(--spacing-sm);
+    --column-gap: 10px;
+    --flap-margin: 1px;
+    --display-padding: 0px;
+    --flap-divider-width: 0.3px;
+  }
+}
+
+/* Medium devices (tablets) */
+@media (min-width: 768px) {
+  :root {
+    --flap-width: 20px;
+    --flap-height: 36px;
+    --flap-font-size: 20px;
+    --header-font-size: 18px;
+    --title-font-size: 40px;
+    --board-padding: var(--spacing-md);
+    --row-gap: var(--spacing-md);
+    --column-gap: 4px;
+    --flap-margin: 1px;
+    --display-padding: 0px;
+    --flap-divider-width: 0.5px;
+    /* Calculate minimum board width based on content */
+    --total-content-width: calc(
+      var(--time-width) + 
+      var(--from-width) + 
+      var(--flight-width) + 
+      var(--remarks-width) + 
+      (var(--column-gap) * 3)
+    );
+    --board-max-width: max(var(--total-content-width), 720px);
+  }
+
+  .board-headers,
+  .board-row {
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Large devices (small laptops) */
+@media (min-width: 992px) {
+  :root {
+    --flap-width: 26px;
+    --flap-height: 38px;
+    --flap-font-size: 28px;
+    --header-font-size: 20px;
+    --title-font-size: 44px;
+    --board-padding: var(--spacing-lg);
+    --row-gap: var(--spacing-md);
+    --column-gap: 8px;
+    --flap-margin: 1px;
+    --display-padding: 0px;
+    --flap-divider-width: 0.8px;
+    /* Calculate minimum board width based on content */
+    --total-content-width: calc(
+      var(--time-width) + 
+      var(--from-width) + 
+      var(--flight-width) + 
+      var(--remarks-width) + 
+      (var(--column-gap) * 3)
+    );
+    --board-max-width: max(var(--total-content-width), 960px);
+  }
+}
+
+/* Extra large devices (large laptops/desktops) */
+@media (min-width: 1200px) {
+  :root {
+    --flap-width: 28px;
+    --flap-height: 42px;
+    --flap-font-size: 30px;
+    --header-font-size: 20px;
+    --title-font-size: 48px;
+    --board-padding: var(--spacing-lg);
+    --row-gap: var(--spacing-md);
+    --column-gap: 12px;
+    --flap-margin: 2px;
+    --display-padding: 0px;
+    --flap-divider-width: 1px;
+    /* Calculate minimum board width based on content */
+    --total-content-width: calc(
+      var(--time-width) + 
+      var(--from-width) + 
+      var(--flight-width) + 
+      var(--remarks-width) + 
+      (var(--column-gap) * 3)
+    );
+    --board-max-width: max(var(--total-content-width), 1200px);
+  }
+}
+
+/* Handle very small screens */
+@media (max-width: 575px) {
+  .departure-board {
+    padding: var(--spacing-xs);
+  }
+
+  .header-item {
+    font-size: var(--header-font-size);
+    padding: 0 2px;
+    margin-left: 2px;
+  }
+}
+
+/* Prevent oversized boards on very large screens */
+@media (min-width: 1400px) {
+  .board-content {
+    max-width: var(--board-max-width);
+    margin: 0 auto;
+  }
+}
+
+/* Extra small devices (small phones) */
+@media (max-width: 349px) {
+  :root {
+    --flap-width: 10px;
+    --flap-height: 20px;
+    --flap-font-size: 11px;
+    --header-font-size: 9px;
+    --title-font-size: 13px;
+    --board-padding: var(--spacing-xs);
+    --row-gap: 5px;
+    --column-gap: 3px;
+    --flap-margin: 0px;
+    --display-padding: 0px;
+    --flap-divider-width: 0.1px;
+  }
+
+  .departure-board {
+    padding: 5px;
+    margin-top: 50px;
+  }
+
+  .header-item {
+    font-size: var(--header-font-size);
+    padding: 0 1px;
+    margin-left: 1px;
+  }
+
+  .board-title {
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+/* Update the existing mobile breakpoint to start from 350px */
+@media (min-width: 350px) and (max-width: 575px) {
+  :root {
+    /* Keep your existing mobile variables */
+    --flap-width: 12px;
+    --flap-height: 25px;
+    --flap-font-size: 13px;
+    --header-font-size: 10px;
+    --title-font-size: 15px;
+  }
 } 

@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Create Basic Auth header
+    // Create Basic Auth header test
     const secret = process.env.SNIPCART_SECRET_KEY + ":";
     const base64Secret = Buffer.from(secret).toString('base64');
 

@@ -218,21 +218,6 @@ const DepartureBoard = () => {
         <div className="board-content-wrapper">
           <div className="board-content">
             <h1 className="board-title">Départs &nbsp; Departures</h1>
-            <button 
-              onClick={fetchOrders}
-              style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                padding: '5px 10px',
-                background: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              Fetch Orders
-            </button>
             <BoardHeader />
             <BoardRow data={boardData['row1']} />
             <BoardRow data={boardData['row2']} />

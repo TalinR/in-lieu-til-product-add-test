@@ -1,4 +1,7 @@
-module.exports = async (req, res) => {
+// Serverless function for Vercel
+const handler = async (req, res) => {
+  console.log('API Route: /api/orders - Request received');
+  
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,17 +11,22 @@ module.exports = async (req, res) => {
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
   );
 
+  // Handle preflight request
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
+  // Only allow GET requests
   if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    console.log('Invalid method:', req.method);
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Create Basic Auth header test
+    console.log('Fetching orders from Snipcart...');
+    
+    // Create Basic Auth header
     const secret = process.env.SNIPCART_SECRET_KEY + ":";
     const base64Secret = Buffer.from(secret).toString('base64');
 
@@ -30,31 +38,27 @@ module.exports = async (req, res) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Snipcart API error: ${response.status}`);
+      console.error('Snipcart API error:', response.status, response.statusText);
+      throw new Error('Failed to fetch from Snipcart');
     }
 
     const data = await response.json();
+    console.log('Successfully fetched orders. Count:', data.items?.length);
 
-    // Filter and transform the data to only include necessary information
+    // Filter out sensitive data, only return product names for now
     const sanitizedOrders = data.items
-      .filter(order => order.items && order.items.length > 0)
-      .map(order => {
-        const item = order.items[0]; // Get first item from order
-        return {
-          time: new Date(order.creationDate).toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-          }),
-          from: item.name.split(' ')[0].substring(0, 5),
-          flight: order.invoiceNumber.substring(0, 6),
-          remarks: `${item.customFields.find(f => f.name === 'Color')?.value || ''} ${item.name}`.substring(0, 20)
-        };
-      });
+      ?.map(order => order.items?.map(item => ({
+        productName: item.name
+      })))
+      .flat();
 
-    res.status(200).json(sanitizedOrders);
+    console.log('Sanitized orders:', sanitizedOrders);
+    
+    return res.status(200).json(sanitizedOrders);
   } catch (error) {
-    console.error('Error fetching orders:', error);
-    res.status(500).json({ message: 'Error fetching orders' });
+    console.error('Server error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
-}; 
+};
+
+export default handler; 

@@ -168,83 +168,21 @@ const DepartureBoard = () => {
 
   const scrollSpeed = useResponsiveSpeed();
 
-  // Function to fetch Snipcart orders
+  // Function to fetch orders from our backend API
   const fetchOrders = async () => {
     try {
-      console.log('Fetching orders...');
-      const response = await fetch('/api/orders', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
+      console.log('Fetching orders from backend...');
+      const response = await fetch('/api/orders');
 
       if (!response.ok) {
-        throw new Error('Failed to fetch orders');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const orders = await response.json();
-      console.log('Orders received:', orders);
+      console.log('Orders fetched successfully:', orders);
       
-      // Transform orders into board data format
-      const transformedOrders = orders.reduce((acc, order, index) => {
-        if (index >= 6) return acc; // Only show first 6 orders
-        
-        acc[`row${index + 1}`] = order;
-        return acc;
-      }, {});
-
-      // If we have less than 3 orders, fill with default data
-      if (Object.keys(transformedOrders).length < 3) {
-        const defaultData = {
-          'row1': {
-            time: "07:30",
-            from: "COMO",
-            flight: "FR123",
-            remarks: "LIMONCELLO PULLOVER"
-          },
-          'row2': {
-            time: "08:45",
-            from: "SHION",
-            flight: "KR5678",
-            remarks: "CREAM TSHIRT"
-          },
-          'row3': {
-            time: "09:30",
-            from: "AVERY",
-            flight: "EM9012",
-            remarks: "KYOHO HOODIE"
-          }
-        };
-
-        setBoardData({...defaultData, ...transformedOrders});
-      } else {
-        setBoardData(transformedOrders);
-      }
-
     } catch (error) {
       console.error('Error fetching orders:', error);
-      // Set fallback data if API call fails
-      setBoardData({
-        'row1': {
-          time: "07:30",
-          from: "COMO",
-          flight: "FR123",
-          remarks: "LIMONCELLO PULLOVER"
-        },
-        'row2': {
-          time: "08:45",
-          from: "SHION",
-          flight: "KR5678",
-          remarks: "CREAM TSHIRT"
-        },
-        'row3': {
-          time: "09:30",
-          from: "AVERY",
-          flight: "EM9012",
-          remarks: "KYOHO HOODIE"
-        }
-      });
     }
   };
 

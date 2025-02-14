@@ -237,6 +237,9 @@ const DepartureBoard = () => {
             <BoardRow data={boardData['row1']} />
             <BoardRow data={boardData['row2']} />
             <BoardRow data={boardData['row3']} />
+            <BoardRow data={boardData['row1']} />
+            <BoardRow data={boardData['row2']} />
+            <BoardRow data={boardData['row3']} />
             <LedScroller 
               text="WELCOME TO IN LIEU AIRPORT — LIEU LOVES YOU — NEW ARRIVALS AVAILABLE"
               speed={scrollSpeed}

@@ -74,7 +74,7 @@ const handler = async (req, res) => {
           timestamp: new Date(order.creationDate).getTime()
         };
       }))
-    //   .flat()
+      .flat()
     //   .sort((a, b) => b.timestamp - a.timestamp) // Sort by newest first
     //   .slice(0, 6); // Only return the 6 most recent orders
 

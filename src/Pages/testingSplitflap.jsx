@@ -212,7 +212,7 @@ const DepartureBoard = () => {
       minute: '2-digit', 
       hour12: false 
     }),
-    from: order.productName.substring(0, 5),
+    from: order.productName,
     flight: `OR${order.orderId.slice(-4)}`,
     remarks: `${order.color} ${order.productName}`.toUpperCase(),
     orderId: order.orderId,

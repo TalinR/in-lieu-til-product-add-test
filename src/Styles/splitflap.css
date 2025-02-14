@@ -33,7 +33,7 @@
   --font-family-primary: 'Arial', sans-serif;
   --font-weight-bold: 800;
   --header-font-size: 10px;
-  --title-font-size: 15px;
+  --title-font-size: 20px;
   --flap-font-size: 13px;
   --letter-spacing: -0.5px;
   
@@ -70,6 +70,20 @@
   --tube-glow-spread: 15px;
   --tube-glow-intensity: 0.8;
   --tube-width: 8px;
+  
+  /* Title spacing variables */
+  --title-margin: 7px;
+  --title-padding: 8px;
+  
+  /* Calculate minimum board width based on content - for all screen sizes */
+  --total-content-width: calc(
+    var(--time-width) + 
+    var(--from-width) + 
+    var(--flight-width) + 
+    var(--remarks-width) + 
+    (var(--column-gap) * 3)
+  );
+  --board-max-width: max(var(--total-content-width), 350px);
 }
 
 @font-face {
@@ -89,11 +103,12 @@
 }
 
 /* Board layout */
-.departure-board {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+.full-width-container {
+  position: absolute;
+  top: 60px; /* Start below navbar */
+  left: 0;
+  width: 100%;
+  min-height: calc(100vh - 60px); /* Subtract navbar height from viewport height */
   background: linear-gradient(
     170deg,
     rgb(20, 20, 20) 0%,
@@ -101,19 +116,17 @@
     rgb(25, 25, 25) 65%,
     rgb(18, 18, 18) 100%
   );
-  padding: calc(var(--board-padding) * 2);
-  color: white;
-  font-family: monospace;
-  width: 100%;
-  margin-top: 60px;
-  position: relative;
-  box-shadow: 
-    inset 0 2px 4px rgba(255,255,255,0.05),
-    inset 0 -2px 4px rgba(0,0,0,0.2);
+  z-index: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
 }
 
 /* Add brushed metal texture effect */
-.departure-board::before {
+.full-width-container::before {
   content: '';
   position: absolute;
   top: 0;
@@ -151,6 +164,32 @@
   pointer-events: none;
   opacity: 0.4;
   mix-blend-mode: overlay;
+  z-index: -1;
+}
+
+/* Board layout */
+.departure-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+  color: white;
+  font-family: monospace;
+  width: 100%;
+  max-width: var(--board-max-width);
+  position: relative;
+  padding: calc(var(--board-padding) * 2);
+  background: none;
+  z-index: 1;
+}
+
+/* Board content wrapper */
+.board-content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 var(--spacing-md);
 }
 
 /* Add subtle edge lighting effect */
@@ -161,40 +200,48 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
+  /* background: linear-gradient(
     170deg,
     rgba(255,255,255,0.03) 0%,
     transparent 20%,
     transparent 80%,
     rgba(0,0,0,0.1) 100%
-  );
+  ); */
   pointer-events: none;
 }
 
-.board-title {
+.board-title,
+.board-title-bottom {
   font-size: var(--title-font-size);
-  margin-bottom: var(--spacing-xl);
   font-weight: normal;
   text-align: left;
   text-shadow: 
-    0 0 10px rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.2);
+
+    1px 1px 1px rgb(0, 0, 0);    /* Far shadow for depth */
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: var(--board-max-width);
-  padding: 0 var(--spacing-md);
+  padding: var(--title-padding) 0 var(--title-padding) 0;
+  /* padding: var(--title-padding); */
   margin-left: auto;
   margin-right: auto;
 }
 
+.board-title {
+  margin-bottom: var(--title-margin);
+}
+
+.board-title-bottom {
+  margin-top: var(--title-margin);
+}
+
+/* Wrapper to maintain vertical centering with titles */
 .board-content {
-  width: 100%;
-  max-width: var(--board-max-width);
+  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 0;
-  min-width: min-content;
   position: relative;
   padding: calc(var(--spacing-md) * 2);
   background: linear-gradient(
@@ -202,14 +249,15 @@
     rgba(15,15,15,0.9) 0%,
     rgba(20,20,20,0.9) 100%
   );
-  border-radius: 4px;
-  overflow: hidden; /* Contain the glow effect */
+  border-radius: 10px;
+  overflow: hidden;
   box-shadow: 
     0 2px 4px rgba(0,0,0,0.2),
     0 -1px 4px rgba(0,0,0,0.1),
     inset 0 1px 1px rgba(255,255,255,0.05);
   padding: var(--spacing-md);
-  margin: 0 var(--spacing-md);
+  margin: 0 auto;
+  max-height: none;
 }
 
 /* Inner glow container */
@@ -223,7 +271,7 @@
   box-shadow:
     /* Inner glow */
     inset 0 0 var(--tube-glow-spread) var(--tube-glow-color),
-    inset 0 0 calc(var(--tube-glow-spread) / 2) rgba(255, 255, 255, 0.1);
+    inset 0 0 calc(var(--tube-glow-spread) / 2) rgba(254, 255, 194, 0.1);
   pointer-events: none;
   z-index: 1;
 }
@@ -258,7 +306,27 @@
 /* Add dividers between rows */
 .board-row {
   padding: var(--row-gap) 0;
-  width: 100%;
+  width: fit-content;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.board-row:hover {
+  transform: scale(1.01);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+/* Ensure the hover effect has rounded corners */
+.board-row:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -10px;
+  right: -10px;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+  z-index: -1;
 }
 
 /* Create divider lines between rows */
@@ -284,9 +352,8 @@
 
 .board-headers {
   margin-bottom: var(--header-gap);
-  /* Add a slightly more prominent divider under headers */
   position: relative;
-  width: 100%;
+  width: fit-content;
 }
 
 .board-headers::after {
@@ -315,7 +382,7 @@
   text-align: left;
   width: 100%;
   padding: 0 var(--display-padding);
-  margin-left: 10px;
+  margin-left: 0px;
 }
 
 /* Row layout */
@@ -356,9 +423,9 @@
     rgba(15,15,15,1) 100%);
   padding: var(--display-padding);
   border-radius: var(--flap-border-radius);
-  box-shadow: 
+  /* box-shadow: 
     inset 0 2px 4px rgba(0,0,0,0.5),
-    inset 0 -2px 4px rgba(0,0,0,0.5);
+    inset 0 -2px 4px rgba(0,0,0,0.5); */
 }
 
 /* Enhance flap depth and texture */
@@ -377,11 +444,11 @@
   overflow: hidden;
   border-radius: var(--flap-border-radius);
   position: relative;
-  box-shadow: 
+  /* box-shadow: 
     -1px 0 1px rgba(0,0,0,0.3),
     1px 0 1px rgba(0,0,0,0.3),
     inset 0 2px 3px rgba(255,255,255,0.05),
-    inset 0 -2px 3px rgba(0,0,0,0.2);
+    inset 0 -2px 3px rgba(0,0,0,0.2); */
 }
 
 /* Add subtle texture to flaps */
@@ -392,7 +459,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  /* background-image: 
     linear-gradient(45deg, 
       rgba(255,255,255,0.02) 25%, 
       transparent 25%, 
@@ -402,7 +469,7 @@
       rgba(255,255,255,0.02) 25%, 
       transparent 25%, 
       transparent 75%, 
-      rgba(255,255,255,0.02) 75%);
+      rgba(255,255,255,0.02) 75%); */
   background-size: 4px 4px;
   pointer-events: none;
   opacity: 0.4;
@@ -425,17 +492,17 @@
 
 .top {
   border-bottom: var(--flap-divider-width) solid #222;
-  box-shadow: 
+  /* box-shadow: 
     inset 0 var(--text-shadow-offset) calc(var(--text-shadow-blur) * 1.5) rgba(255,255,255,0.1),
     0 calc(var(--text-shadow-offset) * -1) 2px rgba(0,0,0,0.9),
-    inset 0 -1px 0 rgba(0,0,0,0.3);
+    inset 0 -1px 0 rgba(0,0,0,0.3); */
 }
 
 .bottom {
   border-top: var(--flap-divider-width) solid #111;
-  box-shadow: 
+  /* box-shadow: 
     inset 0 calc(var(--text-shadow-offset) * -1) calc(var(--text-shadow-blur) * 1.5) rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(0,0,0,0.3);
+    inset 0 1px 0 rgba(0,0,0,0.3); */
 }
 
 /* Enhanced flap states with depth */
@@ -455,9 +522,9 @@
     rgba(18,18,18,1) 50%,
     rgba(8,8,8,1) 100%);
   border-radius: var(--inner-border-radius);
-  box-shadow: 
+  /* box-shadow: 
     inset 0 1px 2px rgba(255,255,255,0.05),
-    inset 0 -1px 2px rgba(0,0,0,0.3);
+    inset 0 -1px 2px rgba(0,0,0,0.3); */
 }
 
 /* Enhanced text styling with better depth */
@@ -468,10 +535,6 @@
   height: var(--flap-height);
   line-height: var(--flap-height);
   color: white;
-  text-shadow: 
-    0 -1px 0 rgba(0,0,0,0.7),
-    0 1px 0 rgba(255,255,255,0.1),
-    0 0 5px rgba(255,255,255,0.05);
   font-family: var(--font-family-primary);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing);
@@ -569,17 +632,20 @@ svg {
 /* Small devices (landscape phones) */
 @media (min-width: 576px) {
   :root {
-    --flap-width: 20px;
-    --flap-height: 34px;
-    --flap-font-size: 24px;
-    --header-font-size: 18px;
-    --title-font-size: 36px;
+    --flap-width: 16px;
+    --flap-height: 30px;
+    --flap-font-size: 18px;
+    --header-font-size: 16px;
+    --title-font-size: 33px;
     --board-padding: var(--spacing-md);
     --row-gap: var(--spacing-sm);
-    --column-gap: 10px;
+    --column-gap: 4px;
     --flap-margin: 1px;
     --display-padding: 0px;
     --flap-divider-width: 0.3px;
+    --title-margin: 10px;
+    --title-padding: 12px;
+    --board-max-width: max(var(--total-content-width), 650px);
   }
 }
 
@@ -606,6 +672,8 @@ svg {
       (var(--column-gap) * 3)
     );
     --board-max-width: max(var(--total-content-width), 720px);
+    --title-margin: 10px;
+    --title-padding: 12px;
   }
 
   .board-headers,
@@ -637,6 +705,8 @@ svg {
       (var(--column-gap) * 3)
     );
     --board-max-width: max(var(--total-content-width), 960px);
+    --title-margin: 10px;
+    --title-padding: 12px;
   }
 }
 
@@ -647,7 +717,7 @@ svg {
     --flap-height: 42px;
     --flap-font-size: 30px;
     --header-font-size: 20px;
-    --title-font-size: 48px;
+    --title-font-size: 40px;
     --board-padding: var(--spacing-lg);
     --row-gap: var(--spacing-md);
     --column-gap: 12px;
@@ -663,6 +733,8 @@ svg {
       (var(--column-gap) * 3)
     );
     --board-max-width: max(var(--total-content-width), 1200px);
+    --title-margin: 0px;
+    --title-padding: 12px;
   }
 }
 
@@ -701,6 +773,9 @@ svg {
     --flap-margin: 0px;
     --display-padding: 0px;
     --flap-divider-width: 0.1px;
+    --title-margin: 12px;
+    --title-padding: 6px;
+    --board-max-width: max(var(--total-content-width), 300px);
   }
 
   .departure-board {
@@ -723,10 +798,10 @@ svg {
 @media (min-width: 350px) and (max-width: 575px) {
   :root {
     /* Keep your existing mobile variables */
-    --flap-width: 12px;
-    --flap-height: 25px;
-    --flap-font-size: 13px;
+    --flap-width: 10px;
+    --flap-height: 20px;
+    --flap-font-size: 10px;
     --header-font-size: 10px;
-    --title-font-size: 15px;
+    --board-max-width: max(var(--total-content-width), 350px);
   }
 } 

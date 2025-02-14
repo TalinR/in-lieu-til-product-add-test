@@ -50,17 +50,24 @@ const handler = async (req, res) => {
       console.log('Example item structure:', JSON.stringify(data.items[0].items[0], null, 2));
     }
 
-    // Filter out sensitive data, only return product names for now
+    // Filter out sensitive data, return product names and colors
     const sanitizedOrders = data.items
       ?.map(order => order.items?.map(item => {
+        // Find the color from customFields
+        const colorField = item.customFields?.find(
+          field => field.name === 'Colour' || field.name === 'Color'
+        );
+        const color = colorField?.value || '';
+
         console.log('Processing item:', {
           name: item.name,
-          customFields: item.customFields,
-          metadata: item.metadata,
-          description: item.description
+          color: color,
+          customFields: item.customFields
         });
+
         return {
-          productName: item.name
+          productName: item.name,
+          color: color
         };
       }))
       .flat();
@@ -76,3 +83,4 @@ const handler = async (req, res) => {
 };
 
 export default handler; 
+

@@ -180,6 +180,26 @@ const DepartureBoard = () => {
 
       const orders = await response.json();
       console.log('Orders fetched successfully:', orders);
+
+      // For testing, update the first three board rows with the fetched data
+      const updatedBoardData = { ...boardData };
+      orders.slice(0, 3).forEach((order, index) => {
+        const rowKey = `row${index + 1}`;
+        const time = new Date().toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit', 
+          hour12: false 
+        });
+        
+        updatedBoardData[rowKey] = {
+          time: time,
+          from: order.productName.substring(0, 5), // First 5 chars of product name
+          flight: `OR${String(index + 1).padStart(4, '0')}`, // Generate a flight number
+          remarks: `${order.color} ${order.productName}`.toUpperCase()
+        };
+      });
+
+      setBoardData(updatedBoardData);
       
     } catch (error) {
       console.error('Error fetching orders:', error);

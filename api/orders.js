@@ -53,6 +53,7 @@ const handler = async (req, res) => {
       .flat();
 
     console.log('Sanitized orders:', sanitizedOrders);
+    console.log('orders', response)
     
     return res.status(200).json(sanitizedOrders);
   } catch (error) {

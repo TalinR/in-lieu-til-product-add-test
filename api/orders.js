@@ -45,11 +45,24 @@ const handler = async (req, res) => {
     const data = await response.json();
     console.log('Successfully fetched orders. Count:', data.items?.length);
 
+    // Log the first order's first item to see its structure
+    if (data.items?.[0]?.items?.[0]) {
+      console.log('Example item structure:', JSON.stringify(data.items[0].items[0], null, 2));
+    }
+
     // Filter out sensitive data, only return product names for now
     const sanitizedOrders = data.items
-      ?.map(order => order.items?.map(item => ({
-        productName: item.name
-      })))
+      ?.map(order => order.items?.map(item => {
+        console.log('Processing item:', {
+          name: item.name,
+          customFields: item.customFields,
+          metadata: item.metadata,
+          description: item.description
+        });
+        return {
+          productName: item.name
+        };
+      }))
       .flat();
 
     console.log('Sanitized orders:', sanitizedOrders);

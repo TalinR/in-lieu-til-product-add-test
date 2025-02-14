@@ -30,7 +30,7 @@ const handler = async (req, res) => {
     const secret = process.env.SNIPCART_SECRET_KEY + ":";
     const base64Secret = Buffer.from(secret).toString('base64');
 
-    const response = await fetch('https://app.snipcart.com/api/orders?offset=0&limit=50&status=processed', {
+    const response = await fetch('https://app.snipcart.com/api/orders?offset=0&limit=6&status=processed', {
       headers: {
         'Accept': 'application/json',
         'Authorization': `Basic ${base64Secret}`
@@ -62,15 +62,21 @@ const handler = async (req, res) => {
         console.log('Processing item:', {
           name: item.name,
           color: color,
-          customFields: item.customFields
+          customFields: item.customFields,
+          orderId: order.invoiceNumber,
+          timestamp: new Date(order.creationDate).getTime()
         });
 
         return {
           productName: item.name,
-          color: color
+          color: color,
+          orderId: order.invoiceNumber,
+          timestamp: new Date(order.creationDate).getTime()
         };
       }))
-      .flat();
+    //   .flat()
+    //   .sort((a, b) => b.timestamp - a.timestamp) // Sort by newest first
+    //   .slice(0, 6); // Only return the 6 most recent orders
 
     console.log('Sanitized orders:', sanitizedOrders);
     console.log('orders', data)

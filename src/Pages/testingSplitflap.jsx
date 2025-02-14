@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../Styles/splitflap.css';
 import SplitFlapDisplay from '../Components/SplitFlapDisplay';
 import LedScroller from '../Components/LedScroller';
@@ -144,7 +144,10 @@ const useResponsiveSpeed = () => {
   return speed;
 };
 
+const POLLING_INTERVAL = 5000; // Check for new orders every 5 seconds
+
 const DepartureBoard = () => {
+  // State for managing board data and product coverage
   const [boardData, setBoardData] = useState({
     'row1': {
       time: "07:30",
@@ -163,12 +166,61 @@ const DepartureBoard = () => {
       from: "AVERY",
       flight: "EM9012",
       remarks: "KYOHO HOODIE"
+    },
+    'row4': {
+      time: "07:30",
+      from: "COMO",
+      flight: "FR123",
+      remarks: "LIMONCELLO PULLOVER"
+    },
+    'row5': {
+      time: "08:45",
+      from: "SHION",
+      flight: "KR5678",
+      remarks: "CREAM TSHIRT"
+    },
+    'row6': {
+      time: "09:30",
+      from: "AVERY",
+      flight: "EM9012",
+      remarks: "KYOHO HOODIE"
     }
   });
+  
+  const [displayedOrders, setDisplayedOrders] = useState([]);
+  const [productCoverage, setProductCoverage] = useState(new Map());
+  const pollingInterval = useRef(null);
 
   const scrollSpeed = useResponsiveSpeed();
 
-  // Function to fetch orders from our backend API
+  // Function to update product coverage count
+  const updateProductCoverage = (orders) => {
+    const coverage = new Map();
+    orders.forEach(order => {
+      coverage.set(
+        order.productName,
+        (coverage.get(order.productName) || 0) + 1
+      );
+    });
+    setProductCoverage(coverage);
+  };
+
+  // Function to format order data for display
+  const formatOrderForDisplay = (order) => ({
+    time: new Date().toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      hour12: false 
+    }),
+    from: order.productName.substring(0, 5),
+    flight: `OR${order.orderId.slice(-4)}`,
+    remarks: `${order.color} ${order.productName}`.toUpperCase(),
+    orderId: order.orderId,
+    productName: order.productName,
+    timestamp: order.timestamp
+  });
+
+  // Function to fetch and process new orders
   const fetchOrders = async () => {
     try {
       console.log('Fetching orders from backend...');
@@ -181,35 +233,95 @@ const DepartureBoard = () => {
       const orders = await response.json();
       console.log('Orders fetched successfully:', orders);
 
-      // For testing, update the first three board rows with the fetched data
-      const updatedBoardData = { ...boardData };
-      orders.slice(0, 3).forEach((order, index) => {
-        const rowKey = `row${index + 1}`;
-        const time = new Date().toLocaleTimeString('en-US', { 
-          hour: '2-digit', 
-          minute: '2-digit', 
-          hour12: false 
-        });
+      // If this is the first fetch, initialize the board
+      if (displayedOrders.length === 0) {
+        const initialOrders = orders.map(formatOrderForDisplay);
+        setDisplayedOrders(initialOrders);
+        updateProductCoverage(orders);
         
-        updatedBoardData[rowKey] = {
-          time: time,
-          from: order.productName.substring(0, 5), // First 5 chars of product name
-          flight: `OR${String(index + 1).padStart(4, '0')}`, // Generate a flight number
-          remarks: `${order.color} ${order.productName}`.toUpperCase()
-        };
-      });
+        // Update board data
+        const updatedBoardData = {};
+        initialOrders.forEach((order, index) => {
+          updatedBoardData[`row${index + 1}`] = order;
+        });
+        setBoardData(updatedBoardData);
+        return;
+      }
 
-      setBoardData(updatedBoardData);
+      // Find new orders
+      const newOrders = orders.filter(order => 
+        !displayedOrders.find(displayed => displayed.orderId === order.orderId)
+      );
+
+      if (newOrders.length === 0) return;
+
+      // Sort displayed orders by timestamp (oldest first)
+      const sortedDisplayed = [...displayedOrders].sort((a, b) => a.timestamp - b.timestamp);
+
+      // Process each new order
+      newOrders.forEach(newOrder => {
+        const formattedNewOrder = formatOrderForDisplay(newOrder);
+        
+        // Find the oldest order that can be replaced
+        const replaceableIndex = sortedDisplayed.findIndex(oldOrder => {
+          const productCount = productCoverage.get(oldOrder.productName);
+          return productCount > 1;
+        });
+
+        if (replaceableIndex === -1) return; // Can't replace any orders safely
+
+        const oldOrder = sortedDisplayed[replaceableIndex];
+        
+        // Update product coverage
+        setProductCoverage(prev => {
+          const updated = new Map(prev);
+          updated.set(oldOrder.productName, prev.get(oldOrder.productName) - 1);
+          updated.set(newOrder.productName, (prev.get(newOrder.productName) || 0) + 1);
+          return updated;
+        });
+
+        // Update displayed orders
+        setDisplayedOrders(prev => {
+          const updated = [...prev];
+          const index = updated.findIndex(o => o.orderId === oldOrder.orderId);
+          updated[index] = formattedNewOrder;
+          return updated;
+        });
+
+        // Update board data
+        setBoardData(prev => {
+          const rowNumber = Object.keys(prev).find(key => 
+            prev[key].orderId === oldOrder.orderId
+          );
+          return {
+            ...prev,
+            [rowNumber]: formattedNewOrder
+          };
+        });
+
+        // Remove the replaced order from sorted array
+        sortedDisplayed.splice(replaceableIndex, 1);
+      });
       
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
   };
 
-  // Add a button to test the API call
+  // Set up polling interval
   useEffect(() => {
-    // Fetch orders when component mounts
+    // Initial fetch
     fetchOrders();
+
+    // Set up polling interval
+    pollingInterval.current = setInterval(fetchOrders, POLLING_INTERVAL);
+
+    // Cleanup
+    return () => {
+      if (pollingInterval.current) {
+        clearInterval(pollingInterval.current);
+      }
+    };
   }, []);
 
   return (
@@ -222,9 +334,9 @@ const DepartureBoard = () => {
             <BoardRow data={boardData['row1']} />
             <BoardRow data={boardData['row2']} />
             <BoardRow data={boardData['row3']} />
-            <BoardRow data={boardData['row1']} />
-            <BoardRow data={boardData['row2']} />
-            <BoardRow data={boardData['row3']} />
+            <BoardRow data={boardData['row4']} />
+            <BoardRow data={boardData['row5']} />
+            <BoardRow data={boardData['row6']} />
             <LedScroller 
               text="WELCOME TO IN LIEU AIRPORT — LIEU LOVES YOU — NEW ARRIVALS AVAILABLE"
               speed={scrollSpeed}

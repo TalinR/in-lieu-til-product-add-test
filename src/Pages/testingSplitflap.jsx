@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Styles/splitflap.css';
 import SplitFlapDisplay from '../Components/SplitFlapDisplay';
 import LedScroller from '../Components/LedScroller';
@@ -144,10 +144,14 @@ const useResponsiveSpeed = () => {
   return speed;
 };
 
-const POLLING_INTERVAL = 5000; // Check for new orders every 5 seconds
+const PRODUCT_TYPES = {
+  'COMO': ['PULLOVER'],
+  'KYOHO': ['HOODIE'],
+  'SHION': ['TSHIRT'],
+  'LYON': ['PANTS']
+};
 
 const DepartureBoard = () => {
-  // State for managing board data and product coverage
   const [boardData, setBoardData] = useState({
     'row1': {
       time: "07:30",
@@ -169,7 +173,7 @@ const DepartureBoard = () => {
     },
     'row4': {
       time: "07:30",
-      from: "COMO",
+      from: "LYON",
       flight: "FR123",
       remarks: "LIMONCELLO PULLOVER"
     },
@@ -186,143 +190,306 @@ const DepartureBoard = () => {
       remarks: "KYOHO HOODIE"
     }
   });
-  
+
+  // New state for order management
   const [displayedOrders, setDisplayedOrders] = useState([]);
-  const [productCoverage, setProductCoverage] = useState(new Map());
-  const pollingInterval = useRef(null);
-
-  const scrollSpeed = useResponsiveSpeed();
-
-  // Function to update product coverage count
-  const updateProductCoverage = (orders) => {
-    const coverage = new Map();
-    orders.forEach(order => {
-      coverage.set(
-        order.productName,
-        (coverage.get(order.productName) || 0) + 1
-      );
-    });
-    setProductCoverage(coverage);
-  };
-
-  // Function to format order data for display
-  const formatOrderForDisplay = (order) => ({
-    time: new Date().toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      hour12: false 
-    }),
-    from: order.productName,
-    flight: `OR${order.orderId.slice(-4)}`,
-    remarks: `${order.color} ${order.productName}`.toUpperCase(),
-    orderId: order.orderId,
-    productName: order.productName,
-    timestamp: order.timestamp
+  const [lastFetchedOrders, setLastFetchedOrders] = useState([]);
+  const [occurrenceDict, setOccurrenceDict] = useState({
+    'COMO': 0,
+    'LYON': 0,
+    'SHION': 0,
+    'KYOHO': 0
   });
 
-  // Function to fetch and process new orders
-  const fetchOrders = async () => {
-    try {
-      console.log('Fetching orders from backend...');
-      const response = await fetch('/api/orders');
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  // Product Coverage Check Function
+  const ensureProductCoverage = (allOrders, currentOrders) => {
+    console.log('Checking product coverage...');
+    
+    // Get current product occurrences
+    const occurrences = {
+      'COMO': 0,
+      'LYON': 0,
+      'SHION': 0,
+      'KYOHO': 0
+    };
+    
+    currentOrders.forEach(order => {
+      const productType = order.productName;
+      if (productType) {
+        occurrences[productType]++;
       }
+    });
+    
+    console.log('Current product occurrences:', occurrences);
 
-      const orders = await response.json();
-      console.log('Orders fetched successfully:', orders);
+    // Find missing products
+    const missingProducts = Object.entries(occurrences)
+      .filter(([_, count]) => count === 0)
+      .map(([type]) => type);
+    
+    console.log('Missing products:', missingProducts);
 
-      // If this is the first fetch, initialize the board
-      if (displayedOrders.length === 0) {
-        const initialOrders = orders.map(formatOrderForDisplay);
-        setDisplayedOrders(initialOrders);
-        updateProductCoverage(orders);
-        
-        // Update board data
-        const updatedBoardData = {};
-        initialOrders.forEach((order, index) => {
-          updatedBoardData[`row${index + 1}`] = order;
-        });
-        setBoardData(updatedBoardData);
-        return;
-      }
+    if (missingProducts.length === 0) {
+      return currentOrders;
+    }
 
-      // Find new orders
-      const newOrders = orders.filter(order => 
-        !displayedOrders.find(displayed => displayed.orderId === order.orderId)
+    // Find orders with missing products
+    const updatedOrders = [...currentOrders];
+    let remainingOrders = allOrders.slice(6); // Orders not in initial display
+
+    missingProducts.forEach(missingType => {
+      // Find first order with missing product type
+      const replacementOrderIndex = remainingOrders.findIndex(
+        order => order.productName === missingType
       );
 
-      if (newOrders.length === 0) return;
+      if (replacementOrderIndex !== -1) {
+        // Find order to replace (bottom-up)
+        for (let i = updatedOrders.length - 1; i >= 0; i--) {
+          const currentType = updatedOrders[i].productName;
+          if (occurrences[currentType] > 1) {
+            console.log(`Replacing duplicate ${currentType} with missing ${missingType}`);
+            // Replace order
+            const replacementOrder = remainingOrders[replacementOrderIndex];
+            updatedOrders[i] = replacementOrder;
+            occurrences[currentType]--;
+            occurrences[missingType]++;
+            remainingOrders = remainingOrders.filter((_, index) => index !== replacementOrderIndex);
+            break;
+          }
+        }
+      }
+    });
 
-      // Sort displayed orders by timestamp (oldest first)
-      const sortedDisplayed = [...displayedOrders].sort((a, b) => a.timestamp - b.timestamp);
+    console.log('Orders after coverage check:', updatedOrders);
+    return updatedOrders;
+  };
 
-      // Process each new order
-      newOrders.forEach(newOrder => {
-        const formattedNewOrder = formatOrderForDisplay(newOrder);
-        
-        // Find the oldest order that can be replaced
-        const replaceableIndex = sortedDisplayed.findIndex(oldOrder => {
-          const productCount = productCoverage.get(oldOrder.productName);
-          return productCount > 1;
-        });
+  // Order Replacement Function
+  const replaceOrder = (oldOrder, newOrder) => {
+    console.log('Attempting to replace order:', { old: oldOrder, new: newOrder });
+    
+    // Get current occurrences
+    const currentOccurrences = { ...occurrenceDict };
+    
+    // Check if replacement would break product coverage
+    if (currentOccurrences[oldOrder.productName] <= 1) {
+      console.log('Cannot replace - would break product coverage');
+      return false;
+    }
 
-        if (replaceableIndex === -1) return; // Can't replace any orders safely
+    // Update occurrences
+    currentOccurrences[oldOrder.productName]--;
+    currentOccurrences[newOrder.productName]++;
 
-        const oldOrder = sortedDisplayed[replaceableIndex];
-        
-        // Update product coverage
-        setProductCoverage(prev => {
-          const updated = new Map(prev);
-          updated.set(oldOrder.productName, prev.get(oldOrder.productName) - 1);
-          updated.set(newOrder.productName, (prev.get(newOrder.productName) || 0) + 1);
-          return updated;
-        });
+    return true;
+  };
 
-        // Update displayed orders
-        setDisplayedOrders(prev => {
-          const updated = [...prev];
-          const index = updated.findIndex(o => o.orderId === oldOrder.orderId);
-          updated[index] = formattedNewOrder;
-          return updated;
-        });
+  // Helper function to get product type from product name
+  const getDisplayType = (productName) => {
+    const brand = productName.split(' ')[0]; // Get the brand name (COMO, KYOHO, etc)
+    return PRODUCT_TYPES[brand]?.[0] || productName; // Return the type or fallback to full name
+  };
 
-        // Update board data
-        setBoardData(prev => {
-          const rowNumber = Object.keys(prev).find(key => 
-            prev[key].orderId === oldOrder.orderId
-          );
-          return {
-            ...prev,
-            [rowNumber]: formattedNewOrder
-          };
-        });
+  // Initialize board with first 6 orders
+  const initializeBoard = async () => {
+    try {
+      console.log('Initializing board...');
+      
+      // 1. Fetch first 50 orders
+      const apiUrl = process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:5000/api/orders'
+        : '/api/orders';
+      
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error('Failed to fetch orders');
+      const orders = await response.json();
+      
+      console.log('Fetched orders:', orders);
 
-        // Remove the replaced order from sorted array
-        sortedDisplayed.splice(replaceableIndex, 1);
+      // 2. Take first 6 for initial display
+      let initialOrders = orders.slice(0, 6);
+      console.log('Initial 6 orders:', initialOrders);
+
+      // 3. Ensure product coverage
+      initialOrders = ensureProductCoverage(orders, initialOrders);
+      console.log('Orders after ensuring coverage:', initialOrders);
+
+      // 4. Update occurrenceDict for final orders
+      const initialOccurrences = {
+        'COMO': 0,
+        'LYON': 0,
+        'SHION': 0,
+        'KYOHO': 0
+      };
+      
+      initialOrders.forEach(order => {
+        const productType = order.productName;
+        if (productType) {
+          initialOccurrences[productType]++;
+        }
       });
       
+      console.log('Final product occurrences:', initialOccurrences);
+
+      // 5. Format orders for display
+      const formattedOrders = initialOrders.map(order => {
+        const displayType = getDisplayType(order.productName);
+        const orderDate = new Date(order.creationDate);
+
+        return {
+          time: orderDate.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            hour12: false 
+          }),
+          from: order.productName.substring(0, 5),
+          flight: order.orderNumber || `OR${Math.random().toString(36).substr(2, 6)}`,
+          remarks: `${order.color} ${displayType}`.toUpperCase(),
+          itemId: order.itemId,
+          productName: order.productName
+        };
+      });
+
+      console.log('Final formatted orders:', formattedOrders);
+      
+      // 6. Update state
+      setDisplayedOrders(formattedOrders);
+      setLastFetchedOrders(orders.slice(0, 10));
+      setOccurrenceDict(initialOccurrences);
+      
+      // For now, also update boardData to maintain existing display
+      const updatedBoardData = { ...boardData };
+      formattedOrders.forEach((order, index) => {
+        const rowKey = `row${index + 1}`;
+        updatedBoardData[rowKey] = {
+          time: order.time,
+          from: order.from,
+          flight: order.flight,
+          remarks: order.remarks
+        };
+      });
+      setBoardData(updatedBoardData);
+
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      console.error('Error initializing board:', error);
     }
   };
 
-  // Set up polling interval
+  // Initialize board when component mounts
   useEffect(() => {
-    // Initial fetch
-    fetchOrders();
+    initializeBoard();
+  }, []);
 
-    // Set up polling interval
-    pollingInterval.current = setInterval(fetchOrders, POLLING_INTERVAL);
+  // Check for new orders function
+  const checkForNewOrders = async () => {
+    try {
+      console.log('Checking for new orders...');
+      
+      // 1. Fetch latest orders
+      const apiUrl = process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:5000/api/orders'
+        : '/api/orders';
+      
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error('Failed to fetch orders');
+      const latestOrdersAll = await response.json();
+      const latestOrders = latestOrdersAll.slice(0, 10);
+      
+      console.log('Latest orders:', latestOrders);
+
+      // 2. Compare with lastFetchedOrders using itemId
+      const lastFetchedIds = lastFetchedOrders.map(order => order.itemId);
+      const newOrders = latestOrders.filter(order => !lastFetchedIds.includes(order.itemId));
+      
+      console.log('Truly new orders (not in last fetch):', newOrders.length);
+      
+      if (newOrders.length === 0) return [];
+
+      // Update lastFetchedOrders with the new fetch
+      setLastFetchedOrders(latestOrders);
+
+      // 3. Filter new orders that can be displayed
+      const displayableOrders = newOrders.filter(newOrder => {
+        const brand = newOrder.productName.split(' ')[0];
+        // Check if we can replace an order of the same type
+        return occurrenceDict[brand] > 1;
+      });
+
+      console.log('Displayable new orders:', displayableOrders);
+      return displayableOrders;
+    } catch (error) {
+      console.error('Error checking for new orders:', error);
+      return [];
+    }
+  };
+
+  // Set up polling for new orders
+  useEffect(() => {
+    const pollInterval = setInterval(async () => {
+      const newOrders = await checkForNewOrders();
+      
+      if (newOrders.length > 0) {
+        // Format the new order for display
+        const newOrder = newOrders[0]; // Take the first new order
+        const displayType = getDisplayType(newOrder.productName);
+        const orderDate = new Date(newOrder.creationDate);
+        
+        const formattedNewOrder = {
+          time: orderDate.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            hour12: false 
+          }),
+          from: newOrder.productName.substring(0, 5),
+          flight: newOrder.orderNumber || `OR${Math.random().toString(36).substr(2, 6)}`,
+          remarks: `${newOrder.color} ${displayType}`.toUpperCase(),
+          itemId: newOrder.itemId,
+          productName: newOrder.productName
+        };
+
+        // Find an order to replace (bottom-up)
+        const brand = newOrder.productName.split(' ')[0];
+        const updatedOrders = [...displayedOrders];
+        let replaced = false;
+
+        for (let i = updatedOrders.length - 1; i >= 0; i--) {
+          const currentOrder = updatedOrders[i];
+          const currentBrand = currentOrder.productName.split(' ')[0];
+          
+          if (currentBrand === brand && occurrenceDict[brand] > 1) {
+            console.log(`Replacing order at position ${i}`);
+            updatedOrders[i] = formattedNewOrder;
+            replaced = true;
+            break;
+          }
+        }
+
+        if (replaced) {
+          // Update states
+          setDisplayedOrders(updatedOrders);
+          
+          // Update boardData
+          const updatedBoardData = { ...boardData };
+          updatedOrders.forEach((order, index) => {
+            const rowKey = `row${index + 1}`;
+            updatedBoardData[rowKey] = {
+              time: order.time,
+              from: order.from,
+              flight: order.flight,
+              remarks: order.remarks
+            };
+          });
+          setBoardData(updatedBoardData);
+        }
+      }
+    }, 5000); // Poll every 5 seconds
 
     // Cleanup
-    return () => {
-      if (pollingInterval.current) {
-        clearInterval(pollingInterval.current);
-      }
-    };
-  }, []);
+    return () => clearInterval(pollInterval);
+  }, [displayedOrders, occurrenceDict]); // Dependencies for the polling effect
+
+  const scrollSpeed = useResponsiveSpeed();
 
   return (
     <div className="full-width-container">

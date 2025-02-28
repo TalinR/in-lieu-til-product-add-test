@@ -23,7 +23,6 @@ import CombinedPage from "./Pages/combinedPage";
 import TestingSnipcart from "./Pages/testingSnipcart";
 import TestingSnipcartAPI from "./Pages/testingSnipcartAPI";
 import TestingSplitflap from "./Pages/testingSplitflap";
-import Competition from "./Pages/competition";
 import "./Styles/snipcart.css";
 
 function App() {
@@ -75,7 +74,6 @@ function App() {
             <Route path="/snipcart-test" element={<TestingSnipcart />} />
             <Route path="/snipcart-api" element={<TestingSnipcartAPI />} />
             <Route path="/split-flap-test" element={<TestingSplitflap />} />
-            <Route path="/competition" element={<Competition />} />
           </Routes>
         </>
       )}

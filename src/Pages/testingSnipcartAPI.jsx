@@ -16,7 +16,7 @@ const TestingSnipcartAPI = () => {
         const response = await fetch('https://app.snipcart.com/api/products', {
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_KEY + ':')}`
+            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_TEST_KEY + ':')}`
           }
         });
         

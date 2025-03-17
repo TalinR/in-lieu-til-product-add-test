@@ -27,7 +27,7 @@ const handler = async (req, res) => {
     console.log('Fetching orders from Snipcart...');
     
     // Create Basic Auth header
-    const secret = process.env.REACT_APP_SNIPCART_SECRET_KEY + ":";
+    const secret = process.env.REACT_APP_SNIPCART_SECRET_TEST_KEY + ":";
     const base64Secret = Buffer.from(secret).toString('base64');
 
     const response = await fetch('https://app.snipcart.com/api/orders?offset=0&limit=50&status=processed', {

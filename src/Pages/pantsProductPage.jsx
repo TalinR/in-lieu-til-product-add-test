@@ -53,7 +53,7 @@ const PantsProductPage = () => {
         const response = await fetch('https://app.snipcart.com/api/products', {
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_KEY + ':')}`
+            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_TEST_KEY + ':')}`
           }
         });
         
@@ -215,7 +215,7 @@ const PantsProductPage = () => {
         data-item-custom2-value={selectedColor}
         data-item-custom2-options={productVariants.colors.join('|')}
         data-item-custom2-required="true"
-        disabled={outOfStock}
+        // disabled={outOfStock}
       >
         {outOfStock ? 'Out of Stock' : 'add to bag'}
       </button>

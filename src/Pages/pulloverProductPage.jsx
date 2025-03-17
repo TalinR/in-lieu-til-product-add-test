@@ -49,7 +49,7 @@ const PulloverProductPage = () => {
         const response = await fetch('https://app.snipcart.com/api/products', {
           headers: {
             'Accept': 'application/json',
-            'Authorization': `Basic ${btoa(process.env.REACT_APP_SNIPCART_SECRET_TEST_KEY + ':')}`
+            'Authorization': `Basic ${btoa("ST_NGYwNDEwZjctYTliMS00NjU2LWI3ZjMtYTU1ZDE3NWZjNmNkNjM4NzMyNzUxNjE4MTE5Nzk0" + ':')}`
           }
         });
         
@@ -85,10 +85,11 @@ const PulloverProductPage = () => {
             };
             
             setPrice(pulloverProduct.price);
-            setInventory(inventoryMap);
-            setVariants(variantsMap);
-            setSelectedSize("Medium");
           }
+          
+          setInventory(inventoryMap);
+          setVariants(variantsMap);
+          setSelectedSize(variantsMap.como_pullover?.sizes[0] || "");
         }
       } catch (error) {
         console.error('Error fetching inventory:', error);
@@ -175,7 +176,7 @@ const PulloverProductPage = () => {
     return <div>Product not found</div>;
   }
 
-  const { title, description, modelInfo, colorDescriptor, passportHolderNote } = product;
+  const { title, description, modelInfo, colorDescriptor } = product;
   const productVariants = variants.como_pullover || { sizes: [], colors: [] };
   const outOfStock = isOutOfStock(selectedSize, selectedColor);
 
@@ -234,7 +235,7 @@ const PulloverProductPage = () => {
         />
         <div className="product-details">
           <h2>{title}</h2>
-          <h3>${price} AUD</h3>
+          <h3>${price}</h3>
           <p className="italic">Como (n)</p>
           <p >{description}</p>
           <p className="italic">
@@ -243,8 +244,6 @@ const PulloverProductPage = () => {
           <p>{colorDescriptor}</p>
           <p className="italic-model-info">{modelInfo}</p>
           <p className="disclaimer-font">
-            *{passportHolderNote}
-            <div className="spacer"></div>
             *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
           </p>
 
@@ -365,8 +364,6 @@ const PulloverProductPage = () => {
               <p>{colorDescriptor}</p>
               <p className="italic-model-info">{modelInfo}</p>
               <p className="disclaimer-font">
-                *{passportHolderNote}
-                <div className="spacer"></div>
                 *Kindly note this is a pre-order. We anticipate delivering your 'Time in Lieu' product by February 14th. Thank you for your patience.
               </p>
 

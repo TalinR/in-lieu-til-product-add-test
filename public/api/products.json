@@ -70,5 +70,23 @@
       "options": "Black|Beige",
       "required": true
     }]
+  },
+  {
+    "id": "AVERY",
+    "title": "AVERY",
+    "description": "AVERY Hoodie",
+    "price": 250.00,
+    "image": "/images/sticker-single.jpg",
+    "url": "/snipcart-test",
+    "customFields": [{
+      "name": "Size",
+      "options": "Extra Small|Small|Medium|Large|Extra Large",
+      "required": true
+    },
+    {
+      "name": "Colour",
+      "options": "Kyoho",
+      "required": true
+    }]
   }
 ]

@@ -203,7 +203,7 @@ const PantsProductPage = () => {
         className={`snipcart-add-item ${outOfStock ? 'out-of-stock' : ''}`}
         data-item-id="lyon_pant"
         data-item-price={price}
-        data-item-url={`${baseUrl}/api/products.json`}
+        data-item-url={window.location.href}
         data-item-description={description}
         data-item-image={images[`${selectedColorRef}_pants_1.jpg`]}
         data-item-name={title}
